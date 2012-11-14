@@ -1,2 +1,2 @@
 add_subdirectory(server)
-add_subdirectory(struct2json)
+add_subdirectory(type_to_json)

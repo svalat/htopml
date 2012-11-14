@@ -27,7 +27,7 @@ WebNodeData ValidationWebNode::getContent(mg_event event, mg_connection* conn, c
 {
 	char buffer[2048];
 	sprintf(buffer,"Ok, get the page at URI : %s\n",request_info->uri);
-	return WebNodeData(strdup(buffer),strlen(buffer),"text/plain");
+	return WebNodeData(strdup(buffer),strlen(buffer),"text/plain",true);
 }
 
 }

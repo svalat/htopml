@@ -7,5 +7,5 @@ add_subdirectory(extern_deps)
 add_subdirectory(src)
 
 add_executable(ihstkd main.cpp)
-target_link_libraries(ihstkd InternalHtmlSpyToolKit mongoose)
+target_link_libraries(ihstkd InternalHtmlSpyToolKit mongoose type_to_json)
 target_link_libraries(ihstkd dl pthread)
