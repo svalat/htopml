@@ -1,2 +1,2 @@
-add_library(InternalHtmlSpyToolKit FileWebNode.cpp ValidationWebNode.cpp Server.cpp WebNode.cpp)
+add_library(InternalHtmlSpyToolKit GnuplotWebNode.cpp FileWebNode.cpp ValidationWebNode.cpp Server.cpp WebNode.cpp)
 target_link_libraries(InternalHtmlSpyToolKit mongoose)

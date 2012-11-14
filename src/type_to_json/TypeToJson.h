@@ -28,7 +28,7 @@ std::ostream & typeToJsonPadding(std::ostream & out,int padding);
 std::ostream & typeToJsonVarName(std::ostream & out,int padding,const std::string & name);
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const T & value);
+template <class T> std::ostream& typeToJson(std::ostream& out,const T & value);
 
 /*******************  FUNCTION  *********************/
 std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::string& value);
