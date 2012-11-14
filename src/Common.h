@@ -6,12 +6,15 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+/********************  HEADERS  *********************/
 #include <sstream>
 #include <string>
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*********************  CLASS  **********************/
 template <class T> std::string toString(const T & value)
 {
 	std::stringstream str;

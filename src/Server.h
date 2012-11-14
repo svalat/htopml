@@ -9,16 +9,20 @@
 #ifndef IHSTK_SERVER_H
 #define IHSTK_SERVER_H
 
+/********************  HEADERS  *********************/
 #include <vector>
 #include "mongoose.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*********************  STRUCT  *********************/
 class WebNode;
 struct WebNodeData;
 typedef std::vector<WebNode*> WebNodeVector;
 
+/********************  ENUM  ************************/
 enum ServerStatus
 {
 	SERVER_NOT_STARTED,
@@ -26,6 +30,7 @@ enum ServerStatus
 	SERVER_RUNNING
 };
 
+/*********************  CLASS  **********************/
 class Server
 {
 	public:

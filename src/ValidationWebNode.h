@@ -9,11 +9,14 @@
 #ifndef IHSTKVALIDATIONWEBNODE_H
 #define IHSTKVALIDATIONWEBNODE_H
 
+/********************  HEADERS  *********************/
 #include "WebNode.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*********************  CLASS  **********************/
 class ValidationWebNode : public WebNode
 {
 	public:

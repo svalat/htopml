@@ -6,16 +6,20 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+/********************  HEADERS  *********************/
 #include <cassert>
 #include "Common.h"
 #include "WebNode.h"
 #include "Server.h"
 
+/**********************  USING  *********************/
 using namespace std;
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
-	
+
+/*******************  FUNCTION  *********************/
 Server::Server(int port)
 {
 	//errors
@@ -27,6 +31,7 @@ Server::Server(int port)
 	this->status = SERVER_NOT_STARTED;
 }
 
+/*******************  FUNCTION  *********************/
 void Server::start()
 {
 	//errors
@@ -48,12 +53,14 @@ void Server::start()
 	status = SERVER_RUNNING;
 }
 
+/*******************  FUNCTION  *********************/
 void Server::stop()
 {
 	assert(status == SERVER_RUNNING && ctx != NULL);
 	mg_stop(ctx);
 }
 
+/*******************  FUNCTION  *********************/
 void* Server::staticCallback(mg_event event, mg_connection* conn)
 {
 	const struct mg_request_info *request_info = mg_get_request_info(conn);
@@ -61,6 +68,7 @@ void* Server::staticCallback(mg_event event, mg_connection* conn)
 	return server->callback(event,conn,request_info);
 }
 
+/*******************  FUNCTION  *********************/
 void * Server::callback(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	if (event == MG_NEW_REQUEST) {
@@ -81,11 +89,13 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 	}
 }
 
+/*******************  FUNCTION  *********************/
 void Server::registerWebNode(WebNode* node)
 {
 	this->webNodes.push_back(node);
 }
 
+/*******************  FUNCTION  *********************/
 WebNode* Server::getWebNode(const char* uri)
 {
 	//errors
@@ -103,6 +113,7 @@ WebNode* Server::getWebNode(const char* uri)
 	return res;
 }
 
+/*******************  FUNCTION  *********************/
 void * Server::quickReturn(mg_connection* conn, const WebNodeData& data)
 {
 	mg_printf(conn,
@@ -117,6 +128,7 @@ void * Server::quickReturn(mg_connection* conn, const WebNodeData& data)
 	return (void*)("");
 }
 
+/*******************  FUNCTION  *********************/
 void * Server::quickErrorCode(mg_connection* conn,int code, const std::string& contentType, const std::string& message)
 {
 	mg_printf(conn,

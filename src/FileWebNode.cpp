@@ -6,14 +6,17 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+/********************  HEADERS  *********************/
 #include <cstdio>
 #include <cstring>
 #include <pthread.h>
 #include "FileWebNode.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*******************  FUNCTION  *********************/
 FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, const std::string mimeType)
 	: WebNode(path,true)
 {
@@ -24,6 +27,7 @@ FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, c
 	pthread_mutex_init(&mutex,NULL);
 }
 
+/*******************  FUNCTION  *********************/
 FileWebNode::~FileWebNode(void )
 {
 	if (cache != NULL)
@@ -32,6 +36,7 @@ FileWebNode::~FileWebNode(void )
 	pthread_mutex_destroy(&mutex);
 }
 
+/*******************  FUNCTION  *********************/
 void FileWebNode::loadFileInCache(void )
 {
 	pthread_mutex_lock(&mutex);
@@ -48,6 +53,7 @@ void FileWebNode::loadFileInCache(void )
 	pthread_mutex_unlock(&mutex);
 }
 
+/*******************  FUNCTION  *********************/
 WebNodeData FileWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	if (cache == NULL)

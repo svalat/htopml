@@ -6,13 +6,16 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+/********************  HEADERS  *********************/
 #include <cstring>
 #include <cassert>
 #include "WebNode.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*******************  FUNCTION  *********************/
 WebNodeData::WebNodeData(void* data, size_t size,const std::string & mimeType,int status,bool autofree)
 {
 	this->data = data;
@@ -22,17 +25,20 @@ WebNodeData::WebNodeData(void* data, size_t size,const std::string & mimeType,in
 	this->autofree = autofree;
 }
 
+/*******************  FUNCTION  *********************/
 WebNode::WebNode(const std::string& path, bool strictPath)
 {
 	this->basePath = path;
 	this->strictPath = strictPath;
 }
 
+/*******************  FUNCTION  *********************/
 WebNode::~WebNode(void )
 {
 
 }
 
+/*******************  FUNCTION  *********************/
 WebNode * WebNode::acceptUri(const char* uri)
 {
 	//errors

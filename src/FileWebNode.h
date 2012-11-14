@@ -9,11 +9,14 @@
 #ifndef IHSTKWEBNODEFILE_H
 #define IHSTKWEBNODEFILE_H
 
+/********************  HEADERS  *********************/
 #include "WebNode.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*********************  CLASS  **********************/
 class FileWebNode : public WebNode
 {
 	public:

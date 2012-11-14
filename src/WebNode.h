@@ -9,14 +9,17 @@
 #ifndef IHSTK_WEB_NODE_H
 #define IHSTK_WEB_NODE_H
 
+/********************  HEADERS  *********************/
 #include <string>
 #include <streambuf>
 #include <cstdlib>
 #include "mongoose.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
+/*********************  STRUCT  *********************/
 struct WebNodeData
 {
 	WebNodeData(void * data,size_t size,const std::string & mimeType,int status = 200,bool autofree=false);
@@ -27,6 +30,7 @@ struct WebNodeData
 	bool autofree;
 };
 
+/*********************  CLASS  **********************/
 class WebNode
 {
 	public:

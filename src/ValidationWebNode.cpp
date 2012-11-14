@@ -6,18 +6,23 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+/********************  HEADERS  *********************/
 #include <cstdio>
 #include <cstring>
 #include "ValidationWebNode.h"
 
+/********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
+
+/*******************  FUNCTION  *********************/
 ValidationWebNode::ValidationWebNode(const std::string& path, bool strictPath)
 	: WebNode(path, strictPath)
 {
 
 }
 
+/*******************  FUNCTION  *********************/
 WebNodeData ValidationWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	char buffer[2048];
