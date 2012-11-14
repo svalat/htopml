@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdio>
-#include "src/Server.h"
-#include "src/ValidationWebNode.h"
-#include "src/FileWebNode.h"
+#include "src/server/Server.h"
+#include "src/server/ValidationWebNode.h"
+#include "src/server/FileWebNode.h"
 
 using namespace InternalHtmlSpyToolKit;
 using namespace std;
