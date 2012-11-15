@@ -6,6 +6,7 @@
 #include "src/server/CJsonWebNode.h"
 #include "src/server/GnuplotWebNode.h"
 #include "src/type_to_json/TypeToJson.h"
+#include "src/web_nodes/LinuxGetRusage.h"
 
 using namespace InternalHtmlSpyToolKit;
 using namespace std;
@@ -40,11 +41,13 @@ int main(int argc, char **argv)
 	FileWebNode makefile("/Makefile","./Makefile","text/plain");
 	CJsonWebNode<Test> jsonnode("/tmp",&test);
 	GnuplotWebNode plot("/plot.png","plot x;");
+	LinuxGetRusage rusageNode("/linux/rusage.js");
 	server.registerWebNode(&node);
 	server.registerWebNode(&nodeall);
 	server.registerWebNode(&makefile);
 	server.registerWebNode(&jsonnode);
 	server.registerWebNode(&plot);
+	server.registerWebNode(&rusageNode);
 	server.start();
 	cout << "running..." << endl;
 	getchar();

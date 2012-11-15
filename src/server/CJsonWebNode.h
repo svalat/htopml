@@ -26,6 +26,8 @@ class CJsonWebNode : public WebNode
 	public:
 		CJsonWebNode(const std::string& path, const T * value);
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
+	protected:
+		virtual void onRequest(const mg_request_info* request_info);
 	private:
 		const T * value;
 };
@@ -43,9 +45,17 @@ template <class T>
 WebNodeData CJsonWebNode<T>::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	std::stringstream str;
+	onRequest(request_info);
 	typeToJson(str,*value);
 	char * res = strdup(str.str().c_str());
 	return WebNodeData(res,strlen(res),"application/json",200,true);
+}
+
+/*******************  FUNCTION  *********************/
+template <class T>
+void CJsonWebNode<T>::onRequest(const mg_request_info* request_info)
+{
+	
 }
 
 };
