@@ -11,58 +11,39 @@
 
 /********************  HEADERS  *********************/
 #include "TypeToJson.h"
+#include "JsonState.h"
 
 /********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
 {
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::vector<T> & iterable)
+template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable)
 {
-	typeToJsonVarName(out,padding,name);
-	out << "[" << std::endl;
+	json.openArray();
 
 	for (typename std::vector<T>::iterator it = iterable.begin() ; it != iterable.end() ; ++it)
-		typeToJson(out,padding+1,"",iterable);
+		json.printValue(*it);
 
-	typeToJsonPadding(out,padding);
-	out << "]," << std::endl;
-	return out;
+	json.closeArray();
 }
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::list<T> & iterable)
+template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable)
 {
-	typeToJsonVarName(out,padding,name);
-	out << "[" << std::endl;
+	json.openArray();
 
 	for (typename std::vector<T>::iterator it = iterable.begin() ; it != iterable.end() ; ++it)
-		typeToJson(out,padding+1,"",iterable);
+		json.printValue(*it);
 
-	typeToJsonPadding(out,padding);
-	out << "]," << std::endl;
-	return out;
-}
-
-/*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const T * array,size_t size)
-{
-	typeToJsonVarName(out,padding,name);
-	out << "[" << std::endl;
-
-	if (array != NULL)
-		for (int i = 0 ; i < size ; i++)
-			typeToJson(out,padding+1,"",array[i]);
-
-	typeToJsonPadding(out,padding);
-	out << "]," << std::endl;
-	return out;
+	json.closeArray();
 }
 
 /*******************  FUNCTION  *********************/
 template <class T> std::ostream& typeToJson(std::ostream& out,const T & value)
 {
-	typeToJson(out,0,"",*value);
+	JsonState state(&out);
+	state.printValue(value);
 	return out;
 }
 

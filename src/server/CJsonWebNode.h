@@ -43,7 +43,7 @@ template <class T>
 WebNodeData CJsonWebNode<T>::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	std::stringstream str;
-	typeToJson(str,value);
+	typeToJson(str,*value);
 	char * res = strdup(str.str().c_str());
 	return WebNodeData(res,strlen(res),"application/json",200,true);
 }

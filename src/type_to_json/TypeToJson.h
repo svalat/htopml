@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include "JsonState.h"
 
 /********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
@@ -21,26 +22,22 @@ namespace InternalHtmlSpyToolKit
 
 /********************  MACRO  ***********************/
 #define IHSTK_TYPE_TO_JSON_BASIC_TYPE(alias_type,target_type) \
-	static inline std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, alias_type value) {return typeToJson(out,padding,name,(target_type)value);}
-
-/*******************  FUNCTION  *********************/
-std::ostream & typeToJsonPadding(std::ostream & out,int padding);
-std::ostream & typeToJsonVarName(std::ostream & out,int padding,const std::string & name);
+	static inline void typeToJson(JsonState & json,std::ostream& stream, alias_type value) {return typeToJson(json,stream,(target_type)value);}
 
 /*******************  FUNCTION  *********************/
 template <class T> std::ostream& typeToJson(std::ostream& out,const T & value);
 
 /*******************  FUNCTION  *********************/
-std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::string& value);
-std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const char * value);
-std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, long value);
-std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, unsigned long value);
-std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, double value);
+void typeToJson(JsonState & json,std::ostream& stream, const std::string& value);
+void typeToJson(JsonState & json,std::ostream& stream, const char * value);
+void typeToJson(JsonState & json,std::ostream& stream, long value);
+void typeToJson(JsonState & json,std::ostream& stream, unsigned long value);
+void typeToJson(JsonState & json,std::ostream& stream, double value);
+void typeToJson(JsonState & json,std::ostream& stream, bool value);
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::vector<T> & iterable);
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::list<T> & iterable);
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const T * array,size_t size);
+template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable);
+template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable);
 
 /*******************  FUNCTION  *********************/
 IHSTK_TYPE_TO_JSON_BASIC_TYPE(int,long);

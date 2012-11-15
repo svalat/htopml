@@ -10,15 +10,35 @@
 using namespace InternalHtmlSpyToolKit;
 using namespace std;
 
+struct Test
+{
+	int a;
+	string b;
+	float c;
+	bool d;
+	int e[8];
+};
+
+void typeToJson(JsonState & json,std::ostream& stream, const Test & value)
+{
+	json.openStruct();
+	json.printField("a",value.a);
+	json.printField("b",value.b);
+	json.printField("c",value.c);
+	json.printField("d",value.d);
+	json.printFieldArray("e",value.e,8);
+	json.closeStruct();
+}
+
 int main(int argc, char **argv)
 {
-	string tmp = "coucou";
+	Test test = {10,"coucou",5.5,true};
 	Server server(8080);
 	cout << "init server on 8080" << endl;
 	ValidationWebNode node("/index.html",true);
 	ValidationWebNode nodeall("/images/",false);
 	FileWebNode makefile("/Makefile","./Makefile","text/plain");
-	CJsonWebNode<string> jsonnode("/tmp",&tmp);
+	CJsonWebNode<Test> jsonnode("/tmp",&test);
 	GnuplotWebNode plot("/plot.png","plot x;");
 	server.registerWebNode(&node);
 	server.registerWebNode(&nodeall);

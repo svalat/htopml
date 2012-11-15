@@ -17,84 +17,50 @@ namespace InternalHtmlSpyToolKit
 {
 
 /*******************  FUNCTION  *********************/
-ostream& typeToJsonPadding(ostream& out, int padding)
+void typeToJson(JsonState & json,std::ostream& stream, const std::string& value)
 {
-	for (int i = 0 ; i < padding ; i++)
-		out << '\t';
-	return out;
+	return typeToJson(json,stream,value.c_str());
 }
 
 /*******************  FUNCTION  *********************/
-ostream& typeToJsonVarName(ostream& out, int padding, const string& name)
+void typeToJson(JsonState & json,std::ostream& stream, const char* value)
 {
-	if (name.empty() == false)
-	{
-		typeToJsonPadding(out,padding);
-		out << name << ": ";
-		return out;
-	}
-	return out;
-}
-
-/*******************  FUNCTION  *********************/
-ostream& typeToJson(std::ostream& out,int padding, const std::string & name, const std::string& value)
-{
-	return typeToJson(out,padding,name,value.c_str());
-}
-
-/*******************  FUNCTION  *********************/
-ostream& typeToJson(ostream& out, int padding, const string& name, const char* value)
-{
-	//name
-	typeToJsonVarName(out,padding,name);
-
-	out << '\"';
+	stream << '\"';
 	while (value != NULL && *value != '\0')
 	{
 		if (*value == '\"')
-			out << "\\\"";
+			stream << "\\\"";
 		else
-			out << *value;
+			stream << *value;
 		value++;
 	}
-	out << "\"," << endl;
-	return out;
+	stream << '"';
 }
 
 /*******************  FUNCTION  *********************/
-ostream& typeToJson(ostream& out, int padding, const string& name, unsigned long value)
+void typeToJson(JsonState & json,std::ostream& stream, unsigned long value)
 {
-	//name
-	typeToJsonVarName(out,padding,name);
-	out << value;
-	out << "\"," << endl;
-	return out;
+	stream << value;
 }
 
 /*******************  FUNCTION  *********************/
-ostream& typeToJson(ostream& out, int padding, const string& name, long value)
+void typeToJson(JsonState & json,std::ostream& stream, long value)
 {
-	//name
-	typeToJsonVarName(out,padding,name);
-	out << value;
-	out << "\"," << endl;
-	return out;
+	stream << value;
 }
 
 /*******************  FUNCTION  *********************/
-ostream& typeToJson(ostream& out, int padding, const string& name, double value)
+void typeToJson(JsonState & json,std::ostream& stream, double value)
 {
-	//name
-	typeToJsonVarName(out,padding,name);
-	out << value;
-	out << "\"," << endl;
-	return out;
+	stream << value;
 }
 
-/*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,int padding, const T & value)
+void typeToJson(JsonState & json,std::ostream& stream, bool value)
 {
-	return typeToJson(out,padding,"",value);
+	if (value)
+		stream << "true";
+	else
+		stream << "false";
 }
 
 };

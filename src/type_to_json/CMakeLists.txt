@@ -1,1 +1,1 @@
-add_library(type_to_json TypeToJson.cpp)
+add_library(type_to_json JsonState.cpp TypeToJson.cpp)
