@@ -38,6 +38,7 @@ class WebNode
 		virtual ~WebNode(void);
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info) = 0;
 		virtual WebNode * acceptUri(const char * uri);
+		const std::string & getBasePath(void) const;
 	private:
 		std::string basePath;
 		bool strictPath;

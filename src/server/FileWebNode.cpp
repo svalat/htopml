@@ -10,7 +10,11 @@
 #include <cstdio>
 #include <cstring>
 #include <pthread.h>
+#include <iostream>
 #include "FileWebNode.h"
+
+/**********************  USING  *********************/
+using namespace std;
 
 /********************  NAMESPACE  *******************/
 namespace InternalHtmlSpyToolKit
@@ -43,6 +47,11 @@ void FileWebNode::loadFileInCache(void )
 	if (cache == NULL)
 	{
 		FILE * fp = fopen(filePath.c_str(),"r");
+		if (fp == NULL)
+		{
+			cerr << "File not found : " << filePath << endl;
+			abort();
+		}
 		fseek(fp, 0L, SEEK_END);
 		size_t fileSize = ftell(fp);
 		fseek(fp, 0L, SEEK_SET);

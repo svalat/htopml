@@ -24,7 +24,7 @@ JsonState::JsonState(std::ostream* out)
 {
 	this->out = out;
 	this->indent = 0;
-	this->stateStack.push(JSON_STATE_ROOT);
+	pushState(JSON_STATE_ROOT);
 }
 
 /*******************  FUNCTION  *********************/
@@ -37,7 +37,7 @@ void JsonState::putPadding()
 /*******************  FUNCTION  *********************/
 JsonStateEnum JsonState::getState(void ) const
 {
-	return stateStack.top();
+	return stateStack.top().state;
 }
 
 /*******************  FUNCTION  *********************/
@@ -65,12 +65,13 @@ void JsonState::printFormattedValue(const char* format, ... )
 	//check where we are
 	assert(getState() & (JSON_STATE_FIELD | JSON_STATE_ARRAY));
 
+	//separator
+	if (getState() == JSON_STATE_ARRAY && !isFirst())
+		*out << ", ";
+
 	//print
 	*out << buffer;
-
-	//separator
-	if (getState() == JSON_STATE_ARRAY)
-		*out << ", ";
+	firstIsDone();
 }
 
 /*******************  FUNCTION  *********************/
@@ -79,14 +80,18 @@ void JsonState::openField(const string& name)
 	//check where we are
 	assert(getState() & (JSON_STATE_ROOT | JSON_STATE_STRUCT));
 
+	//print name
+	if (!isFirst())
+		*out << "," << endl;
+
 	//setup state
-	stateStack.push(JSON_STATE_FIELD);
+	pushState(JSON_STATE_FIELD);
 
 	//print padding
 	putPadding();
 
 	//print name
-	*out << name << ": ";
+	*out << "\"" << name << "\"" << ": ";
 }
 
 /*******************  FUNCTION  *********************/
@@ -96,10 +101,10 @@ void JsonState::closeField(const string& name)
 	assert(getState() == JSON_STATE_FIELD);
 
 	//setup state
-	stateStack.pop();
+	popState(JSON_STATE_FIELD);
 
-	//print name
-	*out << ";" << endl;
+	//mark first as done
+	firstIsDone();
 }
 
 /*******************  FUNCTION  *********************/
@@ -109,7 +114,7 @@ void JsonState::openArray(void)
 	assert(getState() & (JSON_STATE_ROOT | JSON_STATE_FIELD));
 
 	//setup state
-	stateStack.push(JSON_STATE_ARRAY);
+	pushState(JSON_STATE_ARRAY);
 
 	//print name
 	*out << "[ ";
@@ -122,7 +127,7 @@ void JsonState::closeArray(void)
 	assert(getState() == JSON_STATE_ARRAY);
 
 	//setup state
-	stateStack.pop();
+	popState(JSON_STATE_ARRAY);
 
 	//print name
 	*out << "]";
@@ -135,7 +140,7 @@ void JsonState::openStruct(void )
 	assert(getState() & (JSON_STATE_FIELD | JSON_STATE_ARRAY | JSON_STATE_ROOT));
 
 	//setup state
-	stateStack.push(JSON_STATE_STRUCT);
+	pushState(JSON_STATE_STRUCT);
 
 	//print name
 	indent++;
@@ -149,12 +154,38 @@ void JsonState::closeStruct(void )
 	assert(getState() == JSON_STATE_STRUCT);
 
 	//setup state
-	stateStack.pop();
+	popState(JSON_STATE_STRUCT);
 
 	//print name
 	indent--;
 	putPadding();
 	*out << "}";
+}
+
+/*******************  FUNCTION  *********************/
+void JsonState::firstIsDone(void )
+{
+	stateStack.top().isFirst = false;
+}
+
+/*******************  FUNCTION  *********************/
+bool JsonState::isFirst(void ) const
+{
+	return stateStack.top().isFirst;
+}
+
+/*******************  FUNCTION  *********************/
+void JsonState::pushState(JsonStateEnum state)
+{
+	JsonStateStruct tmp = {state,true};
+	stateStack.push(tmp);
+}
+
+/*******************  FUNCTION  *********************/
+void JsonState::popState(JsonStateEnum state)
+{
+	assert(stateStack.top().state == state);
+	stateStack.pop();
 }
 
 };

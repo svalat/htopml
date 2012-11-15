@@ -9,6 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cstring>
 #include <cassert>
+#include <cstdio>
 #include "WebNode.h"
 
 /********************  NAMESPACE  *******************/
@@ -47,10 +48,17 @@ WebNode * WebNode::acceptUri(const char* uri)
 	//check if string start by
 	int len_diff = strlen(uri) - basePath.size();
 	int res = strncmp(uri,basePath.c_str(),basePath.size());
+
 	if  (res == 0 && (!strictPath || len_diff == 0))
 		return this;
 	else
 		return NULL;
+}
+
+/*******************  FUNCTION  *********************/
+const std::string& WebNode::getBasePath(void ) const
+{
+	return basePath;
 }
 
 };

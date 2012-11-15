@@ -7,6 +7,7 @@
 #include "src/server/GnuplotWebNode.h"
 #include "src/type_to_json/TypeToJson.h"
 #include "src/web_nodes/LinuxGetRusage.h"
+#include "src/web_nodes/DirectoryWebNode.h"
 
 using namespace InternalHtmlSpyToolKit;
 using namespace std;
@@ -41,13 +42,24 @@ int main(int argc, char **argv)
 	FileWebNode makefile("/Makefile","./Makefile","text/plain");
 	CJsonWebNode<Test> jsonnode("/tmp",&test);
 	GnuplotWebNode plot("/plot.png","plot x;");
-	LinuxGetRusage rusageNode("/linux/rusage.js");
+	LinuxGetRusage rusageNode("/linux/rusage.json");
+	FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
+	FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
+	DirectoryWebNode ressourcesNode("/ressources/","../extern_deps/");
+	ressourcesNode.registerFile("jquery/jquery.min.js","application/javascript");
+	ressourcesNode.registerFile("highcharts/js/highcharts.js","application/javascript");
+	ressourcesNode.registerFile("highcharts/js/highcharts-more.js","application/javascript");
+	ressourcesNode.registerFile("highcharts/js/modules/exporting.js","application/javascript");
+	
 	server.registerWebNode(&node);
 	server.registerWebNode(&nodeall);
 	server.registerWebNode(&makefile);
 	server.registerWebNode(&jsonnode);
 	server.registerWebNode(&plot);
 	server.registerWebNode(&rusageNode);
+	server.registerWebNode(&ressourcesNode);
+	server.registerWebNode(&rusage_html);
+	server.registerWebNode(&test_json);
 	server.start();
 	cout << "running..." << endl;
 	getchar();

@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="/ressources/jquery/jquery.min.js"></script>
+		<script type="text/javascript">
+    var chart;
+    function requestData() {
+    $.ajax({
+        url: 'rusage.json',
+        contentType: 'application/json; charset=utf-8',
+//         data: json,
+//         dataType: 'json',
+        success: function(point) {
+//         alert('ok');
+            var series = chart.series[0],
+                shift = series.data.length > 200; // shift if the series is longer than 20
+//                 alert('ok');
+
+            // add the point
+            chart.series[0].addPoint(point.ru_nvcsw, true, shift);
+			chart2.series[0].points[0].update(Math.round(point.ru_maxrss / 1024));
+
+            // call it again after one second
+            setTimeout(requestData, 500);
+        },
+        type: "GET",
+//         async: false,
+        error:function (xhr, status, error){
+		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
+		},
+    });
+}
+$(document).ready(function() {
+    chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container',
+            defaultSeriesType: 'spline',
+            events: {
+                load: requestData
+            }
+        },
+        title: {
+            text: 'Live random data'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150,
+            maxZoom: 10*10
+        },
+        yAxis: {
+            minPadding: 0.2,
+            maxPadding: 0.2,
+            title: {
+                text: 'Value',
+                margin: 80
+            }
+        },
+        series: [{
+            name: 'Random data',
+            data: [8,5,10,15,150]
+        }]
+    });
+	document.mychart = chart;
+});
+
+		</script>
+
+
+
+
+
+				<script type="text/javascript">
+$(function () {
+
+    chart2 = new Highcharts.Chart({
+
+	    chart: {
+	        renderTo: 'container2',
+	        type: 'gauge',
+	        plotBackgroundColor: null,
+	        plotBackgroundImage: null,
+	        plotBorderWidth: 0,
+	        plotShadow: false
+	    },
+
+	    title: {
+	        text: 'Memory'
+	    },
+
+	    pane: {
+	        startAngle: -150,
+	        endAngle: 150,
+	        background: [{
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#FFF'],
+	                    [1, '#333']
+	                ]
+	            },
+	            borderWidth: 0,
+	            outerRadius: '109%'
+	        }, {
+	            backgroundColor: {
+	                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+	                stops: [
+	                    [0, '#333'],
+	                    [1, '#FFF']
+	                ]
+	            },
+	            borderWidth: 1,
+	            outerRadius: '107%'
+	        }, {
+	            // default background
+	        }, {
+	            backgroundColor: '#DDD',
+	            borderWidth: 0,
+	            outerRadius: '105%',
+	            innerRadius: '103%'
+	        }]
+	    },
+
+	    // the value axis
+	    yAxis: {
+	        min: 0,
+	        max: 1024,
+
+	        minorTickInterval: 'auto',
+	        minorTickWidth: 1,
+	        minorTickLength: 10,
+	        minorTickPosition: 'inside',
+	        minorTickColor: '#666',
+
+	        tickPixelInterval: 30,
+	        tickWidth: 2,
+	        tickPosition: 'inside',
+	        tickLength: 10,
+	        tickColor: '#666',
+	        labels: {
+	            step: 2,
+	            rotation: 'auto'
+	        },
+	        title: {
+	            text: 'Ko'
+	        },
+	        plotBands: [{
+	            from: 0,
+	            to: 600,
+	            color: '#55BF3B' // green
+	        }, {
+	            from: 600,
+	            to: 800,
+	            color: '#DDDF0D' // yellow
+	        }, {
+	            from: 800,
+	            to: 1024,
+	            color: '#DF5353' // red
+	        }]
+	    },
+
+	    series: [{
+	        name: 'Memory',
+	        data: [0],
+	        tooltip: {
+	            valueSuffix: ' ko'
+	        }
+	    }]
+
+	});
+});
+		</script>
+	</head>
+	<body>
+<script src="/ressources/highcharts/js/highcharts.js"></script>
+<script src="/ressources/highcharts/js/modules/exporting.js"></script>
+<script src="/ressources/highcharts/js/highcharts-more.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<!-- <script type="text/javascript" src="http://www.highcharts.com/highslide/highslide-full.min.js"></script> -->
+<!-- <script type="text/javascript" src="http://www.highcharts.com/highslide/highslide.config.js" charset="utf-8"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/highslide/highslide.css" /> -->
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+<div id="container2" style="width: 400px; height: 300px; margin: 0 auto"></div>
+
+	</body>
+</html>

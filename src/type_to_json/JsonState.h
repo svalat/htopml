@@ -26,6 +26,16 @@ enum JsonStateEnum
 	JSON_STATE_FIELD  = 8,
 };
 
+/*********************  TYPES  **********************/
+struct JsonStateStruct
+{
+	JsonStateEnum state;
+	bool isFirst;
+};
+
+/*********************  TYPES  **********************/
+typedef std::stack<JsonStateStruct> JsonStateStructStack;
+
 /*********************  CLASS  **********************/
 class JsonState
 {
@@ -46,11 +56,15 @@ class JsonState
 		JsonState(const JsonState & state);;
 		void openField(const std::string & name);
 		void closeField(const std::string & name);
+		void pushState(JsonStateEnum state);
+		void popState(JsonStateEnum state);
+		bool isFirst(void) const;
+		void firstIsDone(void);
 	private:
 		void putPadding();
 		std::ostream * out;
 		int indent;
-		std::stack<JsonStateEnum> stateStack;
+		JsonStateStructStack stateStack;
 };
 
 };

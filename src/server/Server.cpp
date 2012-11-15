@@ -101,6 +101,7 @@ WebNode* Server::getWebNode(const char* uri)
 	//errors
 	assert(uri != NULL);
 	WebNode * res = NULL;
+	puts("sdfsdfsf");
 
 	//loop on all nodes to find the addr
 	for (WebNodeVector::iterator it = webNodes.begin() ; it != webNodes.end() ; ++it)
@@ -110,6 +111,7 @@ WebNode* Server::getWebNode(const char* uri)
 			res = tmp;
 	}
 
+	puts("sdfsdfsf");
 	return res;
 }
 
