@@ -26,6 +26,31 @@ void LinuxGetRusage::onRequest(const mg_request_info* request_info)
 	getrusage(RUSAGE_SELF,&data);
 }
 
+static int parseLine(char* line){
+	int i = strlen(line);
+	while (*line < '0' || *line > '9') line++;
+	line[i-3] = '\0';
+	i = atoi(line);
+	return i;
+}
+
+
+static int getMemUsage(){ //Note: this value is in KB!
+	FILE* file = fopen("/proc/self/status", "r");
+	int result = -1;
+	char line[128];
+
+
+	while (fgets(line, 128, file) != NULL){
+		if (strncmp(line, "VmRSS:", 6) == 0){
+			result = parseLine(line);
+			break;
+		}
+	}
+	fclose(file);
+	return result;
+}
+
 /*******************  FUNCTION  *********************/
 void typeToJson(JsonState & json,std::ostream& stream, const rusage & value)
 {
@@ -46,6 +71,8 @@ void typeToJson(JsonState & json,std::ostream& stream, const rusage & value)
 	json.printField("ru_nsignals",value.ru_nsignals);
 	json.printField("ru_nvcsw",value.ru_nvcsw);
 	json.printField("ru_nivcsw",value.ru_nivcsw);
+	int mem = getMemUsage();
+	json.printField("memusage",mem);
 	json.closeStruct();
 }
 

@@ -32,20 +32,20 @@ void typeToJson(JsonState & json,std::ostream& stream, const Test & value)
 	json.closeStruct();
 }
 
-int main(int argc, char **argv)
+int main2(int argc, char **argv)
 {
-	Test test = {10,"coucou",5.5,true};
-	Server server(8080);
+	static Test test = {10,"coucou",5.5,true};
+	static Server server(8080);
 	cout << "init server on 8080" << endl;
-	ValidationWebNode node("/index.html",true);
-	ValidationWebNode nodeall("/images/",false);
-	FileWebNode makefile("/Makefile","./Makefile","text/plain");
-	CJsonWebNode<Test> jsonnode("/tmp",&test);
-	GnuplotWebNode plot("/plot.png","plot x;");
-	LinuxGetRusage rusageNode("/linux/rusage.json");
-	FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
-	FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
-	DirectoryWebNode ressourcesNode("/ressources/","../extern_deps/");
+	static ValidationWebNode node("/index.html",true);
+	static ValidationWebNode nodeall("/images/",false);
+	static FileWebNode makefile("/Makefile","./Makefile","text/plain");
+	static CJsonWebNode<Test> jsonnode("/tmp",&test);
+	static GnuplotWebNode plot("/plot.png","plot x;");
+	static LinuxGetRusage rusageNode("/linux/rusage.json");
+	static FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
+	static FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
+	static DirectoryWebNode ressourcesNode("/ressources/","../extern_deps/");
 	ressourcesNode.registerFile("jquery/jquery.min.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts-more.js","application/javascript");
@@ -62,8 +62,10 @@ int main(int argc, char **argv)
 	server.registerWebNode(&test_json);
 	server.start();
 	cout << "running..." << endl;
-	getchar();
-	server.stop();
-	cout << "stop." << endl;
+// 	getchar();
+// 	server.stop();
+// 	cout << "stop." << endl;
 	return 0;
 }
+
+int tmp = main2(0,NULL);

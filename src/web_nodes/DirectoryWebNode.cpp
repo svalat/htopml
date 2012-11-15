@@ -46,8 +46,6 @@ WebNode* DirectoryWebNode::acceptUri(const char* uri)
     for (FileWebNodeVector::iterator it = files.begin() ; it != files.end() ; ++it)
 		if ((*it)->acceptUri(uri))
 			return *it;
-	puts(uri);
-	puts("okokok");
 	return WebNode::acceptUri(uri);
 }
 
