@@ -11,6 +11,7 @@
 
 /********************  HEADERS  *********************/
 #include <vector>
+#include <string>
 #include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
@@ -38,6 +39,7 @@ class Server
 		void start();
 		void stop();
 		void registerWebNode(WebNode * node);
+		void setPasswordFile(const std::string & path);
 	private:
 		mg_context *ctx;
 		int port;
@@ -51,6 +53,7 @@ class Server
 		WebNodeVector webNodes;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
 		void * quickReturn(mg_connection* conn,const WebNodeData & data);
+		std::string passFile;
 };
 
 };

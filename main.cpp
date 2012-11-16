@@ -81,6 +81,7 @@ int main(int argc, char **argv)
 	server.registerWebNode(&ressourcesNode);
 	server.registerWebNode(&rusage_html);
 	server.registerWebNode(&test_json);
+	server.setPasswordFile("./htpasswd");
 	server.start();
 	cout << "running..." << endl;
 	#ifndef ENABLE_INSTR_LIB

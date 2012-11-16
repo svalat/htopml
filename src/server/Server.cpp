@@ -44,7 +44,15 @@ void Server::start()
 	string port = toString(this->port);
 
 	//gen options
-	const char *options[] = {"listening_ports", port.c_str(), NULL};
+	const char *options[5] = {"listening_ports", port.c_str(), NULL, NULL, NULL};
+	int cntOptions = 2;
+
+	//optional onces.
+	if (passFile.empty() == false)
+	{
+		options[cntOptions++] = "put_delete_passwords_file";
+		options[cntOptions++] = passFile.c_str();
+	}
 
 	//start the server
 	ctx = mg_start(&staticCallback, this, options);
@@ -141,6 +149,12 @@ void * Server::quickErrorCode(mg_connection* conn,int code, const std::string& c
 
 	// Mark as processed
 	return (void*)("");
+}
+
+/*******************  FUNCTION  *********************/
+void Server::setPasswordFile(const std::string& path)
+{
+	this->passFile = path;
 }
 
 }
