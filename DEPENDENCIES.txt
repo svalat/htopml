@@ -13,10 +13,16 @@ Current dependencies for this project are :
          + g++             (tested version 4.6.3)
          + cmake           (tested version 2.8.9)
          + make            (tested version 3.82)
+		 + gtest           (tested version 1.6.0) [Optional]
  - RUN \
          + NONE
+ - RUN htopml tests \
+         + gtest           (tested version 1.6.0)
+ - RUN htopml tests coverage \
+         + gtest           (tested version 1.6.0)
+         + lcov            (tested version 1.7)
 
-Tested systèmes are :
+Tested systems are :
 
  - Gentoo x86_64 (2012)
 

@@ -21,6 +21,8 @@ add_definitions(-DVERSION="${HTMLTOP_VERSION}")
 #Delegate some cmake scripts
 include(${CMAKE_SOURCE_DIR}/cmake/user-options.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpack-options.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/check-deps.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/enable-options.cmake)
 
 ######################################################
 #some include dirs
@@ -38,13 +40,13 @@ endif (NOT DISABLE_TESTS)
 #build htopmld exe (for tests)
 add_executable(htopmld main.cpp)
 target_link_libraries(htopmld mongoose htopml-server htopml-json htopml-web-nodes)
-target_link_libraries(htopmld dl pthread)
+target_link_libraries(htopmld ${CMAKE_THREAD_LIBS_INIT})
 
 ######################################################
 #build libhtopml
 add_library(htopml SHARED main.cpp)
 target_link_libraries(htopml mongoose htopml-server htopml-json htopml-web-nodes)
-target_link_libraries(htopml dl pthread)
+target_link_libraries(htopml ${CMAKE_THREAD_LIBS_INIT})
 SET_TARGET_PROPERTIES(htopml PROPERTIES COMPILE_FLAGS -DENABLE_INSTR_LIB)
 
 ######################################################

@@ -32,12 +32,6 @@ macro (print_variable_status var_name)
 endmacro (print_variable_status)
 
 ######################################################
-print_variable_status("ENABLE_JUNIT_OUTPUT")
-print_variable_status("ENABLE_VALGRIND")
-print_variable_status("DISABLE_TESTS")
-print_variable_status("ENABLE_GCC_COVERAGE")
-
-######################################################
 #enable coverage profiling
 IF (ENABLE_GCC_COVERAGE)
         set(CMAKE_CXX_FLAGS "-O0 -fprofile-arcs -ftest-coverage")
