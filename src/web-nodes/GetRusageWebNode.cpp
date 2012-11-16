@@ -1,5 +1,5 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
@@ -7,21 +7,21 @@
 *****************************************************/
 
 /********************  HEADERS  *********************/
-#include "LinuxGetRusage.h"
+#include "GetRusageWebNode.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-LinuxGetRusage::LinuxGetRusage(const std::string& addr)
-	: CJsonWebNode(addr, &data)
+GetRusageWebNode::GetRusageWebNode(const std::string& addr)
+	: JsonWebNode<rusage>(addr, &data)
 {
 
 }
 
 /*******************  FUNCTION  *********************/
-void LinuxGetRusage::onRequest(const mg_request_info* request_info)
+void GetRusageWebNode::onRequest(const mg_request_info* request_info)
 {
 	getrusage(RUSAGE_SELF,&data);
 }

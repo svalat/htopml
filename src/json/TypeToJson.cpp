@@ -1,5 +1,5 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
@@ -13,7 +13,7 @@
 using namespace std;
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*******************  FUNCTION  *********************/

@@ -1,19 +1,19 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTKWEBNODEFILE_H
-#define IHSTKWEBNODEFILE_H
+#ifndef HTOPML_FILE_WEB_NODE_H
+#define HTOPML_FILE_WEB_NODE_H
 
 /********************  HEADERS  *********************/
 #include "WebNode.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  CLASS  **********************/
@@ -36,4 +36,4 @@ class FileWebNode : public WebNode
 
 };
 
-#endif // IHSTKWEBNODEFILE_H
+#endif // HTOPML_FILE_WEB_NODE_H

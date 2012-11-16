@@ -1,20 +1,20 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef TYPE_TO_JSON_IMPL_H
-#define TYPE_TO_JSON_IMPL_H
+#ifndef HTOPML_TYPE_TO_JSON_IMPL_H
+#define HTOPML_TYPE_TO_JSON_IMPL_H
 
 /********************  HEADERS  *********************/
 #include "TypeToJson.h"
 #include "JsonState.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*******************  FUNCTION  *********************/

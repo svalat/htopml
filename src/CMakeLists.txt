@@ -1,3 +1,3 @@
 add_subdirectory(server)
-add_subdirectory(type_to_json)
-add_subdirectory(web_nodes)
+add_subdirectory(json)
+add_subdirectory(web-nodes)

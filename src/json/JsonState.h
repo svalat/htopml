@@ -1,13 +1,13 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef JSONSTATE_H
-#define JSONSTATE_H
+#ifndef HTOPML_JSON_STATE_H
+#define HTOPML_JSON_STATE_H
 
 /********************  HEADERS  *********************/
 #include <ostream>
@@ -15,7 +15,7 @@
 #include <cassert>
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 enum JsonStateEnum
@@ -37,6 +37,12 @@ struct JsonStateStruct
 typedef std::stack<JsonStateStruct> JsonStateStructStack;
 
 /*********************  CLASS  **********************/
+/**
+ * JsonState is the central class to convert a structure into json text format.
+ * It ensure the storage of current conversion status to open/close arrays,
+ * structures and to register entries.
+ * This class is used by the typeToJson() method.
+**/
 class JsonState
 {
 	public:
@@ -53,6 +59,7 @@ class JsonState
 		void closeStruct(void);
 		JsonStateEnum getState(void) const;
 	private:
+		/** Copy constructor is forbidden. **/
 		JsonState(const JsonState & state);;
 		void openField(const std::string & name);
 		void closeField(const std::string & name);
@@ -62,8 +69,11 @@ class JsonState
 		void firstIsDone(void);
 	private:
 		void putPadding();
+		/** Output stream in which to write. **/
 		std::ostream * out;
+		/** Indentation level. **/
 		int indent;
+		/** Stack of status to now in wich type of node we are. **/
 		JsonStateStructStack stateStack;
 };
 
@@ -71,4 +81,4 @@ class JsonState
 
 #include "JsonState_impl.h"
 
-#endif // JSONSTATE_H
+#endif // HTOPML_JSON_STATE_H

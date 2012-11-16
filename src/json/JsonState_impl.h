@@ -1,19 +1,19 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef JSONSTATE_IMPL_H
-#define JSONSTATE_IMPL_H
+#ifndef HTOPML_JSON_STATE_IMPL_H
+#define HTOPML_JSON_STATE_IMPL_H
 
 /********************  HEADERS  *********************/
 #include "JsonState.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
@@ -79,4 +79,4 @@ void JsonState::printArray(const T * value,int size)
 
 };
 
-#endif // JSONSTATE_IMPL_H
+#endif // HTOPML_JSON_STATE_IMPL_H

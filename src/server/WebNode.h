@@ -1,13 +1,13 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTK_WEB_NODE_H
-#define IHSTK_WEB_NODE_H
+#ifndef HTOPML_WEB_NODE_H
+#define HTOPML_WEB_NODE_H
 
 /********************  HEADERS  *********************/
 #include <string>
@@ -16,7 +16,7 @@
 #include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  STRUCT  *********************/
@@ -46,4 +46,4 @@ class WebNode
 
 };
 
-#endif //IHSTK_WEB_NODE_H
+#endif //HTOPML_WEB_NODE_H

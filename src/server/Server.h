@@ -1,20 +1,20 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTK_SERVER_H
-#define IHSTK_SERVER_H
+#ifndef HTOPML_SERVER_H
+#define HTOPML_SERVER_H
 
 /********************  HEADERS  *********************/
 #include <vector>
 #include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  STRUCT  *********************/
@@ -55,4 +55,4 @@ class Server
 
 };
 
-#endif // IHSTK_SERVER_H
+#endif // HTOPML_SERVER_H

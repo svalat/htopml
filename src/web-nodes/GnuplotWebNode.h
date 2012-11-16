@@ -1,19 +1,19 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTKGNUPLOTWEBNODE_H
-#define IHSTKGNUPLOTWEBNODE_H
+#ifndef HTOPML_GNUPLOT_WEB_NODE_H
+#define HTOPML_GNUPLOT_WEB_NODE_H
 
 /********************  HEADERS  *********************/
-#include "WebNode.h"
+#include "../server/WebNode.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  CLASS  **********************/
@@ -28,4 +28,4 @@ class GnuplotWebNode : public WebNode
 
 };
 
-#endif // IHSTKGNUPLOTWEBNODE_H
+#endif // HTOPML_GNUPLOT_WEB_NODE_H

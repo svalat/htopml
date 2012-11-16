@@ -1,28 +1,28 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef LINUXGETRUSAGEJSONWEBNODE_H
-#define LINUXGETRUSAGEJSONWEBNODE_H
+#ifndef HTOPML_LINUX_GET_RUSAGE_WEB_NODE_H
+#define HTOPML_LINUX_GET_RUSAGE_WEB_NODE_H
 
 /********************  HEADERS  *********************/
 #include <sys/time.h>
 #include <sys/resource.h>
-#include "../server/CJsonWebNode.h"
+#include "../server/JsonWebNode.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class LinuxGetRusage : public CJsonWebNode<rusage>
+class GetRusageWebNode : public JsonWebNode<rusage>
 {
 	public:
-		LinuxGetRusage(const std::string & addr);
+		GetRusageWebNode(const std::string & addr);
 		virtual void onRequest(const mg_request_info* request_info);
 	private:
 		rusage data;
@@ -34,4 +34,4 @@ void typeToJson(JsonState & json,std::ostream& stream, const timeval & value);
 
 };
 
-#endif // LINUXGETRUSAGEJSONWEBNODE_H
+#endif // HTOPML_LINUX_GET_RUSAGE_WEB_NODE_H

@@ -1,19 +1,19 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTKVALIDATIONWEBNODE_H
-#define IHSTKVALIDATIONWEBNODE_H
+#ifndef HTOPML_VALIDATION_WEB_NODE_H
+#define HTOPML_VALIDATION_WEB_NODE_H
 
 /********************  HEADERS  *********************/
 #include "WebNode.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  CLASS  **********************/
@@ -26,4 +26,4 @@ class ValidationWebNode : public WebNode
 
 };
 
-#endif // IHSTKVALIDATIONWEBNODE_H
+#endif // HTOPML_VALIDATION_WEB_NODE_H

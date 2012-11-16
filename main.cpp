@@ -1,17 +1,28 @@
+/*****************************************************
+             PROJECT  : htopml
+             VERSION  : 0.0.0
+             DATE     : 11/2012
+             AUTHOR   : Valat Sébastien
+             LICENSE  : CeCILL-C
+*****************************************************/
+
+/********************  HEADERS  *********************/
 #include <iostream>
 #include <cstdio>
 #include "src/server/Server.h"
 #include "src/server/ValidationWebNode.h"
 #include "src/server/FileWebNode.h"
-#include "src/server/CJsonWebNode.h"
-#include "src/server/GnuplotWebNode.h"
-#include "src/type_to_json/TypeToJson.h"
-#include "src/web_nodes/LinuxGetRusage.h"
-#include "src/web_nodes/DirectoryWebNode.h"
+#include "src/server/JsonWebNode.h"
+#include "src/server/DirectoryWebNode.h"
+#include "src/json/TypeToJson.h"
+#include "src/web-nodes/GnuplotWebNode.h"
+#include "src/web-nodes/GetRusageWebNode.h"
 
-using namespace InternalHtmlSpyToolKit;
+/**********************  USING  *********************/
+using namespace htopml;
 using namespace std;
 
+/*********************  STRUCT  *********************/
 struct Test
 {
 	int a;
@@ -21,6 +32,7 @@ struct Test
 	int e[8];
 };
 
+/*******************  FUNCTION  *********************/
 void typeToJson(JsonState & json,std::ostream& stream, const Test & value)
 {
 	json.openStruct();
@@ -32,20 +44,29 @@ void typeToJson(JsonState & json,std::ostream& stream, const Test & value)
 	json.closeStruct();
 }
 
-int main2(int argc, char **argv)
+/********************  MACRO  ***********************/
+#ifdef ENABLE_INSTR_LIB
+	#define STATIC static
+	#define main(x,y) main2(x,y)
+#else
+	#define STATIC
+#endif
+
+/*******************  FUNCTION  *********************/
+int main(int argc, char **argv)
 {
-	static Test test = {10,"coucou",5.5,true};
-	static Server server(8080);
+	STATIC Test test = {10,"coucou",5.5,true};
+	STATIC Server server(8080);
 	cout << "init server on 8080" << endl;
-	static ValidationWebNode node("/index.html",true);
-	static ValidationWebNode nodeall("/images/",false);
-	static FileWebNode makefile("/Makefile","./Makefile","text/plain");
-	static CJsonWebNode<Test> jsonnode("/tmp",&test);
-	static GnuplotWebNode plot("/plot.png","plot x;");
-	static LinuxGetRusage rusageNode("/linux/rusage.json");
-	static FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
-	static FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
-	static DirectoryWebNode ressourcesNode("/ressources/","../extern_deps/");
+	STATIC ValidationWebNode node("/index.html",true);
+	STATIC ValidationWebNode nodeall("/images/",false);
+	STATIC FileWebNode makefile("/Makefile","./Makefile","text/plain");
+	STATIC JsonWebNode<Test> jsonnode("/tmp",&test);
+	STATIC GnuplotWebNode plot("/plot.png","plot x;");
+	STATIC GetRusageWebNode rusageNode("/linux/rusage.json");
+	STATIC FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
+	STATIC FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
+	STATIC DirectoryWebNode ressourcesNode("/ressources/","../extern-deps/");
 	ressourcesNode.registerFile("jquery/jquery.min.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts-more.js","application/javascript");
@@ -62,10 +83,14 @@ int main2(int argc, char **argv)
 	server.registerWebNode(&test_json);
 	server.start();
 	cout << "running..." << endl;
-// 	getchar();
-// 	server.stop();
-// 	cout << "stop." << endl;
+	#ifndef ENABLE_INSTR_LIB
+	getchar();
+	server.stop();
+	cout << "stop." << endl;
+	#endif
 	return 0;
 }
 
+#ifdef ENABLE_INSTR_LIB
 int tmp = main2(0,NULL);
+#endif

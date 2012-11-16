@@ -1,30 +1,30 @@
 /*****************************************************
-             PROJECT  : InternalHtmlSpyToolKit (IHSTK)
+             PROJECT  : htopml
              VERSION  : 0.0.0
              DATE     : 11/2012
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef IHSTKCJSONWEBNODE_H
-#define IHSTKCJSONWEBNODE_H
+#ifndef HTOPML_JSON_WEB_NODE_H
+#define HTOPML_JSON_WEB_NODE_H
 
 /********************  HEADERS  *********************/
 #include <sstream>
 #include <cstring>
 #include "WebNode.h"
-#include "../type_to_json/TypeToJson.h"
+#include "../json/TypeToJson.h"
 
 /********************  NAMESPACE  *******************/
-namespace InternalHtmlSpyToolKit
+namespace htopml
 {
 
 /*********************  CLASS  **********************/
 template <class T>
-class CJsonWebNode : public WebNode
+class JsonWebNode : public WebNode
 {
 	public:
-		CJsonWebNode(const std::string& path, const T * value);
+		JsonWebNode(const std::string& path, const T * value);
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 	protected:
 		virtual void onRequest(const mg_request_info* request_info);
@@ -34,7 +34,7 @@ class CJsonWebNode : public WebNode
 
 /*******************  FUNCTION  *********************/
 template <class T>
-CJsonWebNode<T>::CJsonWebNode(const std::string& path, const T* value)
+JsonWebNode<T>::JsonWebNode(const std::string& path, const T* value)
 	: WebNode(path, true)
 {
 	this->value = value;
@@ -42,7 +42,7 @@ CJsonWebNode<T>::CJsonWebNode(const std::string& path, const T* value)
 
 /*******************  FUNCTION  *********************/
 template <class T>
-WebNodeData CJsonWebNode<T>::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+WebNodeData JsonWebNode<T>::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	std::stringstream str;
 	onRequest(request_info);
@@ -53,11 +53,11 @@ WebNodeData CJsonWebNode<T>::getContent(mg_event event, mg_connection* conn, con
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void CJsonWebNode<T>::onRequest(const mg_request_info* request_info)
+void JsonWebNode<T>::onRequest(const mg_request_info* request_info)
 {
 	
 }
 
 };
 
-#endif // IHSTKCJSONWEBNODE_H
+#endif // HTOPML_JSON_WEB_NODE_H
