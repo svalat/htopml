@@ -1,7 +1,7 @@
 #!/bin/bash
 ######################################################
 #            PROJECT  : htmltop                      #
-#            VERSION  : 0.0.0                        #
+#            VERSION  : 0.1.0-dev                    #
 #            DATE     : 11/2012                      #
 #            AUTHOR   : Valat Sébastien              #
 #            LICENSE  : CeCILL-C                     #
@@ -39,7 +39,7 @@ function check_version_format()
 #check exec dir to force execution from project root dir
 function check_exec_dir()
 {
-	if [ ! -f dev-scripts/update_version_number.sh ] || [ ! -f ChangeLog.txt ] || [ ! -f COPYING-FR.txt ] ; then
+	if [ ! -f dev-scripts/update_version_number.sh ] || [ ! -f DEPENDENCIES.txt ] || [ ! -f COPYING-FR.txt ] ; then
 		echo "Error: this script must be executed from project root dir as ./dev-scripts/update_version_number.sh"
 		exit 1
 	fi
