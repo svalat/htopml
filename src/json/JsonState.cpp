@@ -69,6 +69,12 @@ void JsonState::printFormattedValue(const char* format, ... )
 	if (getState() == JSON_STATE_ARRAY && !isFirst())
 		*out << ", ";
 
+	//format the chain
+	va_list param;
+	va_start (param, format);
+	vsnprintf (buffer,sizeof(buffer), format, param);
+	va_end (param);
+
 	//print
 	*out << buffer;
 	firstIsDone();

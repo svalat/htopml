@@ -12,7 +12,7 @@ Current dependencies for this project are :
          + gcc             (tested version 4.6.3)
          + g++             (tested version 4.6.3)
          + cmake           (tested version 2.8.9)
-         + make            (tested version 3.82)
+         + make            (tested version gmake-3.82)
 		 + gtest           (tested version 1.6.0) [Optional]
  - RUN \
          + NONE
@@ -29,3 +29,9 @@ Tested systems are :
 Tested compilers are :
 
  - gcc/g++ 4.6.3
+
+Deps websites :
+ - gcc   : http://gcc.gnu.org/
+ - cmake : http://www.cmake.org/
+ - gtest : http://code.google.com/p/googletest/
+ - lcov  : http://ltp.sourceforge.net/coverage/lcov.php

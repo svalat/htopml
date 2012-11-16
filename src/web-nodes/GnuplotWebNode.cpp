@@ -12,6 +12,7 @@
 #include <string>
 #include "GnuplotWebNode.h"
 
+/**********************  USING  *********************/
 using namespace std;
 
 /********************  NAMESPACE  *******************/
@@ -19,16 +20,15 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-GnuplotWebNode::GnuplotWebNode(const std::string& path, std::string command)
-	: WebNode(path, true)
+GnuplotWebNode::GnuplotWebNode(const std::string& path, const std::string & command)
+	: WebNode(path, true), command(command)
 {
-	this->command = command;
 }
 
 /*******************  FUNCTION  *********************/
 WebNodeData GnuplotWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
-	char * buffer = (char*)malloc(2048);
+	char * buffer = NULL;
 	size_t size = 2048;
 	size_t pos = 0;
 	string tmp = string("gnuplot -e \"set term png; set output;") + command + string("\"");
@@ -36,6 +36,10 @@ WebNodeData GnuplotWebNode::getContent(mg_event event, mg_connection* conn, cons
 	if (fp == NULL)
 		return WebNodeData((void*)"error",5,"text/plain",404);
 
+	//prepare buffer
+	buffer = (char*)malloc(2048);
+
+	//read the stream until end
 	while (!feof(fp))
 	{
 		size_t s = fread(buffer+pos,1,2048,fp);
@@ -46,6 +50,8 @@ WebNodeData GnuplotWebNode::getContent(mg_event event, mg_connection* conn, cons
 			buffer = (char*)realloc(buffer,size);
 		}
 	}
+
+	fclose(fp);
 	return WebNodeData(buffer,size,"image/png",true);
 }
 

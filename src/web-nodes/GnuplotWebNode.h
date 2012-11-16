@@ -20,7 +20,7 @@ namespace htopml
 class GnuplotWebNode : public WebNode
 {
 	public:
-		GnuplotWebNode(const std::string& path, std::string command);
+		GnuplotWebNode(const std::string& path, const std::string & command);
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 	private:
 		std::string command;

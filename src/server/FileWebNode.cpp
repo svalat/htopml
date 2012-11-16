@@ -21,11 +21,9 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, const std::string mimeType)
-	: WebNode(path,true)
+FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, const std::string & mimeType)
+	: WebNode(path,true), mimeType(mimeType), filePath(filePath)
 {
-	this->mimeType = mimeType;
-	this->filePath = filePath;
 	this->cache = NULL;
 	this->size = -1;
 	pthread_mutex_init(&mutex,NULL);
@@ -58,6 +56,7 @@ void FileWebNode::loadFileInCache(void )
 		cache = malloc(fileSize);
 		this->size = fileSize;
 		fread(cache,1,fileSize,fp);
+		fclose(fp);
 	}
 	pthread_mutex_unlock(&mutex);
 }

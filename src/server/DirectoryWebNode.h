@@ -29,7 +29,7 @@ class DirectoryWebNode : public WebNode
 		virtual ~DirectoryWebNode(void);
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 		virtual WebNode* acceptUri(const char* uri);
-		void registerFile(const std::string localRelPath,const std::string mimetype);
+		void registerFile(const std::string& localRelPath, const std::string& mimetype);
 	private:
 		std::string getWebMountPoint(const std::string& localRelPath) const;
 		std::string getLocalPath(const std::string& localRelPath) const;

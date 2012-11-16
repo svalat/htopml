@@ -20,10 +20,8 @@ namespace htopml
 
 /*******************  FUNCTION  *********************/
 DirectoryWebNode::DirectoryWebNode(const std::string& webMountPoint, const std::string& localPath)
-	:WebNode(webMountPoint,false)
+	:WebNode(webMountPoint,false), webMountPoint(webMountPoint), localPath(localPath)
 {
-	this->webMountPoint = webMountPoint;
-	this->localPath = localPath;
 }
 
 /*******************  FUNCTION  *********************/
@@ -34,7 +32,7 @@ DirectoryWebNode::~DirectoryWebNode(void )
 }
 
 /*******************  FUNCTION  *********************/
-void DirectoryWebNode::registerFile(const std::string localRelPath,const std::string mimetype)
+void DirectoryWebNode::registerFile(const std::string & localRelPath,const std::string & mimetype)
 {
 	FileWebNode * node = new FileWebNode(getWebMountPoint(localRelPath),getLocalPath(localRelPath),mimetype);
 	files.push_back(node);
