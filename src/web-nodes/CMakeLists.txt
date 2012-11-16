@@ -1,2 +1,11 @@
+######################################################
+#            PROJECT  : htmltop                      #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+
+######################################################
 add_library(htopml-web-nodes GnuplotWebNode.cpp GetRusageWebNode.cpp)
 SET_TARGET_PROPERTIES(htopml-web-nodes PROPERTIES COMPILE_FLAGS -fPIC)
