@@ -14,6 +14,8 @@
 # known ./configure & make & make install procedure.
 
 ######################################################
+#script setup
+PROJECT_NAME='htopml'
 # State variables
 PREFIX='/usr/local'
 CMAKE='cmake'
@@ -34,7 +36,7 @@ LIB_SUFFIX=''
 SOURCE_DIR="`dirname \"$0\"`"
 
 ######################################################
-HELP_MESSAGE="'configure' is a cmake wrapper to build svUnitTest
+HELP_MESSAGE="'configure' is a cmake wrapper to build ${PROJECT_NAME}
 For more control, prefer to use cmake directely, this wrapper only aims
 to ease your life for standard cases.
 
@@ -76,16 +78,6 @@ Some influential environment variables:
                nonstandard directory <lib dir>
    CXX         C++ compiler command
    CXXFLAGS    C++ compiler flags"
-
-######################################################
-#Check current directory
-if [ -f 'CMakeLists.txt' ] && [ -f 'configure' ]; then
-	echo "ERROR : CMake isn't adapted to support build directely in source"
-	echo "directory. Prefer to create a subdirectory to build."
-	echo ""
-	echo "Example : mkdir build && cd build && ../configure"
-	exit 1
-fi
 
 ######################################################
 #Function to extract value from args. It split on equals
@@ -173,6 +165,16 @@ do
 			;;
 	esac
 done
+
+######################################################
+#Check current directory
+if [ -f 'CMakeLists.txt' ] && [ -f 'configure' ]; then
+	echo "ERROR : CMake isn't adapted to support build directely in source"
+	echo "directory. Prefer to create a subdirectory to build."
+	echo ""
+	echo "Example : mkdir build && cd build && ../configure"
+	exit 1
+fi
 
 ######################################################
 #apply coverage options

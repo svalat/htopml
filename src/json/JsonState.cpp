@@ -158,6 +158,7 @@ void JsonState::closeStruct(void )
 
 	//print name
 	indent--;
+	*out << endl;
 	putPadding();
 	*out << "}";
 }

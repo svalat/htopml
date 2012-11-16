@@ -30,6 +30,9 @@ include_directories(${CMAKE_SOURCE_DIR}/extern-deps/mongoose)
 #manage subdirs
 add_subdirectory(extern-deps)
 add_subdirectory(src)
+if (NOT DISABLE_TESTS)
+	add_subdirectory(tests)
+endif (NOT DISABLE_TESTS)
 
 ######################################################
 #build htopmld exe (for tests)
