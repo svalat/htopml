@@ -12,16 +12,12 @@
 /********************  HEADERS  *********************/
 #include <vector>
 #include <string>
+#include "VirtualDirectoryWebNode.h"
 #include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
-
-/*********************  STRUCT  *********************/
-class WebNode;
-struct WebNodeData;
-typedef std::vector<WebNode*> WebNodeVector;
 
 /********************  ENUM  ************************/
 enum ServerStatus
@@ -38,6 +34,7 @@ class Server
 		Server(int port);
 		void start();
 		void stop();
+		void registerWebNode(WebNode & node);
 		void registerWebNode(WebNode * node,bool autodelete = true);
 		void setPasswordFile(const std::string & path);
 		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath,const std::string & mimeType = "auto");
@@ -51,8 +48,7 @@ class Server
 		static void * staticCallback(mg_event event,mg_connection *conn);
 		void* callback(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 		WebNode * getWebNode(const char * uri);
-		WebNodeVector webNodes;
-		WebNodeVector toAutodelete;
+		VirtualDirectoryWebNode rootDir;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
 		void * quickReturn(mg_connection* conn,const WebNodeData & data);
 		std::string passFile;

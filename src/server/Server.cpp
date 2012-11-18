@@ -22,6 +22,7 @@ namespace htopml
 
 /*******************  FUNCTION  *********************/
 Server::Server(int port)
+	:rootDir("/")
 {
 	//errors
 	assert(port > 0 && port <= 65000);
@@ -99,11 +100,15 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 }
 
 /*******************  FUNCTION  *********************/
+void Server::registerWebNode(WebNode& node)
+{
+	rootDir.registerChildNode(node);
+}
+
+/*******************  FUNCTION  *********************/
 void Server::registerWebNode(htopml::WebNode* node, bool autodelete)
 {
-	this->webNodes.push_back(node);
-	if (autodelete)
-		this->toAutodelete.push_back(node);
+	rootDir.registerChildNode(node,autodelete);
 }
 
 /*******************  FUNCTION  *********************/
@@ -114,12 +119,7 @@ WebNode* Server::getWebNode(const char* uri)
 	WebNode * res = NULL;
 
 	//loop on all nodes to find the addr
-	for (WebNodeVector::iterator it = webNodes.begin() ; it != webNodes.end() ; ++it)
-	{
-		WebNode * tmp = (*it)->acceptUri(uri);
-		if (tmp != NULL)
-			res = tmp;
-	}
+	res = rootDir.acceptUri(uri);
 
 	return res;
 }

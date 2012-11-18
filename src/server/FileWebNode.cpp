@@ -28,7 +28,7 @@ FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, c
 	this->size = -1;
 	pthread_mutex_init(&mutex,NULL);
 	if (mimeType == "auto")
-		this->mimeType = getMimeType(path);
+		this->mimeType = getMimeType(filePath);
 }
 
 /*******************  FUNCTION  *********************/

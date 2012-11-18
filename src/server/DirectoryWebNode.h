@@ -11,7 +11,7 @@
 
 /********************  HEADERS  *********************/
 #include <vector>
-#include "../server/WebNode.h"
+#include "../server/VirtualDirectoryWebNode.h"
 #include "../server/FileWebNode.h"
 
 /********************  NAMESPACE  *******************/
@@ -22,21 +22,15 @@ namespace htopml
 typedef std::vector<FileWebNode *> FileWebNodeVector;
 
 /*********************  CLASS  **********************/
-class DirectoryWebNode : public WebNode
+class DirectoryWebNode : public VirtualDirectoryWebNode
 {
 	public:
-		DirectoryWebNode(const std::string & webMountPoint,const std::string & localPath);
-		virtual ~DirectoryWebNode(void);
-		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
-		virtual WebNode* acceptUri(const char* uri);
+		DirectoryWebNode(const std::string & mountPoint,const std::string & localPath);
 		void registerFile(const std::string& localRelPath, const std::string& mimetype = "auto");
 	private:
-		std::string getWebMountPoint(const std::string& localRelPath) const;
 		std::string getLocalPath(const std::string& localRelPath) const;
 	private:
-		std::string webMountPoint;
 		std::string localPath;
-		FileWebNodeVector files;
 };
 
 };
