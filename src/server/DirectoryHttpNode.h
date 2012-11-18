@@ -26,7 +26,7 @@ class DirectoryHttpNode : public VirtualDirectoryHttpNode
 {
 	public:
 		DirectoryHttpNode(const std::string & mountPoint,const std::string & localPath);
-		void registerFile(const std::string& localRelPath, const std::string& mimetype = "auto");
+		void registerFile(const std::string& localRelPath, bool useCache = true, const std::string& mimetype = "auto");
 	private:
 		std::string getLocalPath(const std::string& localRelPath) const;
 	private:

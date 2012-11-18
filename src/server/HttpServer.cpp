@@ -146,9 +146,9 @@ void HttpServer::setPasswordFile(const std::string& path)
 }
 
 /*******************  FUNCTION  *********************/
-void HttpServer::quickRegisterFile(const string& mountPoint, const string& filePath, const string& mimeType)
+void HttpServer::quickRegisterFile(const string& mountPoint, const string& filePath, bool useCache, const string& mimeType)
 {
-	registerHttpNode(new FileHttpNode(mountPoint,filePath,mimeType),true);
+	registerHttpNode(new FileHttpNode(mountPoint,filePath,useCache,mimeType),true);
 }
 
 }

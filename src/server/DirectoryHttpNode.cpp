@@ -25,11 +25,11 @@ DirectoryHttpNode::DirectoryHttpNode(const std::string& mountPoint, const std::s
 }
 
 /*******************  FUNCTION  *********************/
-void DirectoryHttpNode::registerFile(const std::string & localRelPath,const std::string & mimetype)
+void DirectoryHttpNode::registerFile(const std::string & localRelPath,bool useCache,const std::string & mimetype)
 {
 	string mountPoint = getMountPoint(localRelPath);
 	string localPath = getLocalPath(localRelPath);
-	registerChildNode(new FileHttpNode(mountPoint,localPath,mimetype),true);
+	registerChildNode(new FileHttpNode(mountPoint,localPath,useCache,mimetype),true);
 }
 
 /*******************  FUNCTION  *********************/

@@ -37,7 +37,7 @@ class HttpServer
 		void registerHttpNode(HttpNode & node);
 		void registerHttpNode(HttpNode * node,bool autodelete = true);
 		void setPasswordFile(const std::string & path);
-		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath,const std::string & mimeType = "auto");
+		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath, bool useCache = true,const std::string & mimeType = "auto");
 	private:
 		mg_context *ctx;
 		int port;

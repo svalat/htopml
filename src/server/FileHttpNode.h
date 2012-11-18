@@ -20,7 +20,7 @@ namespace htopml
 class FileHttpNode : public HttpNode
 {
 	public:
-		FileHttpNode(const std::string& path, const std::string & filePath,const std::string & mimeType = "auto");
+		FileHttpNode(const std::string& path, const std::string & filePath,bool useCache = true,const std::string & mimeType = "auto");
 		virtual ~FileHttpNode(void );
 		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
 	private:
@@ -34,6 +34,7 @@ class FileHttpNode : public HttpNode
 		void * cache;
 		size_t size;
 		pthread_mutex_t mutex;
+		bool useCache;
 };
 
 };

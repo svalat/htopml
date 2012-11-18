@@ -21,7 +21,7 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-FileHttpNode::FileHttpNode(const std::string& path, const std::string& filePath, const std::string & mimeType)
+FileHttpNode::FileHttpNode(const std::string& path, const std::string& filePath, bool useCache, const std::string & mimeType)
 	: HttpNode(path,true), filePath(filePath)
 {
 	this->cache = NULL;
@@ -29,6 +29,7 @@ FileHttpNode::FileHttpNode(const std::string& path, const std::string& filePath,
 	pthread_mutex_init(&mutex,NULL);
 	if (mimeType == "auto")
 		this->mimeType = getMimeType(filePath);
+	this->useCache = useCache;
 }
 
 /*******************  FUNCTION  *********************/
@@ -72,7 +73,9 @@ void FileHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & req
 	if (cache != NULL)
 	{
 		response.setMimeType(mimeType);
-		response.setRawData(cache,size,false);
+		response.setRawData(cache,size,!useCache);
+		if (useCache == false)
+			cache = NULL;
 	} else {
 		response.setMimeType("text/html");
 		response.setHttpStatus(404);

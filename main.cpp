@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	server.registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//setup top structure
-	server.quickRegisterFile("/linux/top.html","../src/www/linux/top.html");
+	server.quickRegisterFile("/linux/top.html","../src/www/linux/top.html",false);
 	server.registerHttpNode(new TopHttpNode("/linux/top.json"));
 
 	//some options
