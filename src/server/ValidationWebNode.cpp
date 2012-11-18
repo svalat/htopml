@@ -23,11 +23,10 @@ ValidationWebNode::ValidationWebNode(const std::string& path, bool strictPath)
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData ValidationWebNode::getContent(const Request & request)
+void ValidationWebNode::getContent(Response & response,const Request & request)
 {
-	char buffer[2048];
-	sprintf(buffer,"Ok, get the page at URI : %s\n",request.getUri().c_str());
-	return WebNodeData(strdup(buffer),strlen(buffer),"text/plain",true);
+	response.setHttpStatus(200);
+	response.printf("Ok, get the page at URI : %s\n",request.getUri().c_str());
 }
 
 }

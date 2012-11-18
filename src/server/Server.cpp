@@ -89,10 +89,9 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 			return quickErrorCode(conn,404,"text/plain","Page not found\n");
 		} else {
 			Request req(request_info);
-			WebNodeData data = node->getContent(req);
-			quickReturn(conn,data);
-			if (data.autofree)
-				free(data.data);
+			Response rep;
+			node->getContent(rep,req);
+			rep.flushInConnection(conn);
 			return (void*)"";
 		}
 	} else {
@@ -123,21 +122,6 @@ WebNode* Server::getWebNode(const char* uri)
 	res = rootDir.acceptUri(uri);
 
 	return res;
-}
-
-/*******************  FUNCTION  *********************/
-void * Server::quickReturn(mg_connection* conn, const WebNodeData& data)
-{
-	mg_printf(conn,
-			"HTTP/1.1 %d OK\r\n"
-			"Content-Type: %s\r\n"
-			"Content-Length: %lu\r\n" // Always set Content-Length
-			"\r\n",
-			data.status,data.mimeType.c_str(),data.size);
-	mg_write(conn,data.data,data.size);
-
-	// Mark as processed
-	return (void*)("");
 }
 
 /*******************  FUNCTION  *********************/

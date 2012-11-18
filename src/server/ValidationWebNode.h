@@ -21,7 +21,7 @@ class ValidationWebNode : public WebNode
 {
 	public:
 		ValidationWebNode(const std::string& path, bool strictPath);
-		virtual WebNodeData getContent(const Request & request);
+		virtual void getContent(Response & response,const Request & request);
 };
 
 };

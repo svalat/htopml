@@ -64,16 +64,19 @@ void FileWebNode::loadFileInCache(void )
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData FileWebNode::getContent(const Request & request)
+void FileWebNode::getContent(Response & response,const Request & request)
 {
 	if (cache == NULL)
 		loadFileInCache();
+
 	if (cache != NULL)
 	{
-		return WebNodeData(cache,size,mimeType);
+		response.setMimeType(mimeType);
+		response.setRawData(cache,size,false);
 	} else {
-		const char message [] = "Error while loading file.";
-		return WebNodeData(strdup(message),sizeof(message),mimeType,404);
+		response.setMimeType("text/html");
+		response.setHttpStatus(404);
+		response.print("Error while loading file.");
 	}
 }
 

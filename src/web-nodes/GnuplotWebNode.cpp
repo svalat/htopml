@@ -26,7 +26,7 @@ GnuplotWebNode::GnuplotWebNode(const std::string& path, const std::string & comm
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData GnuplotWebNode::getContent(const Request & request)
+void GnuplotWebNode::getContent(Response & response,const Request & request)
 {
 	char * buffer = NULL;
 	size_t size = 2048;
@@ -34,7 +34,10 @@ WebNodeData GnuplotWebNode::getContent(const Request & request)
 	string tmp = string("gnuplot -e \"set term png; set output;") + command + string("\"");
 	FILE * fp = popen(tmp.c_str(),"r");
 	if (fp == NULL)
-		return WebNodeData((void*)"error",5,"text/plain",404);
+	{
+		response.error(404,"error");
+		return;
+	}
 
 	//prepare buffer
 	buffer = (char*)malloc(2048);
@@ -52,7 +55,9 @@ WebNodeData GnuplotWebNode::getContent(const Request & request)
 	}
 
 	fclose(fp);
-	return WebNodeData(buffer,size,"image/png",true);
+
+	//setup answer
+	response.setRawData(buffer,size,true,"image/png",200);
 }
 
 }

@@ -65,16 +65,17 @@ WebNode* VirtualDirectoryWebNode::acceptUri(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData VirtualDirectoryWebNode::getContent(const Request & request)
+void VirtualDirectoryWebNode::getContent(Response & response,const Request & request)
 {
-	stringstream str;
+	ostream & str = response.getStream();
+
+	response.setHttpStatus(404);
+	response.setMimeType("text/html");
+	
 	str << "<html><body><ul>";
 	for (WebNodeVector::iterator it = childs.begin() ; it != childs.end() ; ++it)
 		str << "<li><a href=\"" << (*it)->getHomePage() << "\">" << (*it)->getHomePage() << "</a>" << endl;
 	str << "</ul></body></html>";
-	//TODO generate a file list here.
-	char * res = strdup(str.str().c_str());
-	return WebNodeData(res,strlen(res),"text/html",404,true);
 }
 
 /*******************  FUNCTION  *********************/

@@ -17,16 +17,6 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-WebNodeData::WebNodeData(void* data, size_t size,const std::string & mimeType,int status,bool autofree)
-{
-	this->data = data;
-	this->size = size;
-	this->mimeType = mimeType;
-	this->status = status;
-	this->autofree = autofree;
-}
-
-/*******************  FUNCTION  *********************/
 WebNode::WebNode(const std::string& path, bool strictPath)
 {
 	this->basePath = path;

@@ -14,21 +14,11 @@
 #include <streambuf>
 #include <cstdlib>
 #include "Request.h"
+#include "Response.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
-
-/*********************  STRUCT  *********************/
-struct WebNodeData
-{
-	WebNodeData(void * data,size_t size,const std::string & mimeType,int status = 200,bool autofree=false);
-	void * data;
-	size_t size;
-	std::string mimeType;
-	int status;
-	bool autofree;
-};
 
 /*********************  CLASS  **********************/
 class WebNode
@@ -36,7 +26,7 @@ class WebNode
 	public:
 		WebNode(const std::string & path,bool strictPath);
 		virtual ~WebNode(void);
-		virtual WebNodeData getContent(const Request & request) = 0;
+		virtual void getContent(Response & response,const Request & request) = 0;
 		virtual WebNode * acceptUri(const char * uri);
 		virtual std::string getHomePage(void);
 		const std::string & getBasePath(void) const;

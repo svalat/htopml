@@ -50,7 +50,6 @@ class Server
 		WebNode * getWebNode(const char * uri);
 		VirtualDirectoryWebNode rootDir;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
-		void * quickReturn(mg_connection* conn,const WebNodeData & data);
 		std::string passFile;
 };
 
