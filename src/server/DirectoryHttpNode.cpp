@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <sstream>
 #include <cstring>
-#include "DirectoryWebNode.h"
+#include "DirectoryHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -19,21 +19,21 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-DirectoryWebNode::DirectoryWebNode(const std::string& mountPoint, const std::string& localPath)
-	:VirtualDirectoryWebNode(mountPoint), localPath(localPath)
+DirectoryHttpNode::DirectoryHttpNode(const std::string& mountPoint, const std::string& localPath)
+	:VirtualDirectoryHttpNode(mountPoint), localPath(localPath)
 {
 }
 
 /*******************  FUNCTION  *********************/
-void DirectoryWebNode::registerFile(const std::string & localRelPath,const std::string & mimetype)
+void DirectoryHttpNode::registerFile(const std::string & localRelPath,const std::string & mimetype)
 {
 	string mountPoint = getMountPoint(localRelPath);
 	string localPath = getLocalPath(localRelPath);
-	registerChildNode(new FileWebNode(mountPoint,localPath,mimetype),true);
+	registerChildNode(new FileHttpNode(mountPoint,localPath,mimetype),true);
 }
 
 /*******************  FUNCTION  *********************/
-std::string DirectoryWebNode::getLocalPath(const std::string& localRelPath) const
+std::string DirectoryHttpNode::getLocalPath(const std::string& localRelPath) const
 {
 	std::string res(localPath);
 	if (res[res.size()-1] != '/' && localRelPath[0] != '/')

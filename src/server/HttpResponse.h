@@ -6,8 +6,8 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef RESPONSE_H
-#define RESPONSE_H
+#ifndef HTOPML_HTTP_RESPONSE_H
+#define HTOPML_HTTP_RESPONSE_H
 
 /********************  HEADERS  *********************/
 #include <string>
@@ -22,11 +22,11 @@ namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class Response
+class HttpResponse
 {
 	public:
-		Response(void);
-		virtual ~Response(void);
+		HttpResponse(void);
+		virtual ~HttpResponse(void);
 		void setMimeType(const char * mimeType);
 		void setMimeType(std::string & mimeType);
 		void setRawData(void * data,size_t size,bool autodelete,std::string mimeType = "{KEEP_PREVIOUS}",int status = 200);
@@ -42,7 +42,7 @@ class Response
 		void setInfo(int status,const std::string & mimeType);
 	private:
 		/** Copy is not supported. **/
-		Response(const Response & response);
+		HttpResponse(const HttpResponse & response);
 	private:
 		std::string mimeType;
 		void * rawData;
@@ -54,4 +54,4 @@ class Response
 
 };
 
-#endif // RESPONSE_H
+#endif // HTOPML_HTTP_RESPONSE_H

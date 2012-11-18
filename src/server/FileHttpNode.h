@@ -6,25 +6,25 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_FILE_WEB_NODE_H
-#define HTOPML_FILE_WEB_NODE_H
+#ifndef HTOPML_FILE_HTTP_NODE_H
+#define HTOPML_FILE_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
-#include "WebNode.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class FileWebNode : public WebNode
+class FileHttpNode : public HttpNode
 {
 	public:
-		FileWebNode(const std::string& path, const std::string & filePath,const std::string & mimeType = "auto");
-		virtual ~FileWebNode(void );
-		virtual void onHttpRequest(Response & response,const Request & request);
+		FileHttpNode(const std::string& path, const std::string & filePath,const std::string & mimeType = "auto");
+		virtual ~FileHttpNode(void );
+		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
 	private:
-		FileWebNode(const FileWebNode & node);
+		FileHttpNode(const FileHttpNode & node);
 		void loadFileInCache(void);
 		static std::string getMimeType(const std::string & filename);
 		static bool stringFinishBy(const std::string & value,const std::string & pattern);
@@ -38,4 +38,4 @@ class FileWebNode : public WebNode
 
 };
 
-#endif // HTOPML_FILE_WEB_NODE_H
+#endif // HTOPML_FILE_HTTP_NODE_H

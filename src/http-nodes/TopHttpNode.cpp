@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cstring>
 #include <cstdio>
-#include "TopWebNode.h"
+#include "TopHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -78,13 +78,13 @@ void LinuxTopCpu::setAsDelta(const LinuxTopCpu& previous, const LinuxTopCpu& cur
 }
 
 /*******************  FUNCTION  *********************/
-TopWebNode::TopWebNode(const std::string& addr)
-	:JsonWebNode<LinuxTop>(addr,&delta)
+TopHttpNode::TopHttpNode(const std::string& addr)
+	:JsonHttpNode<LinuxTop>(addr,&delta)
 {
 }
 
 /*******************  FUNCTION  *********************/
-void TopWebNode::onRequest(const Request & request)
+void TopHttpNode::onRequest(const HttpRequest & request)
 {
 	FILE * fp = fopen("/proc/stat","r");
 	if (fp == NULL)
@@ -101,7 +101,7 @@ void TopWebNode::onRequest(const Request & request)
 }
 
 /*******************  FUNCTION  *********************/
-void TopWebNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
+void TopHttpNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 {
 	//vars
 	char buffer[4096];
@@ -140,7 +140,7 @@ void TopWebNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 }
 
 /*******************  FUNCTION  *********************/
-void TopWebNode::parseProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
+void TopHttpNode::parseProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
 {
 	int tmp;
 	int cnt;
@@ -163,7 +163,7 @@ void TopWebNode::parseProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
 }
 
 /*******************  FUNCTION  *********************/
-char* TopWebNode::findEndOfLine(char* start, bool cutWithZero)
+char* TopHttpNode::findEndOfLine(char* start, bool cutWithZero)
 {
 	assert(start != NULL);
 	while (*start != '\0' && *start != '\n')

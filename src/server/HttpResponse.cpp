@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <cstdarg>
-#include "Response.h"
+#include "HttpResponse.h"
 #include "../../extern-deps/mongoose/mongoose.h"
 
 /********************  NAMESPACE  *******************/
@@ -19,7 +19,7 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-Response::Response(void )
+HttpResponse::HttpResponse(void )
 	:mimeType("text/plain")
 {
 	this->rawData = NULL;
@@ -31,7 +31,7 @@ Response::Response(void )
 
 
 /*******************  FUNCTION  *********************/
-Response::~Response(void )
+HttpResponse::~HttpResponse(void )
 {
 	if (stringData != NULL)
 		delete stringData;
@@ -40,7 +40,7 @@ Response::~Response(void )
 }
 
 /*******************  FUNCTION  *********************/
-std::ostream& Response::getStream(void )
+std::ostream& HttpResponse::getStream(void )
 {
 	assert(rawData == NULL && rawDataSize == 0);
 	if (stringData == NULL)
@@ -49,38 +49,38 @@ std::ostream& Response::getStream(void )
 }
 
 /*******************  FUNCTION  *********************/
-bool Response::isRawData(void ) const
+bool HttpResponse::isRawData(void ) const
 {
 	return (rawData != NULL);
 }
 
 /*******************  FUNCTION  *********************/
-bool Response::isStringData(void ) const
+bool HttpResponse::isStringData(void ) const
 {
 	return (stringData != NULL);
 }
 
 /*******************  FUNCTION  *********************/
-void Response::setMimeType(const char* mimeType)
+void HttpResponse::setMimeType(const char* mimeType)
 {
 	assert(mimeType != NULL);
 	this->mimeType = mimeType;
 }
 
 /*******************  FUNCTION  *********************/
-void Response::setMimeType(std::string & mimeType)
+void HttpResponse::setMimeType(std::string & mimeType)
 {
 	this->mimeType = mimeType;
 }
 
 /*******************  FUNCTION  *********************/
-void Response::setHttpStatus(int status)
+void HttpResponse::setHttpStatus(int status)
 {
 	this->status = status;
 }
 
 /*******************  FUNCTION  *********************/
-void Response::setRawData(void* data, size_t size,bool autodelete,std::string mimeType,int status)
+void HttpResponse::setRawData(void* data, size_t size,bool autodelete,std::string mimeType,int status)
 {
 	assert(this->stringData == NULL);
 	assert(this->rawData == NULL && this->rawDataSize == 0);
@@ -93,7 +93,7 @@ void Response::setRawData(void* data, size_t size,bool autodelete,std::string mi
 }
 
 /*******************  FUNCTION  *********************/
-void Response::flushInConnection(mg_connection* conn)
+void HttpResponse::flushInConnection(mg_connection* conn)
 {
 	//vars
 	void * data;
@@ -126,7 +126,7 @@ void Response::flushInConnection(mg_connection* conn)
 }
 
 /*******************  FUNCTION  *********************/
-void Response::error(int status, const char* format, ... )
+void HttpResponse::error(int status, const char* format, ... )
 {
 	//char
 	char buffer[1024];
@@ -141,7 +141,7 @@ void Response::error(int status, const char* format, ... )
 }
 
 /*******************  FUNCTION  *********************/
-void Response::print(const char* value)
+void HttpResponse::print(const char* value)
 {
 	getStream() << value;
 }

@@ -9,9 +9,9 @@
 /********************  HEADERS  *********************/
 #include <cassert>
 #include "../common/Common.h"
-#include "WebNode.h"
-#include "Server.h"
-#include "FileWebNode.h"
+#include "HttpNode.h"
+#include "HttpServer.h"
+#include "FileHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -21,7 +21,7 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-Server::Server(int port)
+HttpServer::HttpServer(int port)
 	:rootDir("/")
 {
 	//errors
@@ -34,7 +34,7 @@ Server::Server(int port)
 }
 
 /*******************  FUNCTION  *********************/
-void Server::start()
+void HttpServer::start()
 {
 	//errors
 	assert(status == SERVER_NOT_STARTED);
@@ -64,32 +64,32 @@ void Server::start()
 }
 
 /*******************  FUNCTION  *********************/
-void Server::stop()
+void HttpServer::stop()
 {
 	assert(status == SERVER_RUNNING && ctx != NULL);
 	mg_stop(ctx);
 }
 
 /*******************  FUNCTION  *********************/
-void* Server::staticCallback(mg_event event, mg_connection* conn)
+void* HttpServer::staticCallback(mg_event event, mg_connection* conn)
 {
 	const struct mg_request_info *request_info = mg_get_request_info(conn);
-	Server * server = (Server*)request_info->user_data;
+	HttpServer * server = (HttpServer*)request_info->user_data;
 	return server->callback(event,conn,request_info);
 }
 
 /*******************  FUNCTION  *********************/
-void * Server::callback(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+void * HttpServer::callback(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
 	if (event == MG_NEW_REQUEST) {
 		//search web node
-		WebNode * node = getWebNode(request_info->uri);
+		HttpNode * node = getHttpNode(request_info->uri);
 		if (node == NULL)
 		{
 			return quickErrorCode(conn,404,"text/plain","Page not found\n");
 		} else {
-			Request req(request_info);
-			Response rep;
+			HttpRequest req(request_info);
+			HttpResponse rep;
 			node->onHttpRequest(rep,req);
 			rep.flushInConnection(conn);
 			return (void*)"";
@@ -100,23 +100,23 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 }
 
 /*******************  FUNCTION  *********************/
-void Server::registerWebNode(WebNode& node)
+void HttpServer::registerHttpNode(HttpNode& node)
 {
 	rootDir.registerChildNode(node);
 }
 
 /*******************  FUNCTION  *********************/
-void Server::registerWebNode(htopml::WebNode* node, bool autodelete)
+void HttpServer::registerHttpNode(htopml::HttpNode* node, bool autodelete)
 {
 	rootDir.registerChildNode(node,autodelete);
 }
 
 /*******************  FUNCTION  *********************/
-WebNode* Server::getWebNode(const char* uri)
+HttpNode* HttpServer::getHttpNode(const char* uri)
 {
 	//errors
 	assert(uri != NULL);
-	WebNode * res = NULL;
+	HttpNode * res = NULL;
 
 	//loop on all nodes to find the addr
 	res = rootDir.acceptUri(uri);
@@ -125,7 +125,7 @@ WebNode* Server::getWebNode(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-void * Server::quickErrorCode(mg_connection* conn,int code, const std::string& contentType, const std::string& message)
+void * HttpServer::quickErrorCode(mg_connection* conn,int code, const std::string& contentType, const std::string& message)
 {
 	mg_printf(conn,
 			"HTTP/1.1 %d OK\r\n"
@@ -140,15 +140,15 @@ void * Server::quickErrorCode(mg_connection* conn,int code, const std::string& c
 }
 
 /*******************  FUNCTION  *********************/
-void Server::setPasswordFile(const std::string& path)
+void HttpServer::setPasswordFile(const std::string& path)
 {
 	this->passFile = path;
 }
 
 /*******************  FUNCTION  *********************/
-void Server::quickRegisterFile(const string& mountPoint, const string& filePath, const string& mimeType)
+void HttpServer::quickRegisterFile(const string& mountPoint, const string& filePath, const string& mimeType)
 {
-	registerWebNode(new FileWebNode(mountPoint,filePath,mimeType),true);
+	registerHttpNode(new FileHttpNode(mountPoint,filePath,mimeType),true);
 }
 
 }

@@ -6,13 +6,13 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_SERVER_H
-#define HTOPML_SERVER_H
+#ifndef HTOPML_HTTP_SERVER_H
+#define HTOPML_HTTP_SERVER_H
 
 /********************  HEADERS  *********************/
 #include <vector>
 #include <string>
-#include "VirtualDirectoryWebNode.h"
+#include "VirtualDirectoryHttpNode.h"
 #include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
@@ -20,7 +20,7 @@ namespace htopml
 {
 
 /********************  ENUM  ************************/
-enum ServerStatus
+enum HttpServerStatus
 {
 	SERVER_NOT_STARTED,
 	SERVER_STARTING,
@@ -28,31 +28,31 @@ enum ServerStatus
 };
 
 /*********************  CLASS  **********************/
-class Server
+class HttpServer
 {
 	public:
-		Server(int port);
+		HttpServer(int port);
 		void start();
 		void stop();
-		void registerWebNode(WebNode & node);
-		void registerWebNode(WebNode * node,bool autodelete = true);
+		void registerHttpNode(HttpNode & node);
+		void registerHttpNode(HttpNode * node,bool autodelete = true);
 		void setPasswordFile(const std::string & path);
 		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath,const std::string & mimeType = "auto");
 	private:
 		mg_context *ctx;
 		int port;
-		ServerStatus status;
+		HttpServerStatus status;
 	private:
 		//copy is forbidden.
-		Server(const Server & orig);
+		HttpServer(const HttpServer & orig);
 		static void * staticCallback(mg_event event,mg_connection *conn);
 		void* callback(mg_event event, mg_connection* conn, const mg_request_info* request_info);
-		WebNode * getWebNode(const char * uri);
-		VirtualDirectoryWebNode rootDir;
+		HttpNode * getHttpNode(const char * uri);
+		VirtualDirectoryHttpNode rootDir;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
 		std::string passFile;
 };
 
 };
 
-#endif // HTOPML_SERVER_H
+#endif // HTOPML_HTTP_SERVER_H

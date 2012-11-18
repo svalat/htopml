@@ -9,14 +9,14 @@
 /********************  HEADERS  *********************/
 #include <iostream>
 #include <cstdio>
-#include "src/server/Server.h"
-#include "src/server/FileWebNode.h"
-#include "src/server/JsonWebNode.h"
-#include "src/server/DirectoryWebNode.h"
+#include "src/server/HttpServer.h"
+#include "src/server/FileHttpNode.h"
+#include "src/server/JsonHttpNode.h"
+#include "src/server/DirectoryHttpNode.h"
 #include "src/json/TypeToJson.h"
-#include "src/web-nodes/GnuplotWebNode.h"
-#include "src/web-nodes/GetRusageWebNode.h"
-#include "src/web-nodes/TopWebNode.h"
+#include "src/http-nodes/GnuplotHttpNode.h"
+#include "src/http-nodes/GetRusageHttpNode.h"
+#include "src/http-nodes/TopHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace htopml;
@@ -31,7 +31,7 @@ using namespace std;
 #endif
 
 /*******************  FUNCTION  *********************/
-void register_user_pages(Server & server)
+void register_user_pages(HttpServer & server)
 {
 	//this is to be overloadded by LD_PRELOAD of link
 }
@@ -39,27 +39,27 @@ void register_user_pages(Server & server)
 /*******************  FUNCTION  *********************/
 int main(int argc, char **argv)
 {
-	STATIC Server server(8080);
+	STATIC HttpServer server(8080);
 	cout << "init server on 8080" << endl;
 
 	//an example of draw directely from gnuplot
-	server.registerWebNode(new GnuplotWebNode("/plot.png","plot x;"));
+	server.registerHttpNode(new GnuplotHttpNode("/plot.png","plot x;"));
 
 	//basic ressources required for highcharts
-	STATIC DirectoryWebNode ressourcesNode("/ressources/","../extern-deps/");
+	STATIC DirectoryHttpNode ressourcesNode("/ressources/","../extern-deps/");
 	ressourcesNode.registerFile("jquery/jquery.min.js");
 	ressourcesNode.registerFile("highcharts/js/highcharts.js");
 	ressourcesNode.registerFile("highcharts/js/highcharts-more.js");
 	ressourcesNode.registerFile("highcharts/js/modules/exporting.js");
-	server.registerWebNode(&ressourcesNode);
+	server.registerHttpNode(&ressourcesNode);
 
 	//fixed html pages
 	server.quickRegisterFile("/linux/rusage.html","../src/www/linux/rusage.html");
-	server.registerWebNode(new GetRusageWebNode("/linux/rusage.json"));
+	server.registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//setup top structure
 	server.quickRegisterFile("/linux/top.html","../src/www/linux/top.html");
-	server.registerWebNode(new TopWebNode("/linux/top.json"));
+	server.registerHttpNode(new TopHttpNode("/linux/top.json"));
 
 	//some options
 	server.setPasswordFile("./htpasswd");

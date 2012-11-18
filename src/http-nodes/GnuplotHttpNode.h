@@ -6,29 +6,26 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_REQUEST_H
-#define HTOPML_REQUEST_H
+#ifndef HTOPML_GNUPLOT_WEB_NODE_H
+#define HTOPML_GNUPLOT_WEB_NODE_H
 
 /********************  HEADERS  *********************/
-#include <string>
-
-/*********************  STRUCT  *********************/
-struct mg_request_info;
+#include "../server/HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class Request
+class GnuplotHttpNode : public HttpNode
 {
 	public:
-		Request(const mg_request_info * mongooseRequest);
-		std::string getUri(void) const;
+		GnuplotHttpNode(const std::string& path, const std::string & command);
+		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
 	private:
-		const mg_request_info * mongooseRequest;
+		std::string command;
 };
 
 };
 
-#endif // REQUEST_H
+#endif // HTOPML_GNUPLOT_WEB_NODE_H

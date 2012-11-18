@@ -9,21 +9,21 @@
 /********************  HEADERS  *********************/
 #include <cstdio>
 #include <cstring>
-#include "ValidationWebNode.h"
+#include "ValidationHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-ValidationWebNode::ValidationWebNode(const std::string& path, bool strictPath)
-	: WebNode(path, strictPath)
+ValidationHttpNode::ValidationHttpNode(const std::string& path, bool strictPath)
+	: HttpNode(path, strictPath)
 {
 
 }
 
 /*******************  FUNCTION  *********************/
-void ValidationWebNode::getContent(Response & response,const Request & request)
+void ValidationHttpNode::getContent(HttpResponse & response,const HttpRequest & request)
 {
 	response.setHttpStatus(200);
 	response.printf("Ok, get the page at URI : %s\n",request.getUri().c_str());

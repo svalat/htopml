@@ -10,21 +10,21 @@
 #include <cassert>
 #include <cstdlib>
 #include "../../extern-deps/mongoose/mongoose.h"
-#include "Request.h"
+#include "HttpRequest.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-Request::Request(const mg_request_info* mongooseRequest)
+HttpRequest::HttpRequest(const mg_request_info* mongooseRequest)
 {
 	assert(mongooseRequest != NULL);
 	this->mongooseRequest = mongooseRequest;
 }
 
 /*******************  FUNCTION  *********************/
-std::string Request::getUri(void ) const
+std::string HttpRequest::getUri(void ) const
 {
 	return mongooseRequest->uri;
 }

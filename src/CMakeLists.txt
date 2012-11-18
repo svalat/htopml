@@ -9,5 +9,5 @@
 ######################################################
 add_subdirectory(server)
 add_subdirectory(json)
-add_subdirectory(web-nodes)
+add_subdirectory(http-nodes)
 add_subdirectory(common)

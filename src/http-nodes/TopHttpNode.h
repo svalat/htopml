@@ -10,7 +10,7 @@
 #define HTOPML_TOP_H
 
 /********************  HEADERS  *********************/
-#include "../server/JsonWebNode.h"
+#include "../server/JsonHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -51,11 +51,11 @@ class LinuxTop
 };
 
 /*********************  CLASS  **********************/
-class TopWebNode : public JsonWebNode<LinuxTop>
+class TopHttpNode : public JsonHttpNode<LinuxTop>
 {
 	public:
-		TopWebNode(const std::string & addr);
-		virtual void onRequest(const Request & request);
+		TopHttpNode(const std::string & addr);
+		virtual void onRequest(const HttpRequest & request);
 	private:
 		void parseProcStat(LinuxTop & top,FILE * fp) const;
 		void parseProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;

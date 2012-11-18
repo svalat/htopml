@@ -8,21 +8,21 @@
 
 /********************  HEADERS  *********************/
 #include <cstdio>
-#include "GetRusageWebNode.h"
+#include "GetRusageHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-GetRusageWebNode::GetRusageWebNode(const std::string& addr)
-	: JsonWebNode<rusage>(addr, &data)
+GetRusageHttpNode::GetRusageHttpNode(const std::string& addr)
+	: JsonHttpNode<rusage>(addr, &data)
 {
 
 }
 
 /*******************  FUNCTION  *********************/
-void GetRusageWebNode::onHttpRequest(const mg_request_info* request_info)
+void GetRusageHttpNode::onHttpRequest(const mg_request_info* request_info)
 {
 	getrusage(RUSAGE_SELF,&data);
 }

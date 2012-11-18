@@ -39,13 +39,13 @@ endif (NOT DISABLE_TESTS)
 ######################################################
 #build htopmld exe (for tests)
 add_executable(htopmld main.cpp)
-target_link_libraries(htopmld mongoose htopml-server htopml-json htopml-web-nodes)
+target_link_libraries(htopmld mongoose htopml-server htopml-json htopml-http-nodes)
 target_link_libraries(htopmld ${CMAKE_THREAD_LIBS_INIT})
 
 ######################################################
 #build libhtopml
 add_library(htopml SHARED main.cpp)
-target_link_libraries(htopml mongoose htopml-server htopml-json htopml-web-nodes)
+target_link_libraries(htopml mongoose htopml-server htopml-json htopml-http-nodes)
 target_link_libraries(htopml ${CMAKE_THREAD_LIBS_INIT})
 SET_TARGET_PROPERTIES(htopml PROPERTIES COMPILE_FLAGS -DENABLE_INSTR_LIB)
 

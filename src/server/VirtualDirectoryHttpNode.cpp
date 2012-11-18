@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <sstream>
 #include <cstring>
-#include "VirtualDirectoryWebNode.h"
+#include "VirtualDirectoryHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -19,26 +19,26 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-VirtualDirectoryWebNode::VirtualDirectoryWebNode(const std::string& mountPoint)
-	:WebNode(mountPoint,false)
+VirtualDirectoryHttpNode::VirtualDirectoryHttpNode(const std::string& mountPoint)
+	:HttpNode(mountPoint,false)
 {
 }
 
 /*******************  FUNCTION  *********************/
-VirtualDirectoryWebNode::~VirtualDirectoryWebNode(void )
+VirtualDirectoryHttpNode::~VirtualDirectoryHttpNode(void )
 {
-    for (WebNodeVector::iterator it = toAutodelete.begin() ; it != toAutodelete.end() ; ++it)
+    for (HttpNodeVector::iterator it = toAutodelete.begin() ; it != toAutodelete.end() ; ++it)
 		delete *it;
 }
 
 /*******************  FUNCTION  *********************/
-void VirtualDirectoryWebNode::registerChildNode(WebNode& node)
+void VirtualDirectoryHttpNode::registerChildNode(HttpNode& node)
 {
 	registerChildNode(&node,false);
 }
 
 /*******************  FUNCTION  *********************/
-void VirtualDirectoryWebNode::registerChildNode(WebNode* node, bool autodelete)
+void VirtualDirectoryHttpNode::registerChildNode(HttpNode* node, bool autodelete)
 {
 	childs.push_back(node);
 	if (autodelete == true)
@@ -46,15 +46,15 @@ void VirtualDirectoryWebNode::registerChildNode(WebNode* node, bool autodelete)
 }
 
 /*******************  FUNCTION  *********************/
-WebNode* VirtualDirectoryWebNode::acceptUri(const char* uri)
+HttpNode* VirtualDirectoryHttpNode::acceptUri(const char* uri)
 {
-	WebNode * res = WebNode::acceptUri(uri);
-	WebNode * tmp;
+	HttpNode * res = HttpNode::acceptUri(uri);
+	HttpNode * tmp;
 	if (res == NULL)
 	{
 		return NULL;
 	} else {
-		for (WebNodeVector::iterator it = childs.begin() ; it != childs.end() ; ++it)
+		for (HttpNodeVector::iterator it = childs.begin() ; it != childs.end() ; ++it)
 		{
 			tmp = (*it)->acceptUri(uri);
 			if (tmp != NULL)
@@ -65,7 +65,7 @@ WebNode* VirtualDirectoryWebNode::acceptUri(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-void VirtualDirectoryWebNode::onHttpRequest(Response & response,const Request & request)
+void VirtualDirectoryHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & request)
 {
 	ostream & str = response.getStream();
 
@@ -73,13 +73,13 @@ void VirtualDirectoryWebNode::onHttpRequest(Response & response,const Request & 
 	response.setMimeType("text/html");
 	
 	str << "<html><body><ul>";
-	for (WebNodeVector::iterator it = childs.begin() ; it != childs.end() ; ++it)
+	for (HttpNodeVector::iterator it = childs.begin() ; it != childs.end() ; ++it)
 		str << "<li><a href=\"" << (*it)->getHomePage() << "\">" << (*it)->getHomePage() << "</a>" << endl;
 	str << "</ul></body></html>";
 }
 
 /*******************  FUNCTION  *********************/
-std::string VirtualDirectoryWebNode::getMountPoint(const std::string& localRelPath) const
+std::string VirtualDirectoryHttpNode::getMountPoint(const std::string& localRelPath) const
 {
 	std::string res(getBasePath());
 

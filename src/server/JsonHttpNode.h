@@ -6,13 +6,13 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_JSON_WEB_NODE_H
-#define HTOPML_JSON_WEB_NODE_H
+#ifndef HTOPML_JSON_HTTP_NODE_H
+#define HTOPML_JSON_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
 #include <sstream>
 #include <cstring>
-#include "WebNode.h"
+#include "HttpNode.h"
 #include "../json/TypeToJson.h"
 
 /********************  NAMESPACE  *******************/
@@ -21,28 +21,28 @@ namespace htopml
 
 /*********************  CLASS  **********************/
 template <class T>
-class JsonWebNode : public WebNode
+class JsonHttpNode : public HttpNode
 {
 	public:
-		JsonWebNode(const std::string& path, const T * value);
-		virtual void onHttpRequest(Response & response,const Request & request);
+		JsonHttpNode(const std::string& path, const T * value);
+		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
 	protected:
-		virtual void onRequest(const Request & request);
+		virtual void onRequest(const HttpRequest & request);
 	private:
 		const T * value;
 };
 
 /*******************  FUNCTION  *********************/
 template <class T>
-JsonWebNode<T>::JsonWebNode(const std::string& path, const T* value)
-	: WebNode(path, true)
+JsonHttpNode<T>::JsonHttpNode(const std::string& path, const T* value)
+	: HttpNode(path, true)
 {
 	this->value = value;
 }
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void JsonWebNode<T>::onHttpRequest(Response & response,const Request & request)
+void JsonHttpNode<T>::onHttpRequest(HttpResponse & response,const HttpRequest & request)
 {
 	response.setHttpStatus(200);
 	response.setMimeType("application/json");
@@ -52,11 +52,11 @@ void JsonWebNode<T>::onHttpRequest(Response & response,const Request & request)
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void JsonWebNode<T>::onRequest(const Request & request)
+void JsonHttpNode<T>::onRequest(const HttpRequest & request)
 {
 	
 }
 
 };
 
-#endif // HTOPML_JSON_WEB_NODE_H
+#endif // HTOPML_JSON_HTTP_NODE_H

@@ -6,28 +6,28 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_WEB_NODE_H
-#define HTOPML_WEB_NODE_H
+#ifndef HTOPML_HTTP_NODE_H
+#define HTOPML_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
 #include <string>
 #include <streambuf>
 #include <cstdlib>
-#include "Request.h"
-#include "Response.h"
+#include "HttpRequest.h"
+#include "HttpResponse.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class WebNode
+class HttpNode
 {
 	public:
-		WebNode(const std::string & path,bool strictPath);
-		virtual ~WebNode(void);
-		virtual void onHttpRequest(Response & response,const Request & request) = 0;
-		virtual WebNode * acceptUri(const char * uri);
+		HttpNode(const std::string & path,bool strictPath);
+		virtual ~HttpNode(void);
+		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request) = 0;
+		virtual HttpNode * acceptUri(const char * uri);
 		virtual std::string getHomePage(void);
 		const std::string & getBasePath(void) const;
 	private:
@@ -37,4 +37,4 @@ class WebNode
 
 };
 
-#endif //HTOPML_WEB_NODE_H
+#endif //HTOPML_HTTP_NODE_H

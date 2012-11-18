@@ -12,17 +12,17 @@
 /********************  HEADERS  *********************/
 #include <sys/time.h>
 #include <sys/resource.h>
-#include "../server/JsonWebNode.h"
+#include "../server/JsonHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class GetRusageWebNode : public JsonWebNode<rusage>
+class GetRusageHttpNode : public JsonHttpNode<rusage>
 {
 	public:
-		GetRusageWebNode(const std::string & addr);
+		GetRusageHttpNode(const std::string & addr);
 		virtual void onHttpRequest(const mg_request_info* request_info);
 	private:
 		rusage data;

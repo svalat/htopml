@@ -11,7 +11,7 @@
 #include <cstring>
 #include <pthread.h>
 #include <iostream>
-#include "FileWebNode.h"
+#include "FileHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -21,8 +21,8 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, const std::string & mimeType)
-	: WebNode(path,true), filePath(filePath)
+FileHttpNode::FileHttpNode(const std::string& path, const std::string& filePath, const std::string & mimeType)
+	: HttpNode(path,true), filePath(filePath)
 {
 	this->cache = NULL;
 	this->size = -1;
@@ -32,7 +32,7 @@ FileWebNode::FileWebNode(const std::string& path, const std::string& filePath, c
 }
 
 /*******************  FUNCTION  *********************/
-FileWebNode::~FileWebNode(void )
+FileHttpNode::~FileHttpNode(void )
 {
 	if (cache != NULL)
 		free(cache);
@@ -41,7 +41,7 @@ FileWebNode::~FileWebNode(void )
 }
 
 /*******************  FUNCTION  *********************/
-void FileWebNode::loadFileInCache(void )
+void FileHttpNode::loadFileInCache(void )
 {
 	pthread_mutex_lock(&mutex);
 	if (cache == NULL)
@@ -64,7 +64,7 @@ void FileWebNode::loadFileInCache(void )
 }
 
 /*******************  FUNCTION  *********************/
-void FileWebNode::onHttpRequest(Response & response,const Request & request)
+void FileHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & request)
 {
 	if (cache == NULL)
 		loadFileInCache();
@@ -81,7 +81,7 @@ void FileWebNode::onHttpRequest(Response & response,const Request & request)
 }
 
 /*******************  FUNCTION  *********************/
-string FileWebNode::getMimeType(const string& filename)
+string FileHttpNode::getMimeType(const string& filename)
 {
 	if (stringFinishBy(filename,".js"))
 	{
@@ -109,7 +109,7 @@ string FileWebNode::getMimeType(const string& filename)
 }
 
 /*******************  FUNCTION  *********************/
-bool FileWebNode::stringFinishBy(const string& value, const string& pattern)
+bool FileHttpNode::stringFinishBy(const string& value, const string& pattern)
 {
 	if (value.size() < pattern.size())
 		return false;

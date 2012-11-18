@@ -6,26 +6,26 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_DIRECTORY_WEB_NODE_H
-#define HTOPML_DIRECTORY_WEB_NODE_H
+#ifndef HTOPML_DIRECTORY_HTTP_NODE_H
+#define HTOPML_DIRECTORY_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
 #include <vector>
-#include "../server/VirtualDirectoryWebNode.h"
-#include "../server/FileWebNode.h"
+#include "../server/VirtualDirectoryHttpNode.h"
+#include "../server/FileHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  TYPES  **********************/
-typedef std::vector<FileWebNode *> FileWebNodeVector;
+typedef std::vector<FileHttpNode *> FileHttpNodeVector;
 
 /*********************  CLASS  **********************/
-class DirectoryWebNode : public VirtualDirectoryWebNode
+class DirectoryHttpNode : public VirtualDirectoryHttpNode
 {
 	public:
-		DirectoryWebNode(const std::string & mountPoint,const std::string & localPath);
+		DirectoryHttpNode(const std::string & mountPoint,const std::string & localPath);
 		void registerFile(const std::string& localRelPath, const std::string& mimetype = "auto");
 	private:
 		std::string getLocalPath(const std::string& localRelPath) const;
@@ -35,4 +35,4 @@ class DirectoryWebNode : public VirtualDirectoryWebNode
 
 };
 
-#endif // HTOPML_DIRECTORY_WEB_NODE_H
+#endif // HTOPML_DIRECTORY_HTTP_NODE_H

@@ -10,7 +10,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
-#include "GnuplotWebNode.h"
+#include "GnuplotHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -20,13 +20,13 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-GnuplotWebNode::GnuplotWebNode(const std::string& path, const std::string & command)
-	: WebNode(path, true), command(command)
+GnuplotHttpNode::GnuplotHttpNode(const std::string& path, const std::string & command)
+	: HttpNode(path, true), command(command)
 {
 }
 
 /*******************  FUNCTION  *********************/
-void GnuplotWebNode::onHttpRequest(Response & response,const Request & request)
+void GnuplotHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & request)
 {
 	char * buffer = NULL;
 	size_t size = 2048;

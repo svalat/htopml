@@ -10,27 +10,27 @@
 #include <cstring>
 #include <cassert>
 #include <cstdio>
-#include "WebNode.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-WebNode::WebNode(const std::string& path, bool strictPath)
+HttpNode::HttpNode(const std::string& path, bool strictPath)
 {
 	this->basePath = path;
 	this->strictPath = strictPath;
 }
 
 /*******************  FUNCTION  *********************/
-WebNode::~WebNode(void )
+HttpNode::~HttpNode(void )
 {
 
 }
 
 /*******************  FUNCTION  *********************/
-WebNode * WebNode::acceptUri(const char* uri)
+HttpNode * HttpNode::acceptUri(const char* uri)
 {
 	//errors
 	assert(uri != NULL);
@@ -46,13 +46,13 @@ WebNode * WebNode::acceptUri(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-const std::string& WebNode::getBasePath(void ) const
+const std::string& HttpNode::getBasePath(void ) const
 {
 	return basePath;
 }
 
 /*******************  FUNCTION  *********************/
-std::string WebNode::getHomePage(void )
+std::string HttpNode::getHomePage(void )
 {
 	return basePath;
 }

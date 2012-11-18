@@ -6,24 +6,24 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_VALIDATION_WEB_NODE_H
-#define HTOPML_VALIDATION_WEB_NODE_H
+#ifndef HTOPML_VALIDATION_HTTP_NODE_H
+#define HTOPML_VALIDATION_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
-#include "WebNode.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class ValidationWebNode : public WebNode
+class ValidationHttpNode : public HttpNode
 {
 	public:
-		ValidationWebNode(const std::string& path, bool strictPath);
-		virtual void getContent(Response & response,const Request & request);
+		ValidationHttpNode(const std::string& path, bool strictPath);
+		virtual void getContent(HttpResponse & response,const HttpRequest & request);
 };
 
 };
 
-#endif // HTOPML_VALIDATION_WEB_NODE_H
+#endif // HTOPML_VALIDATION_HTTP_NODE_H
