@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="/ressources/jquery/jquery.min.js"></script>
+		<script type="text/javascript">
+    var chart = null;
+    function requestData() {
+    $.ajax({
+        url: 'top.json',
+        contentType: 'application/json; charset=utf-8',
+//         data: json,
+//         dataType: 'json',
+        success: function(point) {
+//         alert('ok');
+            var series = chart.series[0],
+                shift = series.data.length > 400; // shift if the series is longer than 20
+//                 alert('ok');
+
+            // add the point
+//             alert(chart.series[0].points[0]);
+			var i = 0;
+            for ( i = 0 ; i < point.nbCpu ; i++)
+			{
+				chart.series[3].points[i].update(point.cpus[i].user,false);
+				chart.series[2].points[i].update(point.cpus[i].nice,false);
+				chart.series[1].points[i].update(point.cpus[i].system,false);
+				chart.series[0].points[i].update(point.cpus[i].idle,false);
+			}
+
+			chart.redraw();
+// 			chart2.series[0].points[0].update(Math.round(point.memusage / 1024));
+// 			chart3.series[0].addPoint(Math.round(point.memusage / 1024), true, shift);
+
+            // call it again after one second
+            setTimeout(requestData, 2000);
+        },
+        type: "GET",
+//         async: false,
+        error:function (xhr, status, error){
+		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
+		},
+    });
+}
+    $(document).ready(function() {
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'column',
+				animation: false,
+				events: {
+						load: requestData
+					}
+            },
+            title: {
+                text: 'Stacked column chart'
+            },
+            xAxis: {
+                categories: ['0', '1', '2', '3', '4','5','6','7','8']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'CPU consumption'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +' ('+ Math.round(this.percentage) +'%)';
+                }
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'percent'
+                }
+            },
+            series: [{
+                name: 'idle',
+                data: [0,0,0,0,0,0,0,0]
+            }, {
+                name: 'system',
+                data: [0,0,0,0,0,0,0,0]
+            }, {
+                name: 'nice',
+                data: [0,0,0,0,0,0,0,0]
+            }, {
+                name: 'user',
+                data: [0,0,0,0,0,0,0,0]
+            }]
+        });
+    });
+
+		</script>
+
+
+	</head>
+	<body>
+<script src="/ressources/highcharts/js/highcharts.js"></script>
+<script src="/ressources/highcharts/js/modules/exporting.js"></script>
+<script src="/ressources/highcharts/js/highcharts-more.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<!-- <script type="text/javascript" src="http://www.highcharts.com/highslide/highslide-full.min.js"></script> -->
+<!-- <script type="text/javascript" src="http://www.highcharts.com/highslide/highslide.config.js" charset="utf-8"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/highslide/highslide.css" /> -->
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>

@@ -26,6 +26,7 @@ void GetRusageWebNode::onRequest(const mg_request_info* request_info)
 	getrusage(RUSAGE_SELF,&data);
 }
 
+/*******************  FUNCTION  *********************/
 static int parseLine(char* line){
 	int i = strlen(line);
 	while (*line < '0' || *line > '9') line++;
@@ -34,7 +35,7 @@ static int parseLine(char* line){
 	return i;
 }
 
-
+/*******************  FUNCTION  *********************/
 static int getMemUsage(){ //Note: this value is in KB!
 	FILE* file = fopen("/proc/self/status", "r");
 	int result = -1;

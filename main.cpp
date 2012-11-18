@@ -17,6 +17,7 @@
 #include "src/json/TypeToJson.h"
 #include "src/web-nodes/GnuplotWebNode.h"
 #include "src/web-nodes/GetRusageWebNode.h"
+#include "src/web-nodes/TopWebNode.h"
 
 /**********************  USING  *********************/
 using namespace htopml;
@@ -65,8 +66,10 @@ int main(int argc, char **argv)
 	STATIC GnuplotWebNode plot("/plot.png","plot x;");
 	STATIC GetRusageWebNode rusageNode("/linux/rusage.json");
 	STATIC FileWebNode rusage_html("/linux/rusage.html","../src/www/rusage.html","text/html");
+	STATIC FileWebNode top_html("/linux/top.html","../src/www/top.html","text/html");
 	STATIC FileWebNode test_json("/linux/test.json","../src/www/test.json","application/json");
 	STATIC DirectoryWebNode ressourcesNode("/ressources/","../extern-deps/");
+	STATIC TopWebNode top("/linux/top.json");
 	ressourcesNode.registerFile("jquery/jquery.min.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts.js","application/javascript");
 	ressourcesNode.registerFile("highcharts/js/highcharts-more.js","application/javascript");
@@ -81,6 +84,8 @@ int main(int argc, char **argv)
 	server.registerWebNode(&ressourcesNode);
 	server.registerWebNode(&rusage_html);
 	server.registerWebNode(&test_json);
+	server.registerWebNode(&top);
+	server.registerWebNode(&top_html);
 	server.setPasswordFile("./htpasswd");
 	server.start();
 	cout << "running..." << endl;
