@@ -6,24 +6,29 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_VALIDATION_WEB_NODE_H
-#define HTOPML_VALIDATION_WEB_NODE_H
+#ifndef HTOPML_REQUEST_H
+#define HTOPML_REQUEST_H
 
 /********************  HEADERS  *********************/
-#include "WebNode.h"
+#include <string>
+
+/*********************  STRUCT  *********************/
+struct mg_request_info;
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class ValidationWebNode : public WebNode
+class Request
 {
 	public:
-		ValidationWebNode(const std::string& path, bool strictPath);
-		virtual WebNodeData getContent(const Request & request);
+		Request(const mg_request_info * mongooseRequest);
+		std::string getUri(void) const;
+	private:
+		const mg_request_info * mongooseRequest;
 };
 
 };
 
-#endif // HTOPML_VALIDATION_WEB_NODE_H
+#endif // REQUEST_H

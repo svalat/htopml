@@ -64,7 +64,7 @@ void FileWebNode::loadFileInCache(void )
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData FileWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+WebNodeData FileWebNode::getContent(const Request & request)
 {
 	if (cache == NULL)
 		loadFileInCache();

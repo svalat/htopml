@@ -88,7 +88,8 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 		{
 			return quickErrorCode(conn,404,"text/plain","Page not found\n");
 		} else {
-			WebNodeData data = node->getContent(event,conn,request_info);
+			Request req(request_info);
+			WebNodeData data = node->getContent(req);
 			quickReturn(conn,data);
 			if (data.autofree)
 				free(data.data);

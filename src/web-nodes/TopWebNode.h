@@ -55,7 +55,7 @@ class TopWebNode : public JsonWebNode<LinuxTop>
 {
 	public:
 		TopWebNode(const std::string & addr);
-		virtual void onRequest(const mg_request_info* request_info);
+		virtual void onRequest(const Request & request);
 	private:
 		void parseProcStat(LinuxTop & top,FILE * fp) const;
 		void parseProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;

@@ -21,7 +21,7 @@ class GnuplotWebNode : public WebNode
 {
 	public:
 		GnuplotWebNode(const std::string& path, const std::string & command);
-		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
+		virtual WebNodeData getContent(const Request & request);
 	private:
 		std::string command;
 };

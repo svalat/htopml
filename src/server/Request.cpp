@@ -7,27 +7,26 @@
 *****************************************************/
 
 /********************  HEADERS  *********************/
-#include <cstdio>
-#include <cstring>
-#include "ValidationWebNode.h"
+#include <cassert>
+#include <cstdlib>
+#include "../../extern-deps/mongoose/mongoose.h"
+#include "Request.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-ValidationWebNode::ValidationWebNode(const std::string& path, bool strictPath)
-	: WebNode(path, strictPath)
+Request::Request(const mg_request_info* mongooseRequest)
 {
-
+	assert(mongooseRequest != NULL);
+	this->mongooseRequest = mongooseRequest;
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData ValidationWebNode::getContent(const Request & request)
+std::string Request::getUri(void ) const
 {
-	char buffer[2048];
-	sprintf(buffer,"Ok, get the page at URI : %s\n",request.getUri().c_str());
-	return WebNodeData(strdup(buffer),strlen(buffer),"text/plain",true);
+	return mongooseRequest->uri;
 }
 
-}
+};

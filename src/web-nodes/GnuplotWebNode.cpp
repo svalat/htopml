@@ -26,7 +26,7 @@ GnuplotWebNode::GnuplotWebNode(const std::string& path, const std::string & comm
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData GnuplotWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+WebNodeData GnuplotWebNode::getContent(const Request & request)
 {
 	char * buffer = NULL;
 	size_t size = 2048;

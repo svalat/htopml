@@ -7,6 +7,7 @@
 *****************************************************/
 
 /********************  HEADERS  *********************/
+#include <cstdio>
 #include "GetRusageWebNode.h"
 
 /********************  NAMESPACE  *******************/
@@ -36,7 +37,8 @@ static int parseLine(char* line){
 }
 
 /*******************  FUNCTION  *********************/
-static int getMemUsage(){ //Note: this value is in KB!
+static int getMemUsage()
+{
 	FILE* file = fopen("/proc/self/status", "r");
 	int result = -1;
 	char line[128];

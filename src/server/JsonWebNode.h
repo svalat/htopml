@@ -25,9 +25,9 @@ class JsonWebNode : public WebNode
 {
 	public:
 		JsonWebNode(const std::string& path, const T * value);
-		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
+		virtual WebNodeData getContent(const Request & request);
 	protected:
-		virtual void onRequest(const mg_request_info* request_info);
+		virtual void onRequest(const Request & request);
 	private:
 		const T * value;
 };
@@ -42,10 +42,10 @@ JsonWebNode<T>::JsonWebNode(const std::string& path, const T* value)
 
 /*******************  FUNCTION  *********************/
 template <class T>
-WebNodeData JsonWebNode<T>::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+WebNodeData JsonWebNode<T>::getContent(const Request & request)
 {
 	std::stringstream str;
-	onRequest(request_info);
+	onRequest(request);
 	typeToJson(str,*value);
 	char * res = strdup(str.str().c_str());
 	return WebNodeData(res,strlen(res),"application/json",200,true);
@@ -53,7 +53,7 @@ WebNodeData JsonWebNode<T>::getContent(mg_event event, mg_connection* conn, cons
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void JsonWebNode<T>::onRequest(const mg_request_info* request_info)
+void JsonWebNode<T>::onRequest(const Request & request)
 {
 	
 }

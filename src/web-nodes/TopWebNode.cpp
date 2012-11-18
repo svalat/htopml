@@ -84,7 +84,7 @@ TopWebNode::TopWebNode(const std::string& addr)
 }
 
 /*******************  FUNCTION  *********************/
-void TopWebNode::onRequest(const mg_request_info* request_info)
+void TopWebNode::onRequest(const Request & request)
 {
 	FILE * fp = fopen("/proc/stat","r");
 	if (fp == NULL)

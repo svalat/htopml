@@ -13,7 +13,7 @@
 #include <string>
 #include <streambuf>
 #include <cstdlib>
-#include "mongoose.h"
+#include "Request.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -36,7 +36,7 @@ class WebNode
 	public:
 		WebNode(const std::string & path,bool strictPath);
 		virtual ~WebNode(void);
-		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info) = 0;
+		virtual WebNodeData getContent(const Request & request) = 0;
 		virtual WebNode * acceptUri(const char * uri);
 		virtual std::string getHomePage(void);
 		const std::string & getBasePath(void) const;

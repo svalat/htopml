@@ -65,7 +65,7 @@ WebNode* VirtualDirectoryWebNode::acceptUri(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-WebNodeData VirtualDirectoryWebNode::getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info)
+WebNodeData VirtualDirectoryWebNode::getContent(const Request & request)
 {
 	stringstream str;
 	str << "<html><body><ul>";
