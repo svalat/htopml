@@ -18,7 +18,7 @@ namespace htopml
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void JsonState::printField(const char * name,const T & value)
+void JsonState::printField(const std::string & name,const T & value)
 {
 	//print
 	openField(name);

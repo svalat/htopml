@@ -47,7 +47,7 @@ class JsonState
 {
 	public:
 		JsonState(std::ostream * out);
-		template <class T> void printField(const char * name,const T & value);
+		template <class T> void printField(const std::string & name,const T & value);
 		template <class T> void printValue(const T & value);
 		template <class T> void printFieldArray(const char * name,const T * value,int size);
 		template <class T> void printArray(const T * value,int size);
