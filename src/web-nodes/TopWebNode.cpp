@@ -28,12 +28,19 @@ LinuxTop::LinuxTop(void )
 void LinuxTop::setAsDelta(const LinuxTop& previous, const LinuxTop& current)
 {
 	//errors
-	assert(previous.nbCpu == current.nbCpu);
-	nbCpu = previous.nbCpu;
+	nbCpu = current.nbCpu;
 
-	//delata of cpu values
-	for (int i = 0 ; i < nbCpu ; i++)
-		cpu[i].setAsDelta(previous.cpu[i],current.cpu[i]);
+	//compute deltas
+	if (current.nbCpu == previous.nbCpu)
+	{
+
+		//delata of cpu values
+		for (int i = 0 ; i < nbCpu ; i++)
+			cpu[i].setAsDelta(previous.cpu[i],current.cpu[i]);
+
+		//delta on total
+		total.setAsDelta(previous.total,current.total);
+	}
 
 	//the other one didn't need delta
 	btime = current.btime;
@@ -88,14 +95,13 @@ void TopWebNode::onRequest(const mg_request_info* request_info)
 		LinuxTop current;
 		parseProcStat(current,fp);
 		fclose(fp);
-		if (last.nbCpu != 0)
-			delta.setAsDelta(last,current);
+		delta.setAsDelta(last,current);
 		last = current;
 	}
 }
 
 /*******************  FUNCTION  *********************/
-void TopWebNode::parseProcStat(LinuxTop& top, FILE* fp)
+void TopWebNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 {
 	//vars
 	char buffer[4096];
@@ -124,17 +130,35 @@ void TopWebNode::parseProcStat(LinuxTop& top, FILE* fp)
 		if (sscanf(cur,"btime %lu",&top.btime) == 1) {
 		} else if (sscanf(cur,"procs_running %lu",&top.proc_running) == 1) {
 		} else if (strncmp(cur,"cpu ",4) == 0 || strncmp(cur,"cpu\t",4) == 0 ) {
+			parseProcStatCpuLine(top.total,cur);
 		} else if (sscanf(cur,"cpu%d ",&top.nbCpu) == 1) {
-			int tmp;
-			int cnt = sscanf(cur,"cpu%d %lu %lu %lu %lu %lu %lu %lu",
-				   &tmp,&top.cpu[top.nbCpu].user,&top.cpu[top.nbCpu].nice,
-			       &top.cpu[top.nbCpu].system,&top.cpu[top.nbCpu].idle,
-			       &top.cpu[top.nbCpu].iowait,&top.cpu[top.nbCpu].irq,
-			       &top.cpu[top.nbCpu].softirq);
-			assert(cnt == 8);
+			parseProcStatCpuLine(top.cpu[top.nbCpu],cur);
 			top.nbCpu++;
 		}
 		cur = next;
+	}
+}
+
+/*******************  FUNCTION  *********************/
+void TopWebNode::parseProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
+{
+	int tmp;
+	int cnt;
+	if (strncmp(value,"cpu ",4) == 0 || strncmp(value,"cpu\t",4) == 0 )
+	{
+		cnt = sscanf(value,"cpu %lu %lu %lu %lu %lu %lu %lu",
+		            &cpu.user,&cpu.nice,
+		            &cpu.system,&cpu.idle,
+		            &cpu.iowait,&cpu.irq,
+		            &cpu.softirq);
+		assert(cnt == 7);
+	} else {
+		cnt = sscanf(value,"cpu%d %lu %lu %lu %lu %lu %lu %lu",
+		            &tmp,&cpu.user,&cpu.nice,
+		            &cpu.system,&cpu.idle,
+		            &cpu.iowait,&cpu.irq,
+		            &cpu.softirq);
+		assert(cnt == 8);
 	}
 }
 
@@ -161,6 +185,7 @@ void typeToJson(JsonState& json, std::ostream& stream, const LinuxTop& value)
 {
 	json.openStruct();
 	json.printFieldArray("cpus",value.cpu,value.nbCpu);
+	json.printField("total",value.total);
 	json.printField("btime",value.btime);
 	json.printField("proc_running",value.proc_running);
 	json.printField("nbCpu",value.nbCpu);

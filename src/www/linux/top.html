@@ -31,17 +31,20 @@
 			}
 
 			chart.redraw();
-// 			chart2.series[0].points[0].update(Math.round(point.memusage / 1024));
-// 			chart3.series[0].addPoint(Math.round(point.memusage / 1024), true, shift);
+			if (point.total.user+point.total.nice+point.total.system+point.total.idle > 0)
+			{
+				var usage = 100.0 * (point.total.user+point.total.nice+point.total.system)/(point.total.user+point.total.nice+point.total.system+point.total.idle);
+				chart3.series[0].addPoint(usage, true, shift);
+			}
 
             // call it again after one second
-            setTimeout(requestData, 2000);
+            setTimeout(requestData, 250);
         },
         type: "GET",
 //         async: false,
-        error:function (xhr, status, error){
-		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
-		},
+//         error:function (xhr, status, error){
+// 		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
+// 		},
     });
 }
     $(document).ready(function() {
@@ -85,16 +88,100 @@
             },
             series: [{
                 name: 'idle',
-                data: [0,0,0,0,0,0,0,0]
+                data: [0,0,0,0,0,0,0,0],
+                color: '#AAAAAA'
             }, {
                 name: 'system',
-                data: [0,0,0,0,0,0,0,0]
+                data: [0,0,0,0,0,0,0,0],
+				color: 'red'
             }, {
                 name: 'nice',
-                data: [0,0,0,0,0,0,0,0]
+                data: [0,0,0,0,0,0,0,0],
+                color: 'orange'
             }, {
                 name: 'user',
+				color: 'green',
                 data: [0,0,0,0,0,0,0,0]
+            }]
+        });
+    });
+
+
+
+
+
+	 var chart3;
+    $(document).ready(function() {
+        chart3 = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container3',
+                zoomType: 'x',
+                spacingRight: 20,
+                animation: false
+            },
+            title: {
+                text: 'Total CPU usage'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' :
+                    'Drag your finger over the plot to zoom in'
+            },
+            xAxis: {
+                type: 'datetime',
+//                 maxZoom: 14 * 24 * 3600000, // fourteen days
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Exchange rate'
+                },
+                min: 0.6,
+				max: 100.0,
+                startOnTick: false,
+                showFirstLabel: false
+            },
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, 'rgba(2,0,0,0)']
+                        ]
+                    },
+                    lineWidth: 1,
+                    marker: {
+                        enabled: false,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                radius: 5
+                            }
+                        }
+                    },
+                    shadow: false,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    }
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Mo',
+//                 pointInterval: 24 * 3600 * 1000,
+                data: [0]
             }]
         });
     });
@@ -114,6 +201,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="http://www.highcharts.com/highslide/highslide.css" /> -->
 
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+<div id="container3" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
 </html>

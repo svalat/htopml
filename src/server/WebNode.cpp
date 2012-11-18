@@ -61,4 +61,10 @@ const std::string& WebNode::getBasePath(void ) const
 	return basePath;
 }
 
+/*******************  FUNCTION  *********************/
+std::string WebNode::getHomePage(void )
+{
+	return basePath;
+}
+
 };

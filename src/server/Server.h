@@ -38,8 +38,9 @@ class Server
 		Server(int port);
 		void start();
 		void stop();
-		void registerWebNode(WebNode * node);
+		void registerWebNode(WebNode * node,bool autodelete = true);
 		void setPasswordFile(const std::string & path);
+		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath,const std::string & mimeType = "auto");
 	private:
 		mg_context *ctx;
 		int port;
@@ -51,6 +52,7 @@ class Server
 		void* callback(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 		WebNode * getWebNode(const char * uri);
 		WebNodeVector webNodes;
+		WebNodeVector toAutodelete;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
 		void * quickReturn(mg_connection* conn,const WebNodeData & data);
 		std::string passFile;

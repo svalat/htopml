@@ -8,9 +8,10 @@
 
 /********************  HEADERS  *********************/
 #include <cassert>
-#include "Common.h"
+#include "../common/Common.h"
 #include "WebNode.h"
 #include "Server.h"
+#include "FileWebNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -98,9 +99,11 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 }
 
 /*******************  FUNCTION  *********************/
-void Server::registerWebNode(WebNode* node)
+void Server::registerWebNode(htopml::WebNode* node, bool autodelete)
 {
 	this->webNodes.push_back(node);
+	if (autodelete)
+		this->toAutodelete.push_back(node);
 }
 
 /*******************  FUNCTION  *********************/
@@ -155,6 +158,12 @@ void * Server::quickErrorCode(mg_connection* conn,int code, const std::string& c
 void Server::setPasswordFile(const std::string& path)
 {
 	this->passFile = path;
+}
+
+/*******************  FUNCTION  *********************/
+void Server::quickRegisterFile(const string& mountPoint, const string& filePath, const string& mimeType)
+{
+	registerWebNode(new FileWebNode(mountPoint,filePath,mimeType),true);
 }
 
 }

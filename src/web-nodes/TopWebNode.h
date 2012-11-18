@@ -44,6 +44,7 @@ class LinuxTop
 		void setNbCpu(int nbCpu);
 	public:
 		struct LinuxTopCpu cpu[HTOPML_TOP_MAX_CPU];
+		struct LinuxTopCpu total;
 		unsigned long btime;
 		unsigned long proc_running;
 		int nbCpu;
@@ -56,7 +57,8 @@ class TopWebNode : public JsonWebNode<LinuxTop>
 		TopWebNode(const std::string & addr);
 		virtual void onRequest(const mg_request_info* request_info);
 	private:
-		void parseProcStat(LinuxTop & top,FILE * fp);
+		void parseProcStat(LinuxTop & top,FILE * fp) const;
+		void parseProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;
 		static char * findEndOfLine(char * start,bool cutWithZero = true);
 	private:
 		LinuxTop delta;

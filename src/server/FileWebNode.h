@@ -20,12 +20,14 @@ namespace htopml
 class FileWebNode : public WebNode
 {
 	public:
-		FileWebNode(const std::string& path, const std::string & filePath,const std::string & mimeType);
+		FileWebNode(const std::string& path, const std::string & filePath,const std::string & mimeType = "auto");
 		virtual ~FileWebNode(void );
 		virtual WebNodeData getContent(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 	private:
 		FileWebNode(const FileWebNode & node);
 		void loadFileInCache(void);
+		static std::string getMimeType(const std::string & filename);
+		static bool stringFinishBy(const std::string & value,const std::string & pattern);
 	private:
 		std::string filePath;
 		std::string mimeType;
