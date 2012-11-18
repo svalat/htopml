@@ -26,7 +26,7 @@ class WebNode
 	public:
 		WebNode(const std::string & path,bool strictPath);
 		virtual ~WebNode(void);
-		virtual void getContent(Response & response,const Request & request) = 0;
+		virtual void onHttpRequest(Response & response,const Request & request) = 0;
 		virtual WebNode * acceptUri(const char * uri);
 		virtual std::string getHomePage(void);
 		const std::string & getBasePath(void) const;

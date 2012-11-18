@@ -64,7 +64,7 @@ void FileWebNode::loadFileInCache(void )
 }
 
 /*******************  FUNCTION  *********************/
-void FileWebNode::getContent(Response & response,const Request & request)
+void FileWebNode::onHttpRequest(Response & response,const Request & request)
 {
 	if (cache == NULL)
 		loadFileInCache();

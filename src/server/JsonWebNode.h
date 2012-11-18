@@ -25,7 +25,7 @@ class JsonWebNode : public WebNode
 {
 	public:
 		JsonWebNode(const std::string& path, const T * value);
-		virtual void getContent(Response & response,const Request & request);
+		virtual void onHttpRequest(Response & response,const Request & request);
 	protected:
 		virtual void onRequest(const Request & request);
 	private:
@@ -42,7 +42,7 @@ JsonWebNode<T>::JsonWebNode(const std::string& path, const T* value)
 
 /*******************  FUNCTION  *********************/
 template <class T>
-void JsonWebNode<T>::getContent(Response & response,const Request & request)
+void JsonWebNode<T>::onHttpRequest(Response & response,const Request & request)
 {
 	response.setHttpStatus(200);
 	response.setMimeType("application/json");

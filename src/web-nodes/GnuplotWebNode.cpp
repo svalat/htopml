@@ -26,7 +26,7 @@ GnuplotWebNode::GnuplotWebNode(const std::string& path, const std::string & comm
 }
 
 /*******************  FUNCTION  *********************/
-void GnuplotWebNode::getContent(Response & response,const Request & request)
+void GnuplotWebNode::onHttpRequest(Response & response,const Request & request)
 {
 	char * buffer = NULL;
 	size_t size = 2048;

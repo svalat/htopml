@@ -28,7 +28,7 @@ class VirtualDirectoryWebNode : public WebNode
 	public:
 		VirtualDirectoryWebNode(const std::string & mountPoint);
 		virtual ~VirtualDirectoryWebNode(void);
-		virtual void getContent(Response & response,const Request & request);
+		virtual void onHttpRequest(Response & response,const Request & request);
 		virtual WebNode* acceptUri(const char* uri);
 		void registerChildNode(WebNode & node);
 		void registerChildNode(WebNode * node, bool autodelete = true);

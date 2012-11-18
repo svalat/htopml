@@ -65,7 +65,7 @@ WebNode* VirtualDirectoryWebNode::acceptUri(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-void VirtualDirectoryWebNode::getContent(Response & response,const Request & request)
+void VirtualDirectoryWebNode::onHttpRequest(Response & response,const Request & request)
 {
 	ostream & str = response.getStream();
 

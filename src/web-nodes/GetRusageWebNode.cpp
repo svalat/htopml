@@ -22,7 +22,7 @@ GetRusageWebNode::GetRusageWebNode(const std::string& addr)
 }
 
 /*******************  FUNCTION  *********************/
-void GetRusageWebNode::onRequest(const mg_request_info* request_info)
+void GetRusageWebNode::onHttpRequest(const mg_request_info* request_info)
 {
 	getrusage(RUSAGE_SELF,&data);
 }

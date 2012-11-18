@@ -90,7 +90,7 @@ void * Server::callback(mg_event event, mg_connection* conn, const mg_request_in
 		} else {
 			Request req(request_info);
 			Response rep;
-			node->getContent(rep,req);
+			node->onHttpRequest(rep,req);
 			rep.flushInConnection(conn);
 			return (void*)"";
 		}
