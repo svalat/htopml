@@ -48,8 +48,9 @@ class JsonObjectFieldDeltaTyped : public JsonObjectField
 		JsonObjectFieldDeltaTyped(const std::string & name,const T * value);
 		virtual void typeToJson(JsonState & json,std::ostream& stream) const;
 	private:
-		bool init;
-		T previous;
+		mutable bool init;
+		//Fine a cleaner way than this hack (maybe add an update function)
+		mutable T previous;
 };
 
 /*********************  TYPES  **********************/

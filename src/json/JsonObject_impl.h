@@ -63,6 +63,7 @@ void JsonObjectFieldDeltaTyped<T>::typeToJson(JsonState & json,std::ostream& str
 	}
 
 	previous = *(const T*)value;
+	this->init = true;
 }
 
 }
