@@ -14,14 +14,28 @@
 //         data: json,
 //         dataType: 'json',
         success: function(point) {
-//         alert('ok');
+			var i = 0;
             var series = chart.series[0],
                 shift = series.data.length > 400; // shift if the series is longer than 20
-//                 alert('ok');
 
-            // add the point
-//             alert(chart.series[0].points[0]);
-			var i = 0;
+			//alert(chart.xAxis[0].categories.length);
+			if (chart.xAxis[0].categories.length != point.nbCpu)
+			{
+				var current = chart.xAxis[0].categories.length;
+				var categories = new Array();
+				for ( i = 0 ; i < point.nbCpu ; i++)
+					categories[i] = "Core " + i;
+				chart.xAxis[0].setCategories(categories, true);
+				for ( i = current ; i < point.nbCpu ; i++)
+				{
+					chart.series[0].addPoint([i, 10+i], false);
+					chart.series[1].addPoint([i, 10+i], false);
+					chart.series[2].addPoint([i, 10+i], false);
+					chart.series[3].addPoint([i, 10+i], false);
+				}
+				chart.redraw();
+			}
+			
             for ( i = 0 ; i < point.nbCpu ; i++)
 			{
 				chart.series[3].points[i].update(point.cpus[i].user,false);
@@ -38,7 +52,7 @@
 			}
 
             // call it again after one second
-            setTimeout(requestData, 250);
+            setTimeout(requestData, 1000);
         },
         type: "GET",
 //         async: false,
@@ -52,7 +66,7 @@
             chart: {
                 renderTo: 'container',
                 type: 'column',
-				animation: false,
+				animation: true,
 				events: {
 						load: requestData
 					}
@@ -61,7 +75,7 @@
                 text: 'Stacked column chart'
             },
             xAxis: {
-                categories: ['0', '1', '2', '3', '4','5','6','7','8']
+                categories: ['0']
             },
             yAxis: {
                 min: 0,
@@ -88,20 +102,20 @@
             },
             series: [{
                 name: 'idle',
-                data: [0,0,0,0,0,0,0,0],
+                data: [0],
                 color: '#AAAAAA'
             }, {
                 name: 'system',
-                data: [0,0,0,0,0,0,0,0],
+                data: [0],
 				color: 'red'
             }, {
                 name: 'nice',
-                data: [0,0,0,0,0,0,0,0],
+                data: [0],
                 color: 'orange'
             }, {
                 name: 'user',
 				color: 'green',
-                data: [0,0,0,0,0,0,0,0]
+                data: [0]
             }]
         });
     });

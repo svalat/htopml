@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 	server.registerHttpNode(&ressourcesNode);
 
 	//fixed html pages
-	server.quickRegisterFile("/linux/rusage.html","../src/www/linux/rusage.html");
+	server.quickRegisterFile("/linux/rusage.html","../src/www/linux/rusage.html",false);
 	server.registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//setup top structure

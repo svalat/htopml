@@ -23,7 +23,7 @@ class GetRusageHttpNode : public JsonHttpNode<rusage>
 {
 	public:
 		GetRusageHttpNode(const std::string & addr);
-		virtual void onHttpRequest(const mg_request_info* request_info);
+		virtual void onRequest(const HttpRequest & request);
 	private:
 		rusage data;
 };
