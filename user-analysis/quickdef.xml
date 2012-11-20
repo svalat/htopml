@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<htopml>
+	<config>
+		<root-mount-point>/user</root-mount-point>
+	</config>
+	<headers>
+		<header>sys/sysinfo.h</header>
+	</headers>
+	<structs>
+		<struct typename="sysinfo">
+			<field export-name="uptime">uptime</field>
+			<array size="3">loads</array>
+			<field>totalram</field>
+			<field>freeram</field>
+			<field>sharedram</field>
+			<field>bufferram</field>
+			<field>totalswap</field>
+			<field>freeswap</field>
+			<field>procs</field>
+			<field>totalhigh</field>
+			<field>freehigh</field>
+			<field>mem_unit</field>
+		</struct>
+	</structs>
+	<exports>
+		<export>
+			<name>Sysinfo</name>
+			<mount>sysinfo.json</mount>
+			<struct>sysinfo</struct>
+			<update>sysinfo(&amp;data);</update>
+		</export>
+	</exports>
+	<graphs>
+		<graph>
+			<container>container</container>
+			<title>Used Memory</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Memory (Mo)</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>sysinfo.json</source>
+			<series>
+				<serie name="Used memory">source.totalram - source.freeram</serie>
+			</series>
+		</graph>
+	</graphs>
+	<!--<user-extends>
+		<handler>add_my_page</handler>
+	</user-extends>-->
+</htopml>

@@ -6,8 +6,8 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
-#ifndef HTOPML_JSON_DELTAO_BJECT_H
-#define HTOPML_JSON_DELTAO_BJECT_H
+#ifndef HTOPML_JSON_DELTA_OBJECT_H
+#define HTOPML_JSON_DELTA_OBJECT_H
 
 /********************  HEADERS  *********************/
 #include <string>
@@ -77,4 +77,4 @@ void typeToJson(JsonState & json,std::ostream& stream, const JsonObjectField & f
 
 #include "JsonObject_impl.h"
 
-#endif // HTOPML_JSON_DELTAO_BJECT_H
+#endif // HTOPML_JSON_DELTA_OBJECT_H
