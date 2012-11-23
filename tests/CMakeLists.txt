@@ -13,8 +13,3 @@ include(${CMAKE_SOURCE_DIR}/cmake/unittest-macros.cmake)
 add_executable(testJson testJson.cpp)
 target_link_libraries(testJson htopml-json gtest)
 htopml_add_test(testJson)
-
-######################################################
-add_executable(testJsonObject testJsonObject.cpp)
-target_link_libraries(testJsonObject htopml-json gtest)
-htopml_add_test(testJsonObject)

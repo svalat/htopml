@@ -40,7 +40,7 @@
 			<refresh>500</refresh>
 			<source>sysinfo.json</source>
 			<series>
-				<serie name="Used memory">source.totalram - source.freeram</serie>
+				<serie name="Used memory" delta="true">data.totalram - data.freeram</serie>
 			</series>
 		</graph>
 	</graphs>

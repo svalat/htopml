@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="/ressources/jquery/jquery.min.js"></script>
 		<script type="text/javascript">
     var chart = null;
+	var lastPoint = null;
     function requestData() {
     $.ajax({
         url: 'top.json',
@@ -28,31 +29,42 @@
 				chart.xAxis[0].setCategories(categories, true);
 				for ( i = current ; i < point.nbCpu ; i++)
 				{
-					chart.series[0].addPoint([i, 10+i], false);
-					chart.series[1].addPoint([i, 10+i], false);
-					chart.series[2].addPoint([i, 10+i], false);
-					chart.series[3].addPoint([i, 10+i], false);
+					chart.series[0].addPoint([i, 10], false);
+					chart.series[1].addPoint([i, 0], false);
+					chart.series[2].addPoint([i, 0], false);
+					chart.series[3].addPoint([i, 0], false);
 				}
 				chart.redraw();
 			}
-			
-            for ( i = 0 ; i < point.nbCpu ; i++)
-			{
-				chart.series[3].points[i].update(point.cpus[i].user,false);
-				chart.series[2].points[i].update(point.cpus[i].nice,false);
-				chart.series[1].points[i].update(point.cpus[i].system,false);
-				chart.series[0].points[i].update(point.cpus[i].idle,false);
-			}
 
-			chart.redraw();
-			if (point.total.user+point.total.nice+point.total.system+point.total.idle > 0)
+			if (lastPoint != null)
 			{
-				var usage = 100.0 * (point.total.user+point.total.nice+point.total.system)/(point.total.user+point.total.nice+point.total.system+point.total.idle);
-				chart3.series[0].addPoint(usage, true, shift);
+				for ( i = 0 ; i < point.nbCpu ; i++)
+				{
+					chart.series[3].points[i].update(point.cpus[i].user-lastPoint.cpus[i].user,false);
+					chart.series[2].points[i].update(point.cpus[i].nice-lastPoint.cpus[i].nice,false);
+					chart.series[1].points[i].update(point.cpus[i].system-lastPoint.cpus[i].system,false);
+					chart.series[0].points[i].update(point.cpus[i].idle-lastPoint.cpus[i].idle,false);
+				}
+
+				chart.redraw();
+				totalUsed      = point.total.user + point.total.nice + point.total.system;
+				lastTotalUsed  = lastPoint.total.user + lastPoint.total.nice + lastPoint.total.system;
+				total          = totalUsed + point.total.idle;
+				lastTotal      = lastTotalUsed + lastPoint.total.idle;
+
+				delteTotalUsed = totalUsed - lastTotalUsed;
+				delteTotal     = total - lastTotal;
+				if (delteTotal > 0)
+				{
+					var usage = 100.0 * (delteTotalUsed)/(delteTotal);
+					chart3.series[0].addPoint(usage, true, shift);
+				}
 			}
+			lastPoint = point;
 
             // call it again after one second
-            setTimeout(requestData, 1000);
+            setTimeout(requestData, 500);
         },
         type: "GET",
 //         async: false,
@@ -66,7 +78,7 @@
             chart: {
                 renderTo: 'container',
                 type: 'column',
-				animation: true,
+				animation: false,
 				events: {
 						load: requestData
 					}
@@ -102,7 +114,7 @@
             },
             series: [{
                 name: 'idle',
-                data: [0],
+                data: [10],
                 color: '#AAAAAA'
             }, {
                 name: 'system',

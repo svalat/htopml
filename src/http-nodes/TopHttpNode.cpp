@@ -25,29 +25,6 @@ LinuxTop::LinuxTop(void )
 }
 
 /*******************  FUNCTION  *********************/
-void LinuxTop::setAsDelta(const LinuxTop& previous, const LinuxTop& current)
-{
-	//errors
-	nbCpu = current.nbCpu;
-
-	//compute deltas
-	if (current.nbCpu == previous.nbCpu)
-	{
-
-		//delata of cpu values
-		for (int i = 0 ; i < nbCpu ; i++)
-			cpu[i].setAsDelta(previous.cpu[i],current.cpu[i]);
-
-		//delta on total
-		total.setAsDelta(previous.total,current.total);
-	}
-
-	//the other one didn't need delta
-	btime = current.btime;
-	proc_running = current.proc_running;
-}
-
-/*******************  FUNCTION  *********************/
 void LinuxTop::setNbCpu(int nbCpu)
 {
 	this->nbCpu = nbCpu;
@@ -66,20 +43,8 @@ LinuxTopCpu::LinuxTopCpu(void )
 }
 
 /*******************  FUNCTION  *********************/
-void LinuxTopCpu::setAsDelta(const LinuxTopCpu& previous, const LinuxTopCpu& current)
-{
-	user = current.user - previous.user;
-	nice = current.nice - previous.nice;
-	system = current.system - previous.system;
-	idle = current.idle - previous.idle;
-	iowait = current.iowait - previous.iowait;
-	irq = current.irq - previous.irq;
-	softirq = current.softirq - previous.softirq;
-}
-
-/*******************  FUNCTION  *********************/
 TopHttpNode::TopHttpNode(const std::string& addr)
-	:JsonHttpNode<LinuxTop>(addr,&delta)
+	:JsonHttpNode<LinuxTop>(addr,&data)
 {
 }
 
@@ -92,11 +57,8 @@ void TopHttpNode::onRequest(const HttpRequest & request)
 		perror("/proc/stat");
 		abort();
 	} else {
-		LinuxTop current;
-		parseProcStat(current,fp);
+		parseProcStat(data,fp);
 		fclose(fp);
-		delta.setAsDelta(last,current);
-		last = current;
 	}
 }
 

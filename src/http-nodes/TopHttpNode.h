@@ -24,7 +24,6 @@ class LinuxTopCpu
 {
 	public:
 		LinuxTopCpu(void);
-		void setAsDelta(const LinuxTopCpu & previous,const LinuxTopCpu & current);
 	public:
 		unsigned long user;
 		unsigned long nice;
@@ -40,7 +39,6 @@ class LinuxTop
 {
 	public:
 		LinuxTop(void);
-		void setAsDelta(const LinuxTop & previous,const LinuxTop & current);
 		void setNbCpu(int nbCpu);
 	public:
 		struct LinuxTopCpu cpu[HTOPML_TOP_MAX_CPU];
@@ -61,8 +59,7 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 		void parseProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;
 		static char * findEndOfLine(char * start,bool cutWithZero = true);
 	private:
-		LinuxTop delta;
-		LinuxTop last;
+		LinuxTop data;
 };
 
 /*******************  FUNCTION  *********************/
