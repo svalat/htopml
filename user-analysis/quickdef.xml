@@ -31,7 +31,7 @@
 		</export>
 	</exports>
 	<graphs>
-		<graph>
+		<graph-lines>
 			<container>container</container>
 			<title>Used Memory</title>
 			<xlabel>Time</xlabel>
@@ -41,8 +41,9 @@
 			<source>sysinfo.json</source>
 			<series>
 				<serie name="Used memory" delta="true">data.totalram - data.freeram</serie>
+				<serie name="Used memory2" delta="false">(data.totalram - data.freeram) / 2</serie>
 			</series>
-		</graph>
+		</graph-lines>
 	</graphs>
 	<!--<user-extends>
 		<handler>add_my_page</handler>

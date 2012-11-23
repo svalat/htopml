@@ -16,7 +16,13 @@ void $XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const htopml::HttpRequest & requ
 
 void register_user_pages(htopml::HttpServer & server)
 {
+	//setup dyanmic nodes
 	//XSL-FOREACH /htopml/exports/export
 	server.registerHttpNode(new $XSL{{name}}HttpNode("$XSL{{/htopml/config/root-mount-point}}/$XSL{{mount}}"),true);
 	//XSL-END-FOREACH
+
+	//mount some static files
+	server.quickRegisterFile("user-analysis/common.js","$XSL{{/htopml/config/root-mount-point}}/common.js");
+	server.quickRegisterFile("user-analysis/HtopmlAutoGraphs.js","$XSL{{/htopml/config/root-mount-point}}/HtopmlAutoGraphs.js");
+	server.quickRegisterFile("user-analysis/HtopmlAuto.htm","$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm");
 };

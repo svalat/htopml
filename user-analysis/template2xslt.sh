@@ -27,15 +27,26 @@ sed -e 's/&/&amp;/g' -e 's/>/\&gt;/g' -e 's/</\&lt;/g' -e 's/"/\&quot;/g' \
 	"$1" | while read line
 do
 	case "$line" in
-		*//XSL-FOREACH*)
-			echo "</xsl:text>"
+		*'//XSL-FOREACH '*)
 			xpath=$(echo "$line" | awk '{print $2}')
+			echo "</xsl:text>"
 			echo "<xsl:for-each select=\"${xpath}\">"
 			printf "<xsl:text>"
 			;;
 		*//XSL-END-FOREACH)
 			echo "</xsl:text>"
 			echo "</xsl:for-each>"
+			printf "<xsl:text>"
+			;;
+		*'//XSL-IF '*)
+			xpath="$(echo "$line" | cut -f 2- -d ' ')"
+			echo "</xsl:text>"
+			echo "<xsl:if test=\"${xpath}\">"
+			printf "<xsl:text>"
+			;;
+		*//XSL-END-IF)
+			echo "</xsl:text>"
+			echo "</xsl:if>"
 			printf "<xsl:text>"
 			;;
 		*)

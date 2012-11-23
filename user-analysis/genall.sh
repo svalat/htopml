@@ -28,19 +28,30 @@ case "$1" in
 		;;
 esac
 
-#Generate all files
 echo "==================== GENERATE ===================="
+
+#Generate all files from templates
 for tmp in *.template
 do
 	basename=$(echo $tmp | sed -e 's/\.template$//g')
 	xslfile=$(tempfile -s '.xsl')
 	echo "${basename}"
-	echo "  + Generate ${xslfile}.xsl"
-	./template2xslt.sh "${tmp}" > "${xslfile}.xsl"
+	echo "  + Generate ${xslfile}"
+	./template2xslt.sh "${tmp}" > "${xslfile}"
 	echo "  + Generate ${basename}"
-	xsltproc -o "${basename}" "${xslfile}.xsl" "${fname}"
-	echo "  + Remove temporaty ${xslfile}.xsl"
-	rm -f "${xslfile}.xsl"
+	xsltproc -o "${basename}" "${xslfile}" "${fname}"
+	echo "  + Remove temporaty ${xslfile}"
+	rm -f "${xslfile}"
+done
+
+#Generate all files from XSLT
+for tmp in *.xsl
+do
+	basename=$(echo $tmp | sed -e 's/\.xsl$//g')
+	xslfile=$tmp
+	echo "${basename}"
+	echo "  + Generate ${basename}"
+	xsltproc -o "${basename}" "${xslfile}" "${fname}"
 done
 
 echo "=================================================="
