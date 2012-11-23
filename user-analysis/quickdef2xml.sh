@@ -1,5 +1,30 @@
 #!/bin/bash
 
+#check params
+if [ -z "$1" ]; then
+	echo "Invalid argument." 1>&2
+	echo "Usage : $0 {file}" 1>&2
+	exit 1
+fi
+
+#check file syntax
+l=1
+cat "$1" | while read line
+do
+	if [ ! -z "$line" ]; then
+		case "$line" in
+			'mountpoint '* | 'include '* | 'struct '* | 'export '*)
+				;;
+			*)
+				echo "Invalid line format at line $l"
+				echo "$line"
+				exit 1
+				;;
+		esac
+	fi
+	l=$(($l+1))
+done || exit 1
+
 #header
 echo "<?xml version='1.0'?>"
 echo "<htopml>"
