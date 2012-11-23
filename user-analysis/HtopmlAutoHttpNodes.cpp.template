@@ -1,0 +1,22 @@
+/*************** GENERATED FILE *****************/
+
+#include "HtopmlAutoHttpNodes.h"
+
+//XSL-FOREACH /htopml/exports/export
+$XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const std::string & addr)
+	:htopml::JsonHttpNode<$XSL{{struct}}>(addr,&data)
+{
+};
+
+void $XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const htopml::HttpRequest & request)
+{
+	$XSL{{update}}
+};
+//XSL-END-FOREACH
+
+void register_user_pages(htopml::HttpServer & server)
+{
+	//XSL-FOREACH /htopml/exports/export
+	server.registerHttpNode(new $XSL{{name}}HttpNode("$XSL{{/htopml/config/root-mount-point}}/$XSL{{mount}}"),true);
+	//XSL-END-FOREACH
+};

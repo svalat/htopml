@@ -1,8 +1,18 @@
 #!/bin/bash
 
-for tmp in *.xsl
+echo "==================== GENERATE ===================="
+for tmp in *.template
 do
-	outname=`echo $tmp | sed -e 's/\.xsl$//g'`
-	echo "Generate $outname"
-	xsltproc -o $outname $tmp quickdef.xml
+	basename=`echo $tmp | sed -e 's/\.template$//g'`
+	echo "${basename}"
+	echo "  + Generate ${basename}.xsl"
+	./template2xslt.sh "${tmp}" > "${basename}.xsl"
+	echo "  + Generate ${basename}"
+	xsltproc -o "${basename}" "${basename}.xsl" quickdef.xml
+	echo "  + Remove temporaty ${basename}.xsl"
+	rm -f "${basename}.xsl"
 done
+
+echo "=================================================="
+echo "Done"
+

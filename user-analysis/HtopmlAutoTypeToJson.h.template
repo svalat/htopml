@@ -1,0 +1,17 @@
+/*************** GENERATED FILE *****************/
+
+#ifndef HTOPML_AUTO_JSON_TO_TYPE_H
+#define HTOPML_AUTO_JSON_TO_TYPE_H
+
+//headers
+#include "../src/json/TypeToJson.h"
+//XSL-FOREACH /htopml/headers/header
+#include <$XSL{{.}}>
+//XSL-END-FOREACH
+
+//functions
+//XSL-FOREACH /htopml/structs/struct
+void typeToJson(htopml::JsonState& json, std::ostream& stream, const $XSL{{@typename}} & value);
+//XSL-END-FOREACH
+
+#endif //HTOPML_AUTO_JSON_TO_TYPE_H
