@@ -5,3 +5,6 @@ include sys/sysinfo.h
 struct sysinfo : uptime loads[3] totalram bufferram totalswap procs totalhigh freehigh mem_unit
 
 export sysinfo : sysinfo(&data);
+
+graph-lines sysinfo : delta(data.totalram - data.freeram) , (data.totalram - data.freeram) / 2
+graph-lines sysinfo : delta(data.totalswap - data.totalswap) , (data.totalswap - data.totalswap) / 2

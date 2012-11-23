@@ -13,11 +13,11 @@ cat "$1" | while read line
 do
 	if [ ! -z "$line" ]; then
 		case "$line" in
-			'mountpoint '* | 'include '* | 'struct '* | 'export '*)
+			'mountpoint '* | 'include '* | 'struct '* | 'export '* | 'graph-lines '*)
 				;;
 			*)
-				echo "Invalid line format at line $l"
-				echo "$line"
+				echo "Invalid line format at line $l" 1>&2
+				echo "$line" 1>&2
 				exit 1
 				;;
 		esac
@@ -78,6 +78,41 @@ do
 	echo "		</export>"
 done
 echo "	</exports>"
+
+#graphs
+echo "	<graphs>"
+containerId=0
+grep "^graph-lines " "$1" | while read graph
+do
+	struct=$(echo "$graph" | awk '{print $2}')
+	source=$(echo "$graph" | awk '{print $2}')
+	containerId=$(($containerId + 1))
+
+	echo "		<graph-lines>"
+	echo "			<container>container${containerId}</container>"
+	echo "			<title>${struct}</title>"
+	echo "			<xlabel>Time</xlabel>"
+	echo "			<ylabel>Values from ${struct}</ylabel>"
+	echo "			<maxpoints>400</maxpoints>"
+	echo "			<refresh>500</refresh>"
+	echo "			<source>${source}.json</source>"
+	echo "			<series>"
+	echo "$graph" | cut -f 2 -d ':' | sed -e 's/,/\n/g' | while read serie
+	do
+		case "$serie" in
+			'delta('*)
+				tmp=$(echo "$serie" | sed -e 's/delta\(.*\)/\1/g')
+				echo "				<serie name=\"$tmp\" delta='true'>$tmp</serie>"
+				;;
+			*)
+				echo "				<serie name=\"$serie\">$serie</serie>"
+				;;
+			esac
+	done
+	echo "			</series>"
+	echo "		</graph-lines>"
+done
+echo "	</graphs>"
 
 #footer
 echo "</htopml>"
