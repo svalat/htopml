@@ -32,6 +32,7 @@ class HttpServer
 {
 	public:
 		HttpServer(int port);
+		virtual ~HttpServer(void);
 		void start();
 		void stop();
 		HttpNode & registerHttpNode(HttpNode & node);

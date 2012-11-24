@@ -76,13 +76,15 @@ void TopHttpNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 
 	//read from file
 	size = fread(buffer,1,sizeof(buffer),fp);
-	if (size == sizeof(buffer))
+	if (size >= sizeof(buffer) - 1)
 	{
 		fprintf(stderr,"Buffer is to small to read /proc/stat in one step.");
 		abort();
 	} else if (size <= 0) {
 		perror("fread");
 		abort();
+	} else {
+		buffer[size] = '\0';
 	}
 
 	//parse it

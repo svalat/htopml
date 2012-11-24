@@ -34,6 +34,13 @@ HttpServer::HttpServer(int port)
 }
 
 /*******************  FUNCTION  *********************/
+HttpServer::~HttpServer(void )
+{
+	if (this->status == SERVER_RUNNING && this->ctx != NULL)
+		this->stop();
+}
+
+/*******************  FUNCTION  *********************/
 void HttpServer::start()
 {
 	//errors
@@ -68,6 +75,7 @@ void HttpServer::stop()
 {
 	assert(status == SERVER_RUNNING && ctx != NULL);
 	mg_stop(ctx);
+	this->ctx = NULL;
 }
 
 /*******************  FUNCTION  *********************/

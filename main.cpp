@@ -18,14 +18,6 @@ using namespace std;
 /*******************  FUNCTION  *********************/
 int main(int argc, char **argv)
 {
-	cout << "init server on 8080" << endl;
-	HtopmlHttpServer server(8080);
-	server.addMenuEntry("dsf","sd");
-	//run server
-	server.start();
-	cout << "running..." << endl;
 	getchar();
-	server.stop();
-	cout << "stop." << endl;
 	return 0;
 }

@@ -44,7 +44,8 @@ char * loadFileInMemory(const std::string & fname,size_t * size,bool abortOnErro
 		fseek(fp, 0L, SEEK_END);
 		size_t fileSize = ftell(fp);
 		fseek(fp, 0L, SEEK_SET);
-		buffer = (char*)malloc(fileSize);
+		buffer = (char*)malloc(fileSize+1);
+		buffer[fileSize] = '\0';
 		if (size != NULL)
 			*size = fileSize;
 		tmp = fread(buffer,1,fileSize,fp);
