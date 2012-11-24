@@ -24,10 +24,8 @@ int main(int argc, char **argv)
 	//run server
 	server.start();
 	cout << "running..." << endl;
-	#ifndef ENABLE_INSTR_LIB
 	getchar();
 	server.stop();
 	cout << "stop." << endl;
-	#endif
 	return 0;
 }

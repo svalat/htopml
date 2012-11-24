@@ -101,7 +101,7 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 	std::string tmp;
 
 	//ensure we get something
-	assert (rawData != NULL || stringData != NULL);
+	assert (rawData != NULL || stringData != NULL || mongooseFile.empty() == false);
 
 	if (rawData != NULL)
 	{
@@ -112,6 +112,9 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 		tmp = stringData->str();
 		data = (void*)tmp.c_str();
 		size = tmp.size();
+	} else if (!mongooseFile.empty()) {
+		mg_send_file(conn,mongooseFile.c_str());
+		return;
 	} else {
 		abort();
 	}
@@ -120,8 +123,8 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 			"HTTP/1.1 %d OK\r\n"
 			"Content-Type: %s\r\n"
 			"Content-Length: %lu\r\n" // Always set Content-Length
-			"\r\n",
-			status,mimeType.c_str(),size);
+			"%s\r\n",
+			status,mimeType.c_str(),size,extraHeaders.str().c_str());
 	mg_write(conn,data,size);
 }
 
@@ -144,6 +147,18 @@ void HttpResponse::error(int status, const char* format, ... )
 void HttpResponse::print(const char* value)
 {
 	getStream() << value;
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::setExtraHttpHeader(const std::string& name, const std::string& value)
+{
+	extraHeaders << "name: " << value << "\r\n";
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::useMongooseFile(const std::string& fname)
+{
+	this->mongooseFile = fname;
 }
 
 };

@@ -40,6 +40,8 @@ class HttpResponse
 		void error(int status,const char * format,...);
 		void errorHtml(int status,const char *test,...);
 		void setInfo(int status,const std::string & mimeType);
+		void setExtraHttpHeader(const std::string & name,const std::string & value);
+		void useMongooseFile(const std::string & fname);
 	private:
 		/** Copy is not supported. **/
 		HttpResponse(const HttpResponse & response);
@@ -50,6 +52,8 @@ class HttpResponse
 		std::stringstream * stringData;
 		bool freeRawData;
 		int status;
+		std::stringstream extraHeaders;
+		std::string mongooseFile;
 };
 
 };

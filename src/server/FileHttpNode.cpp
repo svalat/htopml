@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include <iostream>
 #include "FileHttpNode.h"
+#include <mongoose.h>
 
 /**********************  USING  *********************/
 using namespace std;
@@ -67,7 +68,8 @@ void FileHttpNode::loadFileInCache(void )
 /*******************  FUNCTION  *********************/
 void FileHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & request)
 {
-	if (cache == NULL)
+	response.useMongooseFile(filePath);
+	/*if (cache == NULL)
 		loadFileInCache();
 
 	if (cache != NULL)
@@ -80,7 +82,7 @@ void FileHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & req
 		response.setMimeType("text/html");
 		response.setHttpStatus(404);
 		response.print("Error while loading file.");
-	}
+	}*/
 }
 
 /*******************  FUNCTION  *********************/
