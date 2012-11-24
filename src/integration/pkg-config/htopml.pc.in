@@ -1,0 +1,9 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=${prefix}/include/htopml
+libdir=${prefix}/lib@LIB_SUFFIX@
+
+Name: htopml
+Description: The htopml library.
+Version: 0.1.0-dev
+Cflags: -I${includedir}
+Libs: -L${libdir} -lhtopml

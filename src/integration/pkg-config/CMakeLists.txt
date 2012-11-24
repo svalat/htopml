@@ -7,13 +7,6 @@
 ######################################################
 
 ######################################################
-add_subdirectory(server)
-add_subdirectory(json)
-add_subdirectory(http-nodes)
-add_subdirectory(common)
-add_subdirectory(htopml)
-add_subdirectory(integration)
-
-######################################################
-#install procedure
-INSTALL(DIRECTORY www DESTINATION share/htopml)
+#Generate and install pkg-config file
+configure_file(htopml.pc.in ${CMAKE_CURRENT_BINARY_DIR}/htopml.pc ESCAPE_QUOTES @ONLY)
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/htopml.pc DESTINATION share/pkgconfig)
