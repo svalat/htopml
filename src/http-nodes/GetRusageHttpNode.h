@@ -12,7 +12,7 @@
 /********************  HEADERS  *********************/
 #include <sys/time.h>
 #include <sys/resource.h>
-#include "../server/JsonHttpNode.h"
+#include "JsonHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

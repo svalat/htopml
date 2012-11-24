@@ -12,7 +12,7 @@
 #include <sstream>
 #include <cstdarg>
 #include "HttpResponse.h"
-#include "../../extern-deps/mongoose/mongoose.h"
+#include "mongoose.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

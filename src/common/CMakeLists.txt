@@ -16,4 +16,4 @@ SET_TARGET_PROPERTIES(htopml-common PROPERTIES COMPILE_FLAGS -fPIC)
 
 ######################################################
 #install procedure
-INSTALL(FILES ${COMMON_HEADERS} DESTINATION include/htopml/common)
+INSTALL(FILES ${COMMON_HEADERS} DESTINATION include/htopml)

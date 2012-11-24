@@ -10,7 +10,7 @@
 #define HTOPML_TOP_H
 
 /********************  HEADERS  *********************/
-#include "../server/JsonHttpNode.h"
+#include "JsonHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

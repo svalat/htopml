@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cassert>
 #include <mongoose.h>
-#include "../common/Common.h"
+#include "Common.h"
 #include "HttpNode.h"
 #include "HttpServer.h"
 #include "FileHttpNode.h"

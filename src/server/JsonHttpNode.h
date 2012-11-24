@@ -13,7 +13,7 @@
 #include <sstream>
 #include <cstring>
 #include "HttpNode.h"
-#include "../json/TypeToJson.h"
+#include "TypeToJson.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

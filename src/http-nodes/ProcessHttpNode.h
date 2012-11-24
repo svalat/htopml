@@ -10,7 +10,7 @@
 #define HTOPML_PROCESS_WEB_NODE_H
 
 /********************  HEADERS  *********************/
-#include "../server/HttpNode.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

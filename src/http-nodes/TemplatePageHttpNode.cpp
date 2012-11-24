@@ -10,7 +10,7 @@
 #include <sstream>
 #include <cassert>
 #include <cstring>
-#include "../common/Common.h"
+#include "Common.h"
 #include "TemplatePageHttpNode.h"
 
 /**********************  USING  *********************/

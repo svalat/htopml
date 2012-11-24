@@ -11,8 +11,8 @@
 
 /********************  HEADERS  *********************/
 #include <vector>
-#include "../server/VirtualDirectoryHttpNode.h"
-#include "../server/FileHttpNode.h"
+#include "VirtualDirectoryHttpNode.h"
+#include "FileHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

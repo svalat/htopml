@@ -24,7 +24,6 @@ static void register_user_pages(htopml::HtopmlHttpServer & server)
 	//XSL-END-FOREACH
 
 	//mount some static files
-	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/common.js","../user-analysis/common.js",false);
 	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/HtopmlAutoGraphs.js","../user-analysis/HtopmlAutoGraphs.js",false);
 	server.registerHttpNode(new htopml::TemplatePageHttpNode("$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm","../user-analysis/HtopmlAuto.htm",false));
 

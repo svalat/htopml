@@ -10,9 +10,9 @@
 #define HTOPML_MENU_HTTP_NODE_H
 
 /********************  HEADERS  *********************/
-#include <vector>
-#include "../json/JsonState.h"
-#include "../server/HttpNode.h"
+#include "vector"
+#include "JsonState.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

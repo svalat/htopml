@@ -11,7 +11,7 @@
 
 /********************  HEADERS  *********************/
 #include <vector>
-#include "../server/HttpNode.h"
+#include "HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

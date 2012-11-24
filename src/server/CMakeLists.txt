@@ -17,4 +17,4 @@ SET_TARGET_PROPERTIES(htopml-server PROPERTIES COMPILE_FLAGS -fPIC)
 
 ######################################################
 #install procedure
-INSTALL(FILES ${SERVER_HEADERS} DESTINATION include/htopml/server)
+INSTALL(FILES ${SERVER_HEADERS} DESTINATION include/htopml)

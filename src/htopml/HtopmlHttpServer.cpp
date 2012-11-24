@@ -7,12 +7,12 @@
 *****************************************************/
 
 /********************  HEADERS  *********************/
+#include "DirectoryHttpNode.h"
+#include "TemplatePageHttpNode.h"
+#include "GetRusageHttpNode.h"
+#include "TopHttpNode.h"
+#include "ProcessHttpNode.h"
 #include "HtopmlHttpServer.h"
-#include "../server/DirectoryHttpNode.h"
-#include "../http-nodes/TemplatePageHttpNode.h"
-#include "../http-nodes/GetRusageHttpNode.h"
-#include "../http-nodes/TopHttpNode.h"
-#include "../http-nodes/ProcessHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

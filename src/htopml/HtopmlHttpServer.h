@@ -10,8 +10,8 @@
 #define HTOPML_HTOPML_HTTP_SERVER_H
 
 /********************  HEADERS  *********************/
-#include "../server/HttpServer.h"
-#include "../http-nodes/MenuHttpNode.h"
+#include "HttpServer.h"
+#include "MenuHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

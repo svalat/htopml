@@ -1,5 +1,5 @@
 prefix=@CMAKE_INSTALL_PREFIX@
-includedir=${prefix}/include/htopml
+includedir=${prefix}/include
 libdir=${prefix}/lib@LIB_SUFFIX@
 
 Name: htopml

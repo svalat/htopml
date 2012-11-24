@@ -17,4 +17,4 @@ SET_TARGET_PROPERTIES(htopml-http-nodes PROPERTIES COMPILE_FLAGS -fPIC)
 
 ######################################################
 #install procedure
-INSTALL(FILES ${HTTP_NODES_HEADERS} DESTINATION include/htopml/http-nodes)
+INSTALL(FILES ${HTTP_NODES_HEADERS} DESTINATION include/htopml)

@@ -23,7 +23,6 @@
 find_path(HTOPML_INCLUDE_DIR
 	NAMES htopml/HtopmlHttpServer.h
 	PATHS ${HTOPML_PREFIX}/include /usr/local/include
-	PATH_SUFFIXES htopml
 	DOC "The htopml include directory"
 )
 

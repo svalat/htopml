@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cassert>
 #include <cstdlib>
-#include "../../extern-deps/mongoose/mongoose.h"
+#include "mongoose.h"
 #include "HttpRequest.h"
 
 /********************  NAMESPACE  *******************/
