@@ -8,5 +8,5 @@ struct sysinfo_t : uptime loads[3] totalram bufferram sharedram freeram totalswa
 
 export sysinfo_t : sysinfo(&data);
 
-graph-lines sysinfo : delta(data.totalram - data.freeram) , (data.totalram - data.freeram) / 2
-graph-lines sysinfo : delta(data.totalswap - data.totalswap) , (data.totalswap - data.totalswap) / 2
+graph-lines sysinfo_t : delta(data.totalram - data.freeram) , (data.totalram - data.freeram) / 2
+graph-lines sysinfo_t : delta(data.totalswap - data.totalswap) , (data.totalswap - data.totalswap) / 2

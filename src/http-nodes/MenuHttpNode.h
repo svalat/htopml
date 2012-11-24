@@ -11,7 +11,8 @@
 
 /********************  HEADERS  *********************/
 #include <vector>
-#include "HttpNode.h"
+#include "../json/JsonState.h"
+#include "../server/HttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml

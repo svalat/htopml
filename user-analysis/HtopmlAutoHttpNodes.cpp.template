@@ -1,6 +1,7 @@
 /*************** GENERATED FILE *****************/
 
-#include "../src/server/TemplatePageHttpNode.h"
+#include "../src/http-nodes/TemplatePageHttpNode.h"
+#include "../src/htopml/HtopmlHttpServer.h"
 #include "HtopmlAutoHttpNodes.h"
 
 //XSL-FOREACH /htopml/exports/export
@@ -15,7 +16,7 @@ void $XSL{{name}}HttpNode::onRequest(const htopml::HttpRequest & request)
 };
 //XSL-END-FOREACH
 
-void register_user_pages(htopml::HttpServer & server)
+static void register_user_pages(htopml::HtopmlHttpServer & server)
 {
 	//setup dyanmic nodes
 	//XSL-FOREACH /htopml/exports/export
@@ -26,4 +27,9 @@ void register_user_pages(htopml::HttpServer & server)
 	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/common.js","../user-analysis/common.js",false);
 	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/HtopmlAutoGraphs.js","../user-analysis/HtopmlAutoGraphs.js",false);
 	server.registerHttpNode(new htopml::TemplatePageHttpNode("$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm","../user-analysis/HtopmlAuto.htm",false));
+
+	//add menu entry
+	server.addMenuEntry("User analysis","$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm");
 };
+
+REGISTER_TO_SERVER(register_user_pages);
