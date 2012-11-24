@@ -31,10 +31,14 @@ using namespace std;
 #endif
 
 /*******************  FUNCTION  *********************/
+#ifndef SKEEP_DEFAULT_USER_PAGES
 void register_user_pages(HttpServer & server)
 {
 	//this is to be overloadded by LD_PRELOAD of link
 }
+#else
+void register_user_pages(HttpServer & server);
+#endif
 
 /*******************  FUNCTION  *********************/
 int main(int argc, char **argv)

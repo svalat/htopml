@@ -26,6 +26,7 @@ template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& strea
 		json.printValue(*it);
 
 	json.closeArray();
+	return stream;
 }
 
 /*******************  FUNCTION  *********************/
@@ -37,6 +38,7 @@ template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& strea
 		json.printValue(*it);
 
 	json.closeArray();
+	return stream;
 }
 
 /*******************  FUNCTION  *********************/

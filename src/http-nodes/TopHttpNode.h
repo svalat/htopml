@@ -41,8 +41,8 @@ class LinuxTop
 		LinuxTop(void);
 		void setNbCpu(int nbCpu);
 	public:
-		struct LinuxTopCpu cpu[HTOPML_TOP_MAX_CPU];
-		struct LinuxTopCpu total;
+		LinuxTopCpu cpu[HTOPML_TOP_MAX_CPU];
+		LinuxTopCpu total;
 		unsigned long btime;
 		unsigned long proc_running;
 		int nbCpu;

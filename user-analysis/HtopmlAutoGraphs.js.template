@@ -39,7 +39,7 @@ function htopmlUpdateGraphs() {
 
 //XSL-FOREACH /htopml/graphs/graph-lines
 //declare local namespace for graph
-function () {
+$(function () {
 	//declare local variable to store the graph
 	var graph;
 
@@ -49,11 +49,12 @@ function () {
 		var serie;
 		var shift;
 		var value;
+		var id = 0;
 
 		//XSL-FOREACH series/serie
 		//Add point for serie "$XSL{{@name}}"
-		serie = chart.series[0],
-		shift = series.data.length > $XSL{{../../maxpoints}}; // shift if the series is longer than $XSL{{maxpoints}}
+		serie = chart.series[id++],
+		shift = serie.data.length > $XSL{{../../maxpoints}}; // shift if the series is longer than $XSL{{maxpoints}}
 		//XSL-IF @delta = 'true'
 		if (serie.htopmlLastValue != null)
 			value = $XSL{{.}} - serie.htopmlLastValue;
@@ -61,7 +62,7 @@ function () {
 			value = 0;
 		serie.htopmlLastValue = $XSL{{.}};
 		//XSL-END-IF
-		//XSL-IF @delta != 'true'
+		//XSL-IF not(@delta = 'true')
 		value = $XSL{{.}};
 		//XSL-END-IF
 		serie.addPoint(value, false, shift);
@@ -103,7 +104,10 @@ function () {
 			]
 		});
 		//mark for update
-		htopmlMarkForUpdate(graph,"$XSL{{source}}",updateData);
+		htopmlMarkForUpdate(chart,"$XSL{{source}}",updateData);
 	});
-}
+});
 //XSL-END-FOREACH
+
+//start to update
+htopmlUpdateGraphs();

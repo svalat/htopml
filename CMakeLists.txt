@@ -35,6 +35,7 @@ add_subdirectory(src)
 if (NOT DISABLE_TESTS)
 	add_subdirectory(tests)
 endif (NOT DISABLE_TESTS)
+add_subdirectory(user-analysis)
 
 ######################################################
 #build htopmld exe (for tests)

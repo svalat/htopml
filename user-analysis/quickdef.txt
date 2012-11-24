@@ -2,7 +2,7 @@ mountpoint /usr
 
 include sys/sysinfo.h
 
-struct sysinfo : uptime loads[3] totalram bufferram totalswap procs totalhigh freehigh mem_unit
+struct sysinfo : uptime loads[3] totalram bufferram sharedram freeram totalswap procs totalhigh freehigh mem_unit
 
 export sysinfo : sysinfo(&data);
 

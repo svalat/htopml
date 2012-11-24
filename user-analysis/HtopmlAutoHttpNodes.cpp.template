@@ -8,7 +8,7 @@ $XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const std::string & addr)
 {
 };
 
-void $XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const htopml::HttpRequest & request)
+void $XSL{{name}}HttpNode::onRequest(const htopml::HttpRequest & request)
 {
 	$XSL{{update}}
 };
@@ -22,7 +22,7 @@ void register_user_pages(htopml::HttpServer & server)
 	//XSL-END-FOREACH
 
 	//mount some static files
-	server.quickRegisterFile("user-analysis/common.js","$XSL{{/htopml/config/root-mount-point}}/common.js");
-	server.quickRegisterFile("user-analysis/HtopmlAutoGraphs.js","$XSL{{/htopml/config/root-mount-point}}/HtopmlAutoGraphs.js");
-	server.quickRegisterFile("user-analysis/HtopmlAuto.htm","$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm");
+	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/common.js","../user-analysis/common.js",false);
+	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/HtopmlAutoGraphs.js","../user-analysis/HtopmlAutoGraphs.js",false);
+	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/HtopmlAuto.htm","../user-analysis/HtopmlAuto.htm",false);
 };
