@@ -13,7 +13,7 @@ void register_user_pages(htopml::HttpServer &server);
 class $XSL{{name}}HttpNode : public htopml::JsonHttpNode<$XSL{{struct}}>
 {
 	public:
-		SysinfoHttpNode(const std::string & addr);
+		$XSL{{name}}HttpNode(const std::string & addr);
 		virtual void onRequest(const htopml::HttpRequest & request);
 	private:
 		$XSL{{struct}} data;

@@ -9,6 +9,10 @@
 #include <$XSL{{.}}>
 //XSL-END-FOREACH
 
+//XSL-FOREACH /htopml/typedefs/typedef
+typedef $XSL{{.}} $XSL{{@name}};
+//XSL-END-FOREACH
+
 //functions
 //XSL-FOREACH /htopml/structs/struct
 void typeToJson(htopml::JsonState& json, std::ostream& stream, const $XSL{{@typename}} & value);

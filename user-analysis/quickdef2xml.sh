@@ -13,7 +13,7 @@ cat "$1" | while read line
 do
 	if [ ! -z "$line" ]; then
 		case "$line" in
-			'mountpoint '* | 'include '* | 'struct '* | 'export '* | 'graph-lines '*)
+			'mountpoint '* | 'include '* | 'struct '* | 'export '* | 'graph-lines '* | 'typedef '*)
 				;;
 			*)
 				echo "Invalid line format at line $l" 1>&2
@@ -42,6 +42,16 @@ do
 	echo "		<header>${tmp}</header>"
 done
 echo "	</headers>"
+
+#typedefs
+echo "	<typedefs>"
+grep '^typedef ' quickdef.txt | while read tmp
+do
+	name=$(echo "$tmp" | awk '{print $2}')
+	value=$(echo "$tmp" | cut -f 2 -d ':')
+	echo "		<typedef name=\"${name}\">${value}</typedef>"
+done
+echo "	</typedefs>"
 
 #structs
 echo "	<structs>"

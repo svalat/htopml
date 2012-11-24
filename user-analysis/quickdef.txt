@@ -2,9 +2,11 @@ mountpoint /usr
 
 include sys/sysinfo.h
 
-struct sysinfo : uptime loads[3] totalram bufferram sharedram freeram totalswap procs totalhigh freehigh mem_unit
+typedef sysinfo_t : struct sysinfo
 
-export sysinfo : sysinfo(&data);
+struct sysinfo_t : uptime loads[3] totalram bufferram sharedram freeram totalswap procs totalhigh freehigh mem_unit
+
+export sysinfo_t : sysinfo(&data);
 
 graph-lines sysinfo : delta(data.totalram - data.freeram) , (data.totalram - data.freeram) / 2
 graph-lines sysinfo : delta(data.totalswap - data.totalswap) , (data.totalswap - data.totalswap) / 2
