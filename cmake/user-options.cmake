@@ -13,6 +13,7 @@ set(ENABLE_JUNIT_OUTPUT no CACHE BOOL "Generate a JUnit XML file for each test w
 set(ENABLE_VALGRIND no CACHE BOOL "Wrap all test execution with valgrind memcheck to generate XML report for each one.")
 set(ENABLE_GCC_COVERAGE no CACHE BOOL "Compile htopml library with coverage GCC CFLAGS.")
 set(DISABLE_TESTS no CACHE BOOL "Disable compilation of svUnitTest tests.")
+set(ENABLE_LOCAL_PATHS yes CACHE BOOL "Setup absolute path to run in build directory, not for installation.")
 
 ######################################################
 #Take care of lib suffix for lib64 directory on some distributions
@@ -38,3 +39,12 @@ IF (ENABLE_GCC_COVERAGE)
         set(CMAKE_C_FLAGS "-O0 -fprofile-arcs -ftest-coverage")
         set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
 ENDIF (ENABLE_GCC_COVERAGE)
+
+######################################################
+IF (ENABLE_LOCAL_PATHS)
+	add_definitions(-DHTOPML_EXTDEPS_PATH="${CMAKE_SOURCE_DIR}/extern-deps")
+	add_definitions(-DHTOPML_WWW_PATH="${CMAKE_SOURCE_DIR}/src/www")
+ELSE (ENABLE_LOCAL_PATHS)
+	add_definitions(-DHTOPML_EXTDEPS_PATH="${CMAKE_INSTALL_PREFIX}/share/htopml/www")
+	add_definitions(-DHTOPML_WWW_PATH="${CMAKE_INSTALL_PREFIX}/share/htopml/www")
+ENDIF (ENABLE_LOCAL_PATHS)

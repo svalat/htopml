@@ -47,7 +47,7 @@ void HtopmlHttpServer::setupMenu(void )
 void HtopmlHttpServer::setupCommonRessources(void )
 {
 	//basic ressources required for highcharts
-	DirectoryHttpNode * ressourcesNode = new DirectoryHttpNode("/ressources/","../extern-deps/");
+	DirectoryHttpNode * ressourcesNode = new DirectoryHttpNode("/ressources/",HTOPML_EXTDEPS_PATH);
 	ressourcesNode->registerFile("jquery/jquery.min.js");
 	ressourcesNode->registerFile("highcharts/js/highcharts.js");
 	ressourcesNode->registerFile("highcharts/js/highcharts-more.js");
@@ -56,7 +56,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	this->registerHttpNode(ressourcesNode);
 
 	//theme node
-	DirectoryHttpNode * themeNode = new DirectoryHttpNode("/theme/","../src/www/theme/");
+	DirectoryHttpNode * themeNode = new DirectoryHttpNode("/theme/",HTOPML_WWW_PATH "/theme/");
 	themeNode->registerFile("body.jpg");
 	themeNode->registerFile("header.jpg");
 	themeNode->registerFile("menu_hover.png");
@@ -69,7 +69,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	this->quickRegisterFile("/common.js","../src/www/common.js");
 
 	//icon nodes
-	DirectoryHttpNode * iconsNode = new DirectoryHttpNode("/theme/icons/","../src/www/theme/icons/");
+	DirectoryHttpNode * iconsNode = new DirectoryHttpNode("/theme/icons/",HTOPML_WWW_PATH "/theme/icons/");
 	iconsNode->registerFile("home.png");
 	iconsNode->registerFile("unknown.png");
 	themeNode->registerChildNode(iconsNode);
