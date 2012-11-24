@@ -18,27 +18,25 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable)
+template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable)
 {
 	json.openArray();
 
-	for (typename std::vector<T>::iterator it = iterable.begin() ; it != iterable.end() ; ++it)
+	for (typename std::vector<T>::const_iterator it = iterable.begin() ; it != iterable.end() ; ++it)
 		json.printValue(*it);
 
 	json.closeArray();
-	return stream;
 }
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable)
+template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable)
 {
 	json.openArray();
 
-	for (typename std::vector<T>::iterator it = iterable.begin() ; it != iterable.end() ; ++it)
+	for (typename std::vector<T>::const_iterator it = iterable.begin() ; it != iterable.end() ; ++it)
 		json.printValue(*it);
 
 	json.closeArray();
-	return stream;
 }
 
 /*******************  FUNCTION  *********************/

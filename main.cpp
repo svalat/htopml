@@ -13,6 +13,8 @@
 #include "src/server/FileHttpNode.h"
 #include "src/server/JsonHttpNode.h"
 #include "src/server/DirectoryHttpNode.h"
+#include "src/server/TemplatePageHttpNode.h"
+#include "src/server/MenuHttpNode.h"
 #include "src/json/TypeToJson.h"
 #include "src/http-nodes/GnuplotHttpNode.h"
 #include "src/http-nodes/GetRusageHttpNode.h"
@@ -55,15 +57,43 @@ int main(int argc, char **argv)
 	ressourcesNode.registerFile("highcharts/js/highcharts.js");
 	ressourcesNode.registerFile("highcharts/js/highcharts-more.js");
 	ressourcesNode.registerFile("highcharts/js/modules/exporting.js");
+	ressourcesNode.registerFile("highcharts/js/themes/gray.js");
 	server.registerHttpNode(&ressourcesNode);
+
+	//theme node
+	STATIC DirectoryHttpNode themeNode("/theme/","../src/www/theme/");
+	themeNode.registerFile("body.jpg");
+	themeNode.registerFile("header.jpg");
+	themeNode.registerFile("menu_hover.png");
+	themeNode.registerFile("htopml.css",false);
+	themeNode.registerFile("layout.htm",false);
+	themeNode.registerFile("htopml.js",false);
+	server.registerHttpNode(&themeNode);
+
+	//icon nodes
+	STATIC DirectoryHttpNode iconsNode("/theme/icons/","../src/www/theme/icons/");
+	iconsNode.registerFile("aboutus.png");
+	iconsNode.registerFile("contact.png");
+	iconsNode.registerFile("home.png");
+	iconsNode.registerFile("portfolio.png");
+	iconsNode.registerFile("services.png");
+	iconsNode.registerFile("unknown.png");
+	themeNode.registerChildNode(iconsNode);
 
 	//fixed html pages
 	server.quickRegisterFile("/linux/rusage.html","../src/www/linux/rusage.html",false);
 	server.registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//setup top structure
-	server.quickRegisterFile("/linux/top.html","../src/www/linux/top.html",false);
+	server.registerHttpNode(new TemplatePageHttpNode("/linux/top.html","../src/www/linux/top.html"));
 	server.registerHttpNode(new TopHttpNode("/linux/top.json"));
+
+	//setup menu
+	MenuHttpNode * menu = new MenuHttpNode("/menu.js","navigation");
+	menu->addEntry("Top","/linux/top.html");
+	menu->addEntry("Getrusage","/linux/rusage.html");
+	menu->addEntry("User analysis","/usr/HtopmlAuto.htm");
+	server.registerHttpNode(menu);
 
 	//some options
 	server.setPasswordFile("./htpasswd");

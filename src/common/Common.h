@@ -6,7 +6,11 @@
              LICENSE  : CeCILL-C
 *****************************************************/
 
+#ifndef HTOPML_COMMON_H
+#define HTOPML_COMMON_H
+
 /********************  HEADERS  *********************/
+#include <cstdlib>
 #include <sstream>
 #include <string>
 
@@ -22,4 +26,9 @@ template <class T> std::string toString(const T & value)
 	return str.str();
 }
 
+/*******************  FUNCTION  *********************/
+char * loadFileInMemory(const std::string & fname,size_t * size = NULL,bool abortOnError = true);
+
 };
+
+#endif //HTOPML_COMMON_H

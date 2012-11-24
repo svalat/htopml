@@ -100,15 +100,17 @@ void * HttpServer::callback(mg_event event, mg_connection* conn, const mg_reques
 }
 
 /*******************  FUNCTION  *********************/
-void HttpServer::registerHttpNode(HttpNode& node)
+HttpNode & HttpServer::registerHttpNode(HttpNode& node)
 {
 	rootDir.registerChildNode(node);
+	return node;
 }
 
 /*******************  FUNCTION  *********************/
-void HttpServer::registerHttpNode(htopml::HttpNode* node, bool autodelete)
+HttpNode * HttpServer::registerHttpNode(htopml::HttpNode* node, bool autodelete)
 {
 	rootDir.registerChildNode(node,autodelete);
+	return node;
 }
 
 /*******************  FUNCTION  *********************/

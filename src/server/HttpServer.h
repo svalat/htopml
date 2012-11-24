@@ -34,8 +34,8 @@ class HttpServer
 		HttpServer(int port);
 		void start();
 		void stop();
-		void registerHttpNode(HttpNode & node);
-		void registerHttpNode(HttpNode * node,bool autodelete = true);
+		HttpNode & registerHttpNode(HttpNode & node);
+		HttpNode * registerHttpNode(HttpNode * node,bool autodelete = true);
 		void setPasswordFile(const std::string & path);
 		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath, bool useCache = true,const std::string & mimeType = "auto");
 	private:

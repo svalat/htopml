@@ -1,0 +1,154 @@
+/*
+This file mainly came (and be drived) from http://www.templatemo.com into template "284 mini social".
+Thanks to the author for his great work.
+*/
+
+/* Setup body color */ 
+body {
+	margin: 0px;
+	padding: 0px;
+	color: #c2bead;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 12px;
+	line-height: 1.5em;
+	background-color: #2f2e28;
+	background-image: url(/theme/body.jpg);
+	background-repeat: repeat-y;
+	background-position: left;
+}
+
+/* Setup links */
+a, a:link, a:visited { color: #34baf9; text-decoration: none; }
+a:hover { color: #CCFF00; text-decoration: underline; }
+
+/* setup images and par */
+p { margin: 0 0 10px 0; padding: 0; }
+img { border: none; }
+
+/* setup titles */
+h1, h2, h3, h4, h5, h6 { color: #e2c934; }
+h1 { font-size: 24px; font-weight: normal; margin: 0 0 30px 0; padding: 5px 0; }
+h2 { font-size: 20px; font-weight: normal; margin: 0 0 30px 0; font-weight: normal; }
+h3 { font-size: 16px; margin: 0 0 15px 0; padding: 0; padding: 0; font-weight: normal;  }
+h4 { font-size: 14px; margin: 0 0 15px 0; padding: 0; }
+
+/* setup titles */
+.cleaner { clear: both; width: 100%; height: 0px; font-size: 0px;  }
+.cleaner_h10 { clear: both; width:100%; height: 10px; }
+.cleaner_h20 { clear: both; width:100%; height: 20px; }
+.cleaner_h30 { clear: both; width:100%; height: 30px; }
+.cleaner_h40 { clear: both; width:100%; height: 40px; }
+.cleaner_h50 { clear: both; width:100%; height: 50px; }
+.cleaner_h60 { clear: both; width:100%; height: 60px; }
+
+/* some other elements */
+blockquote { font-style: italic; margin: 0 0 0 10px;}
+cite { font-weight: bold; color:#333; }
+cite span { color: #666; }
+em { color: #f9a834; }
+
+#layout {
+	border:0px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	width:100%;
+}
+
+/* sidebar */
+#sidebar {
+	vertical-align:top;
+	padding-left:70px;
+	float: left;
+	width: 270px;
+}
+
+#sidebar_header {
+	margin-left: 10px;
+	width: 230px;
+	height: 114px;
+	text-align: center;
+	padding: 80px 0 0 0;
+	background: url(/theme/header.jpg) no-repeat top left;
+	font-family: Georgia, Serif;
+	font-size:40px;
+}
+
+/* Main content */
+#content {
+	padding-top: 50px;
+}
+
+/* Navigration menu */
+ul.navigation {
+	width: 270px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+	text-align: left;
+}
+
+ul.navigation li {
+    display: inline-block;
+    margin: 0px;
+	padding: 0;
+}
+
+ul.navigation a {
+	display: block;
+	width: 190px;
+	height: 33px;
+	padding: 12px 0 0 80px;
+	margin-bottom: 5px;
+	color: #8a8980;
+	font-size: 16px;
+	font-weight: normal;
+    text-decoration: none;
+	position: relative;
+}
+
+ul.navigation a .ui_icon {
+	position: absolute;
+	top: 0;
+	left: 15px;
+	width: 40px;
+	height: 40px;
+	background: url(/theme/icons/unknown.png) no-repeat;
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: gray; /* IE6-9 */
+    -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+
+ul.navigation a:hover .ui_icon {
+	filter: none;
+    -webkit-filter: grayscale(0%);
+}
+
+ul.navigation a.selected .ui_icon {
+	filter: none;
+    -webkit-filter: grayscale(0%);
+}
+
+/* ul.navigation a .home { background: url(/theme/icons/home.png) no-repeat; } */
+/* ul.navigation a .aboutus { background: url(/theme/icons/aboutus.png) no-repeat; } */
+/* ul.navigation a .services { background: url(/theme/icons/services.png)  no-repeat; } */
+/* ul.navigation a .gallery { background:  url(/theme/icons/portfolio.png) no-repeat; } */
+/* ul.navigation a .contactus { background:  url(/theme/icons/contact.png) no-repeat; } */
+
+ul.navigation a:hover, ul.navigation a.selected {
+	color: #201f1b;
+	background: url(/theme/menu_hover.png) no-repeat left;
+}
+
+ul.navigation a:focus {
+    outline: none;
+}
+
+div.section {
+	-moz-box-shadow: inset 0 3px 8px rgba(0,0,0,.4);
+   -webkit-box-shadow: inset 0 3px 8px rgba(0,0,0,.4);
+   box-shadow: inset 0 3px 8px rgba(0,0,0,.24);
+   border-radius: 8px;
+   padding:10px;
+   margin:10px;
+   background-color:#201f1b;
+}
