@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 	themeNode.registerChildNode(iconsNode);
 
 	//fixed html pages
-	server.quickRegisterFile("/linux/rusage.html","../src/www/linux/rusage.html",false);
+	server.registerHttpNode(new TemplatePageHttpNode("/linux/rusage.html","../src/www/linux/rusage.html"));
 	server.registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//setup top structure
@@ -92,7 +92,6 @@ int main(int argc, char **argv)
 	MenuHttpNode * menu = new MenuHttpNode("/menu.js","navigation");
 	menu->addEntry("Top","/linux/top.html");
 	menu->addEntry("Getrusage","/linux/rusage.html");
-	menu->addEntry("User analysis","/usr/HtopmlAuto.htm");
 	server.registerHttpNode(menu);
 
 	//some options
