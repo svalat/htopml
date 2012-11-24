@@ -23,10 +23,10 @@ class FileHttpNode : public HttpNode
 		FileHttpNode(const std::string& path, const std::string & filePath,bool useCache = true,const std::string & mimeType = "auto");
 		virtual ~FileHttpNode(void );
 		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
+		static std::string getMimeType(const std::string & filename);
 	private:
 		FileHttpNode(const FileHttpNode & node);
 		void loadFileInCache(void);
-		static std::string getMimeType(const std::string & filename);
 		static bool stringFinishBy(const std::string & value,const std::string & pattern);
 	private:
 		std::string filePath;

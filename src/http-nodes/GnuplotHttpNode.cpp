@@ -21,43 +21,14 @@ namespace htopml
 
 /*******************  FUNCTION  *********************/
 GnuplotHttpNode::GnuplotHttpNode(const std::string& path, const std::string & command)
-	: HttpNode(path, true), command(command)
+	: ProcessHttpNode(path,"auto")
 {
 }
 
 /*******************  FUNCTION  *********************/
-void GnuplotHttpNode::onHttpRequest(HttpResponse & response,const HttpRequest & request)
+string GnuplotHttpNode::genCommandOnRequest(const HttpRequest& request)
 {
-	char * buffer = NULL;
-	size_t size = 2048;
-	size_t pos = 0;
-	string tmp = string("gnuplot -e \"set term png; set output;") + command + string("\"");
-	FILE * fp = popen(tmp.c_str(),"r");
-	if (fp == NULL)
-	{
-		response.error(404,"error");
-		return;
-	}
-
-	//prepare buffer
-	buffer = (char*)malloc(2048);
-
-	//read the stream until end
-	while (!feof(fp))
-	{
-		size_t s = fread(buffer+pos,1,2048,fp);
-		if (s > 0)
-		{
-			pos+=s;
-			size+=2048;
-			buffer = (char*)realloc(buffer,size);
-		}
-	}
-
-	fclose(fp);
-
-	//setup answer
-	response.setRawData(buffer,size,true,"image/png",200);
+	return string("gnuplot -e \"set term png; set output;") + command + string("\"");
 }
 
 }

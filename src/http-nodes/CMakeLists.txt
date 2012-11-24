@@ -7,6 +7,6 @@
 ######################################################
 
 ######################################################
-add_library(htopml-http-nodes TopHttpNode.cpp GnuplotHttpNode.cpp GetRusageHttpNode.cpp MenuHttpNode.cpp TemplatePageHttpNode.cpp)
+add_library(htopml-http-nodes ProcessHttpNode.cpp TopHttpNode.cpp GnuplotHttpNode.cpp GetRusageHttpNode.cpp MenuHttpNode.cpp TemplatePageHttpNode.cpp)
 target_link_libraries(htopml-http-nodes htopml-json htopml-server)
 SET_TARGET_PROPERTIES(htopml-http-nodes PROPERTIES COMPILE_FLAGS -fPIC)

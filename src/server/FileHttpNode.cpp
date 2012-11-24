@@ -107,6 +107,8 @@ string FileHttpNode::getMimeType(const string& filename)
 		return "image/svg";
 	} else if (stringFinishBy(filename,".txt")) {
 		return "plain/text";
+	} else if (stringFinishBy(filename,".xml")) {
+		return "text/xml";
 	} else {
 		cerr << "Unknown extension, can't determine mime type automatically : " << filename << endl;
 		abort();

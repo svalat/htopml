@@ -33,6 +33,7 @@ class HtopmlHttpServer : public HttpServer
 		void setupMenu(void);
 		void setupTop(void);
 		void setupRusage(void);
+		void setupHowloc(void);
 	private:
 		MenuHttpNode menu;
 };

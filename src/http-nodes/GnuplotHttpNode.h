@@ -10,18 +10,18 @@
 #define HTOPML_GNUPLOT_WEB_NODE_H
 
 /********************  HEADERS  *********************/
-#include "../server/HttpNode.h"
+#include "ProcessHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
 
 /*********************  CLASS  **********************/
-class GnuplotHttpNode : public HttpNode
+class GnuplotHttpNode : public ProcessHttpNode
 {
 	public:
 		GnuplotHttpNode(const std::string& path, const std::string & command);
-		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
+		virtual std::string genCommandOnRequest(const HttpRequest& request);
 	private:
 		std::string command;
 };

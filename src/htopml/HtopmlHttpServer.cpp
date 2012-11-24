@@ -12,6 +12,7 @@
 #include "../http-nodes/TemplatePageHttpNode.h"
 #include "../http-nodes/GetRusageHttpNode.h"
 #include "../http-nodes/TopHttpNode.h"
+#include "../http-nodes/ProcessHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -28,6 +29,7 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	setupCommonRessources();
 	setupTop();
 	setupRusage();
+	setupHowloc();
 
 	this->setPasswordFile("./htpasswd");
 
@@ -73,7 +75,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	themeNode->registerChildNode(iconsNode);
 
 	//set home pages
-	addTemplatePage("/index.htm","../src/www/index.htm");
+	addTemplatePage("/index.htm","../src/www/index.htm",false);
 	menu.addEntry("Home","/index.htm","/theme/icons/home.png");
 	setHomepage("/index.htm");
 }
@@ -82,6 +84,16 @@ void HtopmlHttpServer::setupCommonRessources(void )
 void HtopmlHttpServer::addMenuEntry(const std::string& name, const std::string& url, const std::string& icon)
 {
 	this->menu.addEntry(name,url,icon);
+}
+
+/*******************  FUNCTION  *********************/
+void HtopmlHttpServer::setupHowloc(void )
+{
+	//setup top structure
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.txt","lstopo --of console"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.xml","lstopo --of xml"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","lstopo --of svg"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.png","lstopo --of png"));
 }
 
 /*******************  FUNCTION  *********************/
