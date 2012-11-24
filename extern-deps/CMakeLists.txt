@@ -8,3 +8,8 @@
 
 ######################################################
 add_subdirectory(mongoose)
+
+######################################################
+#install procedure
+INSTALL(DIRECTORY highcharts DESTINATION share/htopml/www)
+INSTALL(DIRECTORY jquery DESTINATION share/htopml/www)

@@ -12,3 +12,7 @@ add_subdirectory(json)
 add_subdirectory(http-nodes)
 add_subdirectory(common)
 add_subdirectory(htopml)
+
+######################################################
+#install procedure
+INSTALL(DIRECTORY www DESTINATION share/htopml)

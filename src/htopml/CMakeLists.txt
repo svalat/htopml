@@ -7,8 +7,12 @@
 ######################################################
 
 ######################################################
+set(HTOPML_SOURCES HtopmlHttpServer.cpp)
+set(HTOPML_HEADERS HtopmlHttpServer.h)
+
+######################################################
 #build libhtopml
-add_library(htopml SHARED HtopmlHttpServer.cpp)
+add_library(htopml SHARED ${HTOPML_SOURCES})
 target_link_libraries(htopml mongoose htopml-server htopml-json htopml-http-nodes htopml-common)
 target_link_libraries(htopml ${CMAKE_THREAD_LIBS_INIT})
 
@@ -17,3 +21,4 @@ target_link_libraries(htopml ${CMAKE_THREAD_LIBS_INIT})
 INSTALL(TARGETS htopml
         ARCHIVE DESTINATION lib${LIB_SUFFIX}
         LIBRARY DESTINATION lib${LIB_SUFFIX})
+INSTALL(FILES ${HTOPML_HEADERS} DESTINATION include/htopml/htopml)
