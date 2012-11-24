@@ -60,7 +60,26 @@ HttpNode* VirtualDirectoryHttpNode::acceptUri(const char* uri)
 			if (tmp != NULL)
 				res = tmp;
 		}
+		if (res == this)
+			res = acceptUriIndex(uri);
 		return res;
+	}
+}
+
+/*******************  FUNCTION  *********************/
+void VirtualDirectoryHttpNode::setHomepage(const string& homepage)
+{
+	this->homepage = homepage;
+}
+
+/*******************  FUNCTION  *********************/
+HttpNode* VirtualDirectoryHttpNode::acceptUriIndex(const char* uri)
+{
+	if ((getMountPoint() == uri || getMountPoint() + "/" == uri) && homepage.empty() == false)
+	{
+		return acceptUri(homepage.c_str());
+	} else {
+		return this;
 	}
 }
 

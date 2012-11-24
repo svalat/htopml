@@ -108,6 +108,12 @@ void * HttpServer::callback(mg_event event, mg_connection* conn, const mg_reques
 }
 
 /*******************  FUNCTION  *********************/
+void HttpServer::setHomepage(const string& homepage)
+{
+	rootDir.setHomepage(homepage);
+}
+
+/*******************  FUNCTION  *********************/
 HttpNode & HttpServer::registerHttpNode(HttpNode& node)
 {
 	rootDir.registerChildNode(node);

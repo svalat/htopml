@@ -33,9 +33,13 @@ class VirtualDirectoryHttpNode : public HttpNode
 		void registerChildNode(HttpNode & node);
 		void registerChildNode(HttpNode * node, bool autodelete = true);
 		std::string getMountPoint(const std::string& localRelPath = "") const;
+		void setHomepage(const std::string & homepage);
+	private:
+		virtual HttpNode* acceptUriIndex(const char* uri);
 	private:
 		HttpNodeVector childs;
 		HttpNodeVector toAutodelete;
+		std::string homepage;
 };
 
 };
