@@ -1,0 +1,76 @@
+/***************** GENERATED FILE *******************/
+
+//XSL-FOREACH /htopml/graphs/graph-lines
+//declare local namespace for graph
+$(function () {
+	//declare local variable to store the graph
+	var graph;
+
+	//local function to update chart
+	function updateData(chart,data) {
+		//vars
+		var serie;
+		var shift;
+		var value;
+		var id = 0;
+
+		//XSL-FOREACH series/serie
+		//Add point for serie "$XSL{{@name}}"
+		serie = chart.series[id++],
+		shift = serie.data.length > $XSL{{../../maxpoints}}; // shift if the series is longer than $XSL{{maxpoints}}
+		//XSL-IF @delta = 'true'
+		if (serie.htopmlLastValue != null)
+			value = $XSL{{.}} - serie.htopmlLastValue;
+		else
+			value = 0;
+		serie.htopmlLastValue = $XSL{{.}};
+		//XSL-END-IF
+		//XSL-IF not(@delta = 'true')
+		value = $XSL{{.}};
+		//XSL-END-IF
+		serie.addPoint(value, false, shift);
+		//XSL-END-FOREACH
+
+		//now force to redraw the graph
+		chart.redraw();
+	}
+
+	//create it when page is ready
+	$(document).ready(function() {
+		//create the chart
+		chart = new Highcharts.Chart({
+			chart: {
+				renderTo: '$XSL{{container}}',
+				type: 'line',
+				animation: false,
+			},
+			title: {
+				text: '$XSL{{title}}'
+			},
+			xAxis: {
+				type: 'datetime',
+				tickPixelInterval: 150,
+				maxZoom: 10*10,
+				title: {
+					text: '$XSL{{xlabel}}'
+				}
+			},
+			yAxis: {
+				title: {
+					text: '$XSL{{ylabel}}',
+				}
+			},
+			series: [
+				//XSL-FOREACH series/serie
+				{name: '$XSL{{@name}}',data: [0]},
+				//XSL-END-FOREACH
+			]
+		});
+		//mark for update
+		htopmlMarkForUpdate(chart,"$XSL{{source}}",updateData);
+	});
+});
+//XSL-END-FOREACH
+
+//start to update
+htopmlUpdateGraphs();

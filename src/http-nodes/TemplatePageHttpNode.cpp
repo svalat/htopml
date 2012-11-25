@@ -33,6 +33,8 @@ TemplatePageHttpNode::TemplatePageHttpNode(const string& mount, const string& co
 	: HttpNode(mount, true), templateFile(templateFile),contentFile(contentFile)
 {
 	this->cache = cache;
+	if (templateFile.empty())
+		this->templateFile = HTOPML_WWW_PATH "/theme/layout.htm";
 }
 
 /*******************  FUNCTION  *********************/

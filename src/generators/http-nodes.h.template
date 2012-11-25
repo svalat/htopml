@@ -1,0 +1,20 @@
+/*************** GENERATED FILE *****************/
+
+#ifndef HTOPML_AUTO_HTTP_NODE_H
+#define HTOPML_AUTO_HTTP_NODE_H
+
+#include <htopml/JsonHttpNode.h>
+#include "{{FILE_PREFIX}}-json.h"
+
+//XSL-FOREACH /htopml/exports/export
+class $XSL{{name}}HttpNode : public htopml::JsonHttpNode<$XSL{{struct}}>
+{
+	public:
+		$XSL{{name}}HttpNode(const std::string & addr);
+		virtual void onRequest(const htopml::HttpRequest & request);
+	private:
+		$XSL{{struct}} data;
+};
+
+//XSL-END-FOREACH
+#endif //HTOPML_AUTO_HTTP_NODE_H

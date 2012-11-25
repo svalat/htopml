@@ -1,0 +1,17 @@
+/*************** GENERATED FILE *****************/
+
+#include "{{FILE_PREFIX}}-json.h"
+
+//XSL-FOREACH /htopml/structs/struct
+void typeToJson(htopml::JsonState& json, std::ostream& stream, const $XSL{{@typename}} & value)
+{
+	json.openStruct();
+	//XSL-FOREACH field
+	json.printField("$XSL{{.}}",value.$XSL{{.}});
+	//XSL-END-FOREACH
+	//XSL-FOREACH array
+	json.printFieldArray("$XSL{{.}}",value.$XSL{{.}},$XSL{{@size}});
+	//XSL-END-FOREACH
+	json.closeStruct();
+}
+//XSL-END-FOREACH

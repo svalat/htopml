@@ -66,7 +66,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	this->registerHttpNode(themeNode);
 
 	//common js
-	this->quickRegisterFile("/common.js","../src/www/common.js");
+	this->quickRegisterFile("/common.js",HTOPML_WWW_PATH "/common.js");
 
 	//icon nodes
 	DirectoryHttpNode * iconsNode = new DirectoryHttpNode("/theme/icons/",HTOPML_WWW_PATH "/theme/icons/");
@@ -75,7 +75,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	themeNode->registerChildNode(iconsNode);
 
 	//set home pages
-	addTemplatePage("/index.htm","../src/www/index.htm",false);
+	addTemplatePage("/index.htm",HTOPML_WWW_PATH "/index.htm",false);
 	menu.addEntry("Home","/index.htm","/theme/icons/home.png");
 	setHomepage("/index.htm");
 }
@@ -103,7 +103,7 @@ void HtopmlHttpServer::setupRusage(void )
 	this->registerHttpNode(new GetRusageHttpNode("/linux/rusage.json"));
 
 	//add page
-	addTemplatePage("/linux/rusage.html","../src/www/linux/rusage.html");
+	addTemplatePage("/linux/rusage.html",HTOPML_WWW_PATH "/linux/rusage.html");
 
 	//register menu entry
 	menu.addEntry("Getrusage","/linux/rusage.html");
@@ -116,7 +116,7 @@ void HtopmlHttpServer::setupTop(void )
 	this->registerHttpNode(new TopHttpNode("/linux/top.json"));
 
 	//add page
-	this->addTemplatePage("/linux/top.html","../src/www/linux/top.html");
+	this->addTemplatePage("/linux/top.html",HTOPML_WWW_PATH "/linux/top.html");
 
 	//register menu entry
 	menu.addEntry("Top","/linux/top.html");

@@ -1,0 +1,47 @@
+######################################################
+CXX=g++
+CC=gcc
+CFLAGS=-g -fPIC -DSTATIC_DATA_PATH="\"$(PWD)\""
+LDFLAGS=-shared -g -fPIC
+
+######################################################
+HTOPML_CFLAGS=-I{{HTOPML_PREFIX}}/include
+HTOPML_LDFLAGS=-L{{HTOPML_PREFIX}}/lib -Wl,-rpath={{HTOPML_PREFIX}}/lib -lhtopml
+
+######################################################
+RM=rm -f
+
+######################################################
+TARGETS=lib{{FILE_PREFIX}}.so {{FILE_PREFIX}}d
+
+######################################################
+SRC_CXX=$(wildcard *.cpp)
+SRC_C=$(wildcard *.c)
+OBJ= $(SRC_C:.c=.c.o) $(SRC_CXX:.cpp=.cpp.o)
+
+######################################################
+all: $(TARGETS)
+
+######################################################
+%.cpp.o: %.cpp
+	$(CXX) -c $(CFLAGS) $(HTOPML_CFLAGS) $^ -o $@
+
+######################################################
+%.c.o: %.c
+	$(CC) -c $(CFLAGS) $(HTOPML_CFLAGS) $^ -o $@
+
+######################################################
+lib{{FILE_PREFIX}}.so: $(OBJ)
+	$(CXX) $(LDFLAGS) $(HTOPML_LDFLAGS) $^ -o $@
+
+######################################################
+{{FILE_PREFIX}}d: main.cpp lib{{FILE_PREFIX}}.so
+	$(CXX) -L. -Wl,-rpath=$(PWD) -l{{FILE_PREFIX}} $< -o $@
+
+######################################################
+clean:
+	$(RM) $(TARGETS)
+	$(RM) $(OBJ)
+
+######################################################
+.PHONY: clean all

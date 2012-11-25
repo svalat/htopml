@@ -20,7 +20,7 @@ namespace htopml
 class TemplatePageHttpNode : public HttpNode
 {
 	public:
-		TemplatePageHttpNode(const std::string& mount,const std::string & contentFile,bool cache = false,const std::string & templateFile="../src/www/theme/layout.htm");
+		TemplatePageHttpNode(const std::string& mount,const std::string & contentFile,bool cache = false,const std::string & templateFile="");
 		virtual void onHttpRequest(HttpResponse & response,const HttpRequest & request);
 	protected:
 		void load(std::ostream & stream);

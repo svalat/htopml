@@ -13,6 +13,7 @@ add_subdirectory(http-nodes)
 add_subdirectory(common)
 add_subdirectory(htopml)
 add_subdirectory(integration)
+add_subdirectory(generators)
 
 ######################################################
 #install procedure

@@ -8,7 +8,7 @@
 
 ######################################################
 set(HTTP_NODES_SOURCES ProcessHttpNode.cpp TopHttpNode.cpp GnuplotHttpNode.cpp GetRusageHttpNode.cpp MenuHttpNode.cpp TemplatePageHttpNode.cpp)
-set(HTTP_NODES_HEADERS ProcessHttpNode.h TopHttpNode.h GnuplotHttpNode.h GetRusageHttpNode.h MenuHttpNode.h TemplatePageHttpNode.h)
+set(HTTP_NODES_HEADERS ProcessHttpNode.h   TopHttpNode.h   GnuplotHttpNode.h   GetRusageHttpNode.h   MenuHttpNode.h   TemplatePageHttpNode.h)
 
 ######################################################
 add_library(htopml-http-nodes ${HTTP_NODES_SOURCES})

@@ -1,0 +1,36 @@
+/*************** GENERATED FILE *****************/
+
+#include <cstdio>
+#include <htopml/TemplatePageHttpNode.h>
+#include <htopml/HtopmlHttpServer.h>
+#include "{{FILE_PREFIX}}-http-nodes.h"
+
+//XSL-FOREACH /htopml/exports/export
+$XSL{{name}}HttpNode::$XSL{{name}}HttpNode(const std::string & addr)
+	:htopml::JsonHttpNode<$XSL{{struct}}>(addr,&data)
+{
+};
+
+void $XSL{{name}}HttpNode::onRequest(const htopml::HttpRequest & request)
+{
+	$XSL{{update}}
+};
+//XSL-END-FOREACH
+
+static void register_user_pages(htopml::HtopmlHttpServer & server)
+{
+	puts("Load {{FILE_PREFIX}} analysis");
+	//setup dyanmic nodes
+	//XSL-FOREACH /htopml/exports/export
+	server.registerHttpNode(new $XSL{{name}}HttpNode("$XSL{{/htopml/config/root-mount-point}}/$XSL{{mount}}"),true);
+	//XSL-END-FOREACH
+
+	//mount some static files
+	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-graphs.js",STATIC_DATA_PATH "/{{FILE_PREFIX}}-graphs.js",false);
+	server.registerHttpNode(new htopml::TemplatePageHttpNode("$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html",STATIC_DATA_PATH "/{{FILE_PREFIX}}-view.html",false));
+
+	//add menu entry
+	server.addMenuEntry("User analysis","$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html");
+};
+
+REGISTER_TO_SERVER(register_user_pages);

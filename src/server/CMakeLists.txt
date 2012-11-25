@@ -8,7 +8,7 @@
 
 ######################################################
 set(SERVER_SOURCES HttpResponse.cpp HttpRequest.cpp VirtualDirectoryHttpNode.cpp DirectoryHttpNode.cpp FileHttpNode.cpp ValidationHttpNode.cpp HttpServer.cpp HttpNode.cpp)
-set(SERVER_HEADERS HttpResponse.h HttpRequest.h VirtualDirectoryHttpNode.h DirectoryHttpNode.h FileHttpNode.h ValidationHttpNode.h HttpServer.h HttpNode.h)
+set(SERVER_HEADERS HttpResponse.h   HttpRequest.h   VirtualDirectoryHttpNode.h   DirectoryHttpNode.h   FileHttpNode.h   ValidationHttpNode.h   HttpServer.h   HttpNode.h JsonHttpNode.h)
 
 ######################################################
 add_library(htopml-server ${SERVER_SOURCES})
