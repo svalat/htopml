@@ -1,0 +1,68 @@
+<?xml version='1.0'?>
+<htopml>
+	<config>
+		<root-mount-point>/linux</root-mount-point>
+		<name>Global memory</name>
+		<icon>memory.png</icon>
+	</config>
+	<headers>
+		<header>sys/sysinfo.h</header>
+	</headers>
+	<typedefs>
+		<typedef name="sysinfo_t"> struct sysinfo</typedef>
+	</typedefs>
+	<structs>
+		<struct typename='sysinfo_t'>
+			<field>uptime</field>
+			<array size='3'>loads</array>
+			<field>totalram</field>
+			<field>freeram</field>
+			<field>sharedram</field>
+			<field>bufferram</field>
+			<field>totalswap</field>
+			<field>freeswap</field>
+			<field>procs</field>
+			<field>totalhigh</field>
+			<field>freehigh</field>
+			<field>mem_unit</field>
+		</struct>
+	</structs>
+	<exports>
+		<export>
+			<name>Sysinfo_t</name>
+			<mount>sysinfo_t.json</mount>
+			<struct>sysinfo_t</struct>
+			<update> sysinfo(&amp;data);</update>
+		</export>
+	</exports>
+	<graphs>
+		<graph-lines>
+			<container>linux_ram</container>
+			<title>RAM usage</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Memory</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>sysinfo_t.json</source>
+			<series>
+				<serie name="Total RAM">data.totalram * data.mem_unit</serie>
+				<serie name="Total used ram">(data.totalram - data.freeram) * data.mem_unit</serie>
+				<serie name="Shared memory">data.sharedram * data.mem_unit</serie>
+				<serie name="Buffers">data.bufferram * data.mem_unit</serie>
+			</series>
+		</graph-lines>
+		<graph-lines>
+			<container>linux_swap</container>
+			<title>SWAP usage</title>
+			<xlabel>Time</xlabel>
+			<ylabel>SWAP</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>sysinfo_t.json</source>
+			<series>
+				<serie name="Total SWAP">data.totalswap * data.mem_init</serie>
+				<serie name="SWAP usage">(data.totalswap - data.freeswap) * data.mem_unit</serie>
+			</series>
+		</graph-lines>
+	</graphs>
+</htopml>

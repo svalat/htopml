@@ -29,8 +29,15 @@ static void register_user_pages(htopml::HtopmlHttpServer & server)
 	server.quickRegisterFile("$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-graphs.js",STATIC_DATA_PATH "/{{FILE_PREFIX}}-graphs.js",false);
 	server.registerHttpNode(new htopml::TemplatePageHttpNode("$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html",STATIC_DATA_PATH "/{{FILE_PREFIX}}-view.html",false));
 
-	//add menu entry
-	server.addMenuEntry("User analysis","$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html");
+	//setup icon
+	std::string icon;
+	//XSL-IF /htopml/config/icon
+	icon = "$XSL{{/htopml/config/root-mount-point}}/icons/$XSL{{htopml/config/icon}}";
+	server.quickRegisterFile(icon,STATIC_DATA_PATH "/$XSL{{htopml/config/icon}}");
+	//XSL-END-IF
+
+	//add menu entry	
+	server.addMenuEntry("$XSL{{/htopml/config/name}}","$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html",icon);
 };
 
 REGISTER_TO_SERVER(register_user_pages);

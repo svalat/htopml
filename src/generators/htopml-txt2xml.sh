@@ -72,6 +72,7 @@ function print_mount_point()
 	#gen xml
 	echo "	<config>"
 	echo "		<root-mount-point>${mountpoint}</root-mount-point>"
+	echo "		<name>Custom anlysis</name>"
 	echo "	</config>"
 }
 
