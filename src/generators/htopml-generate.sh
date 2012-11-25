@@ -18,6 +18,7 @@ FILTER="$*"
 HTOPML_PREFIX="$(dirname "$0")/.."
 TEMPLATES_DIR="${HTOPML_PREFIX}/share/htopml/templates/"
 SCRIPT_LIB_DIR="${HTOPML_PREFIX}/share/htopml/scripts/"
+EXAMPLE_DIR="${HTOPML_PREFIX}/share/htopml/example/"
 BIN_DIR="${HTOPML_PREFIX}/bin"
 FILE_PREFIX=$(basename ${FILE} | sed -e 's/\.txt//g' -e 's/\.xml//g')
 
@@ -31,6 +32,8 @@ set -e
 if [ -z "${FILE}" ]; then
 	echo "Invalid argument." 1>&2
 	echo "Usage : $0 {file.xml|file.txt} [list_of_files_to_generate]" 1>&2
+	echo "" 1>&2
+	echo "You can found some example of file format in ${EXAMPLE_DIR}"
 	exit 1
 fi
 
