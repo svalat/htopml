@@ -13,9 +13,12 @@ Current dependencies for this project are :
          + g++             (tested version 4.6.3)
          + cmake           (tested version 2.8.9)
          + make            (tested version gmake-3.82)
-		 + gtest           (tested version 1.6.0) [Optional]
+         + gtest           (tested version 1.6.0) [Optional]
  - RUN \
          + NONE
+ - AUTO-GENERATE CUSTOM ANALYSIS \
+         + xmllint         (tested version 2.8.0)
+         + xsltproc        (tested version 1.1.27)
  - RUN htopml tests \
          + gtest           (tested version 1.6.0)
  - RUN htopml tests coverage \
@@ -31,7 +34,9 @@ Tested compilers are :
  - gcc/g++ 4.6.3
 
 Deps websites :
- - gcc   : http://gcc.gnu.org/
- - cmake : http://www.cmake.org/
- - gtest : http://code.google.com/p/googletest/
- - lcov  : http://ltp.sourceforge.net/coverage/lcov.php
+ - gcc     : http://gcc.gnu.org/
+ - cmake   : http://www.cmake.org/
+ - gtest   : http://code.google.com/p/googletest/
+ - lcov    : http://ltp.sourceforge.net/coverage/lcov.php
+ - libxml  : http://www.xmlsoft.org/
+ - libxslt : http://xmlsoft.org/XSLT/

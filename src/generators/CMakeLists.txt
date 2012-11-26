@@ -19,5 +19,5 @@ INSTALL(PROGRAMS htopml-template2xslt.sh
         DESTINATION share/htopml/scripts)
 
 ######################################################
-INSTALL(FILES graphs.js.template http-nodes.cpp.template http-nodes.h.template json.cpp.template json.h.template view.html.xsl Makefile.in main.cpp
+INSTALL(FILES graphs.js.template http-nodes.cpp.template http-nodes.h.template json.cpp.template json.h.template view.html.xsl Makefile.in main.cpp htopml-project.xsd
 		DESTINATION share/htopml/templates/)

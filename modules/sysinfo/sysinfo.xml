@@ -1,4 +1,13 @@
 <?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
 <htopml>
 	<config>
 		<root-mount-point>/linux</root-mount-point>

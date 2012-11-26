@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- Entry point of the document -->
+	<xs:element name="htopml" type="htopml"/>
+
+   <!-- def complex type htopml -->
+	<xs:complexType name="htopml">
+		<xs:all>
+			<xs:element name="config" type="config" minOccurs="1"/>
+			<xs:element name="headers" type="headers" minOccurs="0"/>
+			<xs:element name="typedefs" type="typedefs" minOccurs="1"/>
+			<xs:element name="structs" type="structs" minOccurs="0"/>
+			<xs:element name="exports" type="exports" minOccurs="0"/>
+			<xs:element name="graphs" type="graphs" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+
+	<!-- def complex type config -->
+	<xs:complexType name="config">
+		<xs:all>
+			<xs:element name="root-mount-point" type='xs:string' minOccurs='1'/>
+			<xs:element name="name" type='xs:string' minOccurs='1'/>
+			<xs:element name="icon" type='xs:string' minOccurs='0'/>
+		</xs:all>
+	</xs:complexType>
+
+	<!-- def complex type headers -->
+	<xs:complexType name="headers">
+		<xs:sequence>
+			<xs:element name="header" type='xs:string' maxOccurs='unbounded'/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type config -->
+	<xs:complexType name="typedefs">
+		<xs:sequence>
+			<xs:element name="typedef" type='typedef' minOccurs='0' maxOccurs='unbounded'>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="typedef">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use='required'/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<!-- def complex type headers -->
+	<xs:complexType name="structs">
+		<xs:sequence>
+			<xs:element name="struct" type='struct' maxOccurs='unbounded'/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type config -->
+	<xs:complexType name="struct">
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name='array' type='struct-array'/>
+				<xs:element name='field' type='xs:string'/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="typename" type="xs:string" use='required'/>
+	</xs:complexType>
+
+
+	<xs:complexType name="struct-array">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="size" type="xs:string" use='required'/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<!-- def complex type headers -->
+	<xs:complexType name="exports">
+		<xs:sequence>
+			<xs:element name="export" type='export' maxOccurs='unbounded'/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type export -->
+	<xs:complexType name="export">
+		<xs:all>
+			<xs:element name='name' type='xs:string' minOccurs='1'/>
+			<xs:element name='mount' type='xs:string' minOccurs='1'/>
+			<xs:element name='struct' type='xs:string' minOccurs='1'/>
+			<xs:element name='update' type='xs:string' minOccurs='1'/>
+		</xs:all>
+	</xs:complexType>
+
+	<!-- def complex type graphs -->
+	<xs:complexType name="graphs">
+		<xs:sequence>
+			<xs:element name="graph-lines" type='graph-lines' minOccurs='0' maxOccurs='unbounded'/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type graph-lines -->
+	<xs:complexType name="graph-lines">
+		<xs:all>
+			<xs:element name='container' type='xs:string' minOccurs='1'/>
+			<xs:element name='title' type='xs:string' minOccurs='1'/>
+			<xs:element name='xlabel' type='xs:string' minOccurs='1'/>
+			<xs:element name='ylabel' type='xs:string' minOccurs='1'/>
+			<xs:element name='source' type='xs:string' minOccurs='1'/>
+			<xs:element name='maxpoints' type='xs:integer' minOccurs='1'/>
+			<xs:element name='refresh' type='xs:integer' minOccurs='1'/>
+			<xs:element name='series' type='series' minOccurs='1'/>
+		</xs:all>
+	</xs:complexType>
+
+	<!-- def complex type series -->
+	<xs:complexType name="series">
+		<xs:sequence>
+			<xs:element name="serie" type='serie' maxOccurs='unbounded'/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type serie -->
+	<xs:complexType name="serie">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use='required'/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>

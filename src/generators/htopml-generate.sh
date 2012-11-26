@@ -38,6 +38,10 @@ if [ -z "${FILE}" ]; then
 fi
 
 ######################################################
+#Check the XML format
+xmllint --schema "${TEMPLATES_DIR}/htopml-project.xsd" "${FILE}" --noout || exit 1
+
+######################################################
 #check for first phase conversion if we start from short txt format instead
 #of full XML
 case "${FILE}" in

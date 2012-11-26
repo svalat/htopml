@@ -57,7 +57,7 @@ function check_file_syntax()
 function print_header()
 {
 	echo "<?xml version='1.0'?>"
-	echo "<htopml>"
+	echo "<htopml xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='htopml-project.xsd'>"
 }
 
 ######################################################
