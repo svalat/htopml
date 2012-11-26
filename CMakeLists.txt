@@ -18,6 +18,10 @@ enable_testing()
 add_definitions(-DVERSION="${HTMLTOP_VERSION}")
 
 ######################################################
+#Add internal search path for scripts
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/)
+
+######################################################
 #Delegate some cmake scripts
 include(${CMAKE_SOURCE_DIR}/cmake/user-options.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/cpack-options.cmake)

@@ -13,6 +13,10 @@
 #include "TopHttpNode.h"
 #include "ProcessHttpNode.h"
 #include "HtopmlHttpServer.h"
+//optional
+#ifdef HAVE_HWLOC
+#include "HwlocThreadBindingHttpNode.h"
+#endif //HAVE_HWLOC
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -30,6 +34,11 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	setupTop();
 	setupRusage();
 	setupHowloc();
+
+	//setup hwloc node
+	#ifdef HAVE_HWLOC
+	this->registerHttpNode(new HwlocThreadBindingHttpNode("/linux/hwloc-thread-binding.json"));
+	#endif //HAVE_HWLOC
 
 	this->setPasswordFile("./htpasswd");
 

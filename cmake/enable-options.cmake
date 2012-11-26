@@ -12,8 +12,15 @@ if (NOT GTEST_FOUND)
 endif (NOT GTEST_FOUND)
 
 ######################################################
+#Enable hwloc in sources
+if (HWLOC_FOUND)
+	add_definitions(-DHAVE_HWLOC)
+endif (HWLOC_FOUND)
+
+######################################################
 print_variable_status("ENABLE_JUNIT_OUTPUT")
 print_variable_status("ENABLE_VALGRIND")
 print_variable_status("DISABLE_TESTS")
 print_variable_status("ENABLE_GCC_COVERAGE")
 print_variable_status("ENABLE_LOCAL_PATHS")
+print_variable_status("HWLOC_FOUND")
