@@ -39,9 +39,13 @@ lib{{FILE_PREFIX}}.so: $(OBJ)
 	$(CXX) -L. -Wl,-rpath=$(PWD) -l{{FILE_PREFIX}} $< -o $@
 
 ######################################################
+distclean: clean
+	$(RM) `cat ./manifest-generated.txt`
+
+######################################################
 clean:
 	$(RM) $(TARGETS)
 	$(RM) $(OBJ)
 
 ######################################################
-.PHONY: clean all
+.PHONY: clean all distclean

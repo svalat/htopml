@@ -75,6 +75,20 @@ function check_if_want_to_gen()
 }
 
 ######################################################
+#Register generated file for distclean
+#Params : {fname}
+function reg_gen_file()
+{
+	if [ ! -e "./manifest-generated.txt" ]; then
+		echo "manifest-generated.txt" > "./manifest-generated.txt"
+	fi
+	
+	if [ -z "$(grep "^$1$" './manifest-generated.txt')" ]; then
+		echo "$1" >> "./manifest-generated.txt"
+	fi
+}
+
+######################################################
 echo "==================== GENERATE ===================="
 
 ######################################################
@@ -91,6 +105,8 @@ do
 	#Check if want to gen
 	if check_if_want_to_gen "${outfname}"
 	then
+		#mark as generated
+		reg_gen_file "${outfname}"
 		#gen and display
 		echo "${outfname}"
 		echo "  + Generate ${xslfile}"
@@ -119,6 +135,8 @@ do
 	#Check if want to gen
 	if check_if_want_to_gen "${outfname}"
 	then
+		#mark as generated
+		reg_gen_file "${outfname}"
 		#display
 		echo "${outfname}"
 		echo "  + Generate ${outfname}"
@@ -133,6 +151,8 @@ done
 #setup makefile
 if check_if_want_to_gen "Makefile"
 then
+	#mark as generated
+	reg_gen_file "Makefile"
 	echo "Makefile"
 	echo "  + Generate Makefile"
 	sed -e "s/{{FILE_PREFIX}}/${FILE_PREFIX}/g" -e "s#{{HTOPML_PREFIX}}#${HTOPML_PREFIX}#g" "${TEMPLATES_DIR}/Makefile.in" > Makefile
@@ -142,9 +162,10 @@ fi
 
 ######################################################
 #copy main.cpp
-#setup makefile
-if check_if_want_to_gen "Makefile"
+if check_if_want_to_gen "main.cpp"
 then
+	#mark as generated
+	reg_gen_file "main.cpp"
 	echo "main.cpp"
 	echo "  + Generate main.cpp"
 	cp "${TEMPLATES_DIR}/main.cpp" 'main.cpp'
