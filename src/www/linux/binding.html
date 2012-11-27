@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Highcharts Example</title>
+		<script type="text/javascript">
+    function requestData() {
+    $.ajax({
+        url: 'hwloc-thread-binding.json',
+        contentType: 'application/json; charset=utf-8',
+//         data: json,
+//         dataType: 'json',
+        success: function(point) {
+			alert(point.binding);
+
+			svgdoc = document.getElementById('hwlocimg');
+			alert(svgdoc);
+			svgdoc2 = svgdoc.getSVGDocument();
+			alert(svgdoc2);
+
+			for (var i in point.binding)
+			{
+				var id="rect_"+point.binding[i].replace(':','_');
+				alert(id);
+				alert(document.getElementById(id) + " <----");
+				var rect = svgdoc2.getElementById(id);
+				alert(rect);
+				alert(rect.style);
+				rect.style.setProperty('fill',"#00AA00");
+
+			}
+            // call it again after one second
+//             setTimeout(requestData, 500);
+        },
+        type: "GET",
+//         async: false,
+        error:function (xhr, status, error){
+		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
+		},
+    });
+}
+$(document).ready(function() {
+	requestData();
+});
+
+		</script>
+	</head>
+	<body>
+		<div class='section'>
+			<embed src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg'/>
+		</div>
+	</body>
+</html>

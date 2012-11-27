@@ -38,6 +38,10 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	//setup hwloc node
 	#ifdef HAVE_HWLOC
 	this->registerHttpNode(new HwlocThreadBindingHttpNode("/linux/hwloc-thread-binding.json"));
+	addTemplatePage("/linux/binding.html",HTOPML_WWW_PATH "/linux/binding.html",false);
+
+	//register menu entry
+	menu.addEntry("binding","/linux/binding.html");
 	#endif //HAVE_HWLOC
 
 	this->setPasswordFile("./htpasswd");
@@ -101,7 +105,7 @@ void HtopmlHttpServer::setupHowloc(void )
 	//setup top structure
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.txt","lstopo --of console"));
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.xml","lstopo --of xml"));
-	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","lstopo --of svg"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","lstopo --of native_svg"));
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.png","lstopo --of png"));
 }
 

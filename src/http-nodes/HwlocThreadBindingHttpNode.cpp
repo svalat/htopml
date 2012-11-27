@@ -133,7 +133,7 @@ std::string HwlocThreadBindingHttpNode::getBindingFromCpuset(hwloc_bitmap_t cpus
 			char type[64];
 			unsigned idx;
 			hwloc_obj_t obj = hwloc_get_first_largest_obj_inside_cpuset(topology, remaining);
-			hwloc_obj_type_snprintf(type, sizeof(type), obj, 1);
+			hwloc_obj_type_snprintf(type, sizeof(type), obj, 0);
 			idx = logical ? obj->logical_index : obj->os_index;
 			if (idx == (unsigned) -1)
 				sprintf(buffer,"%s\"%s\"", first ? "" : ", ", type);

@@ -76,6 +76,7 @@ em { color: #f9a834; }
 /* Main content */
 #content {
 	padding-top: 50px;
+	width:100%;
 }
 
 /* Navigration menu */
