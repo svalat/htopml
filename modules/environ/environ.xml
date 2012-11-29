@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<htopml>
+	<config>
+		<root-mount-point>/linux</root-mount-point>
+		<name>Environement</name>
+	</config>
+	<headers>
+		<header>environ.h</header>
+	</headers>
+	<exports>
+		<export>
+			<name>environ</name>
+			<mount>environ.json</mount>
+			<struct>environ_c_array</struct>
+			<update></update>
+		</export>
+	</exports>
+</htopml>
