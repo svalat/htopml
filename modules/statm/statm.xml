@@ -1,0 +1,55 @@
+<?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<htopml>
+	<config>
+		<root-mount-point>/linux</root-mount-point>
+		<name>Process memory</name>
+		<icon>memory.png</icon>
+	</config>
+	<headers>
+		<header>statm.h</header>
+	</headers>
+	<structs>
+		<struct typename='statm'>
+			<field>size</field>
+			<field>resident</field>
+			<field>share</field>
+			<field>text</field>
+			<field>lib</field>
+			<field>data</field>
+			<field>dirty</field>
+		</struct>
+	</structs>
+	<exports>
+		<export>
+			<name>statm</name>
+			<mount>statm.json</mount>
+			<struct>statm</struct>
+			<update>statm_load(&amp;data);</update>
+		</export>
+	</exports>
+	<graphs>
+		<graph-lines>
+			<container>statm</container>
+			<title>Process memory usage</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Memory</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>statm.json</source>
+			<series>
+				<serie name="Virtual memory">data.size * 4096</serie>
+				<serie name="Physical">data.resident * 4096</serie>
+				<serie name="Shared memory">data.share * 4096</serie>
+			</series>
+		</graph-lines>
+	</graphs>
+</htopml>

@@ -5,7 +5,7 @@ CFLAGS=-g -fPIC -DSTATIC_DATA_PATH="\"$(PWD)\""
 LDFLAGS=-shared -g -fPIC
 
 ######################################################
-HTOPML_CFLAGS=-I{{HTOPML_PREFIX}}/include
+HTOPML_CFLAGS=-I{{HTOPML_PREFIX}}/include -I.
 HTOPML_LDFLAGS=-L{{HTOPML_PREFIX}}/lib -Wl,-rpath={{HTOPML_PREFIX}}/lib -lhtopml
 
 ######################################################

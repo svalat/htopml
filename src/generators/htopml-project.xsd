@@ -18,7 +18,7 @@
 		<xs:all>
 			<xs:element name="config" type="config" minOccurs="1"/>
 			<xs:element name="headers" type="headers" minOccurs="0"/>
-			<xs:element name="typedefs" type="typedefs" minOccurs="1"/>
+			<xs:element name="typedefs" type="typedefs" minOccurs="0"/>
 			<xs:element name="structs" type="structs" minOccurs="0"/>
 			<xs:element name="exports" type="exports" minOccurs="0"/>
 			<xs:element name="graphs" type="graphs" minOccurs="0"/>
