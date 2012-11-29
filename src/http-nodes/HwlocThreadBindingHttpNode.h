@@ -24,6 +24,7 @@ struct HwlocThreadBinding
 	//static members
 	int threadId;
 	std::string binding;
+	std::string lastPosition;
 };
 
 /*********************  STRUCT  *********************/
@@ -53,6 +54,7 @@ class HwlocThreadBindingHttpNode : public JsonHttpNode<HwlocBinding>
 		void syncListOfThreads(void);
 		void syncHwlocInfos(void);
 		std::string getBindingFromCpuset(hwloc_bitmap_t cpuset, bool show_cpuset, bool logical = true);
+		hwloc_obj_t getDeepestUniqChild(hwloc_obj_t  obj);
 	private:
 		bool hwlocWasInit;
 		HwlocBinding data;

@@ -8,6 +8,7 @@
 
 /********************  HEADERS  *********************/
 #include <hwloc.h>
+#include <hwloc/helper.h>
 // #include <hwloc/linux.h>
 #include <dirent.h>
 #include "HwlocThreadBindingHttpNode.h"
@@ -76,6 +77,8 @@ void HwlocThreadBindingHttpNode::syncHwlocInfos(void )
 		res = hwloc_get_proc_cpubind(topology, it->threadId, cpuset,0);
 		hwloc_bitmap_and(cpuset, cpuset, topocpuset);
 		it->binding = getBindingFromCpuset(cpuset,false,true);
+		hwloc_get_proc_last_cpu_location(topology,it->threadId,cpuset,HWLOC_CPUBIND_THREAD);
+		it->lastPosition = getBindingFromCpuset(cpuset,false,true);
 	}
 }
 
@@ -113,7 +116,37 @@ void HwlocThreadBindingHttpNode::syncListOfThreads(void )
 }
 
 /*******************  FUNCTION  *********************/
-//this is a copy past from hwloc-ps
+/**
+ * Down deeper in the tree while finding a uniq child on the path and return
+ * the deepest one.
+**/
+hwloc_obj_t HwlocThreadBindingHttpNode::getDeepestUniqChild(hwloc_obj_t obj)
+{
+	//vars
+	hwloc_obj_t child = obj;
+	hwloc_obj_t next = NULL;
+	hwloc_obj_t cur;
+
+	//errors
+	assert(obj != NULL);
+
+	//loop to go deeper while we found a uniq child
+	while (child != NULL && next == NULL)
+	{
+		//current in now the child
+		cur = child;
+		//get first child
+		child = hwloc_get_next_child(topology,cur,NULL);
+		//check if we get another one
+		next =  hwloc_get_next_child(topology,cur,child);
+	};
+
+	//ok we found
+	return cur;
+}
+
+/*******************  FUNCTION  *********************/
+//this is rouguthly a copy past from hwloc-ps
 std::string HwlocThreadBindingHttpNode::getBindingFromCpuset(hwloc_bitmap_t cpuset,bool show_cpuset,bool logical)
 {
 	//vars
@@ -133,6 +166,8 @@ std::string HwlocThreadBindingHttpNode::getBindingFromCpuset(hwloc_bitmap_t cpus
 			char type[64];
 			unsigned idx;
 			hwloc_obj_t obj = hwloc_get_first_largest_obj_inside_cpuset(topology, remaining);
+			//This is a new line compare to hwloc-ps to get the PU/core instead of caches
+			obj = getDeepestUniqChild(obj); 
 			hwloc_obj_type_snprintf(type, sizeof(type), obj, 0);
 			idx = logical ? obj->logical_index : obj->os_index;
 			if (idx == (unsigned) -1)
@@ -156,6 +191,7 @@ void typeToJson(JsonState& state, ostream& stream, const HwlocThreadBinding& val
 	state.openStruct();
 	state.printField("threadId",value.threadId);
 	state.printFormattedField("binding","%s",value.binding.c_str());
+	state.printFormattedField("lastPosition","%s",value.lastPosition.c_str());
 	state.closeStruct();
 }
 

@@ -3,50 +3,106 @@
 	<head>
 		<title>Highcharts Example</title>
 		<script type="text/javascript">
-    function requestData() {
-    $.ajax({
-        url: 'hwloc-thread-binding.json',
-        contentType: 'application/json; charset=utf-8',
-//         data: json,
-//         dataType: 'json',
-        success: function(point) {
-			alert(point.binding);
 
-			svgdoc = document.getElementById('hwlocimg');
-			alert(svgdoc);
-			svgdoc2 = svgdoc.getSVGDocument();
-			alert(svgdoc2);
 
-			for (var i in point.binding)
+	function hwloc_img_update_rect_color(name,objects,color)
+	{
+		svgdoc = document.getElementById(name);
+		svgdoc = svgdoc.getSVGDocument()
+		for (var i in objects)
+		{
+			var id="rect_"+objects[i].replace(':','_');
+			var rect = svgdoc.getElementById(id);
+			rect.style.setProperty('fill',color);
+		}
+	}
+
+	function hwloc_img_set_count_bullet(name,counts)
+	{
+		svgdoc = document.getElementById(name);
+		svgdoc = svgdoc.getSVGDocument();
+// 		alert(svgdoc);
+		for (var obj in counts)
+		{
+			var id="rect_"+obj.replace(':','_');
+// 			alert(id);
+			var rect = svgdoc.getElementById(id);
+// 			alert(rect);
+// 			alert(rect.x.animVal.value + " - " + rect.y.animVal.value);
+			var bulletCircle = svgdoc.createElementNS("http://www.w3.org/2000/svg","circle");
+			bulletCircle.setAttribute("cx", rect.x.animVal.value+5);
+			bulletCircle.setAttribute("cy", rect.y.animVal.value+3);
+			bulletCircle.setAttribute("r", "11");
+			rect.parentNode.appendChild(bulletCircle);
+			bulletCircle.setAttribute("fill", "#FFFFFF");
+			bulletCircle.setAttribute("stroke-width", "1");
+			bulletCircle.setAttribute("stroke", "#000000");
+			bulletCircle.id = "bulletCircle_" + obj.replace(':','_');
+			//text
+			var bulletText = svgdoc.createElementNS("http://www.w3.org/2000/svg","text");
+			bulletText.setAttribute("x", rect.x.animVal.value-1);
+			bulletText.setAttribute("y", rect.y.animVal.value+7);
+			bulletText.setAttribute("font-size", "10px");
+			bulletText.textContent = counts[obj];
+			if (counts[obj] >= 0 && counts[obj] < 10)
+				bulletText.setAttribute("x", rect.x.animVal.value+2);
+			bulletText.id = "bulletText_" + obj.replace(':','_');
+			rect.parentNode.appendChild(bulletText);
+		}
+	}
+
+	function requestData() {
+	$.ajax({
+		url: 'hwloc-thread-binding.json',
+		contentType: 'application/json; charset=utf-8',
+		success: function(point) {
+			hwloc_img_update_rect_color("hwlocimg-binding",point.binding,"#55AA55");
+			hwloc_img_update_rect_color("hwlocimg-run",point.binding,"#55AA55");
+			var thCountBind = new Array();
+			var thCountRun = new Array();
+			for (i in point.threads)
 			{
-				var id="rect_"+point.binding[i].replace(':','_');
-				alert(id);
-				alert(document.getElementById(id) + " <----");
-				var rect = svgdoc2.getElementById(id);
-				alert(rect);
-				alert(rect.style);
-				rect.style.setProperty('fill',"#00AA00");
-
+				var bindings = point.threads[i].binding;
+				for (j in bindings)
+				{
+					var id = bindings[j];
+// 					alert(id);
+					if(id in thCountBind)
+						thCountBind[id]++;
+					else
+						thCountBind[id]=1;
+				}
+				
+				var lastPos = point.threads[i].lastPosition[0];
+				if(lastPos in thCountRun)
+					thCountRun[lastPos]++;
+				else
+					thCountRun[lastPos]=1;
 			}
-            // call it again after one second
-//             setTimeout(requestData, 500);
-        },
-        type: "GET",
+			hwloc_img_set_count_bullet("hwlocimg-binding",thCountBind);
+			hwloc_img_set_count_bullet("hwlocimg-run",thCountRun);
+		},
+		type: "GET",
 //         async: false,
-        error:function (xhr, status, error){
+		error:function (xhr, status, error){
 		alert("Erreur de chargement du fichier '"+self.url+"' : "+xhr.responseText+" ("+status+" - "+error+")");
 		},
-    });
+	});
 }
-$(document).ready(function() {
-	requestData();
-});
+// $(document).ready(function() {
+// 	requestData();
+// });
 
 		</script>
 	</head>
 	<body>
-		<div class='section'>
-			<embed src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg'/>
+		<div class='section' style='float:left'>
+			<h1>Process and threads binding</h1>
+			<embed src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg-binding'/>
+		</div>
+		<div class='section' style='float:left'>
+			<h1>Last known positions</h1>
+			<embed onload="requestData()"  src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg-run'/>
 		</div>
 	</body>
 </html>
