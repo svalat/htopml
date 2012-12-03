@@ -36,7 +36,7 @@ lib{{FILE_PREFIX}}.so: $(OBJ)
 
 ######################################################
 {{FILE_PREFIX}}d: main.cpp lib{{FILE_PREFIX}}.so
-	$(CXX) -L. -Wl,-rpath=$(PWD) -l{{FILE_PREFIX}} $< -o $@
+	$(CXX) $(LDFLAGS) -L. -Wl,-rpath=$(PWD) -l{{FILE_PREFIX}} $< -o $@
 
 ######################################################
 distclean: clean

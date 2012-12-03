@@ -40,11 +40,11 @@ template <class T> void typeToJson(JsonState & json,std::ostream& stream, const 
 template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable);
 
 /*******************  FUNCTION  *********************/
-IHSTK_TYPE_TO_JSON_BASIC_TYPE(int,long);
-IHSTK_TYPE_TO_JSON_BASIC_TYPE(unsigned int,unsigned long);
-IHSTK_TYPE_TO_JSON_BASIC_TYPE(float,double);
+IHSTK_TYPE_TO_JSON_BASIC_TYPE(int,long)
+IHSTK_TYPE_TO_JSON_BASIC_TYPE(unsigned int,unsigned long)
+IHSTK_TYPE_TO_JSON_BASIC_TYPE(float,double)
 
-};
+}
 
 #include "TypeToJson_impl.h"
 

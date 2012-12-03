@@ -14,6 +14,7 @@ endif (NOT GTEST_FOUND)
 ######################################################
 #Enable hwloc in sources
 if (HWLOC_FOUND)
+	include_directories(${HWLOC_INCLUDE_DIRS})
 	add_definitions(-DHAVE_HWLOC)
 endif (HWLOC_FOUND)
 

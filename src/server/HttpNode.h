@@ -35,6 +35,6 @@ class HttpNode
 		bool strictPath;
 };
 
-};
+}
 
 #endif //HTOPML_HTTP_NODE_H

@@ -161,4 +161,4 @@ void HttpResponse::useMongooseFile(const std::string& fname)
 	this->mongooseFile = fname;
 }
 
-};
+}

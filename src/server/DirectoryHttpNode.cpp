@@ -42,4 +42,4 @@ std::string DirectoryHttpNode::getLocalPath(const std::string& localRelPath) con
 	return res;
 }
 
-};
+}

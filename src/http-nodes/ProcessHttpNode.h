@@ -38,6 +38,6 @@ class SimpleProcessHttpNode : public ProcessHttpNode
 		std::string command;
 };
 
-};
+}
 
 #endif // HTOPML_PROCESS_WEB_NODE_H

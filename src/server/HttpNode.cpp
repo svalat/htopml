@@ -57,4 +57,4 @@ std::string HttpNode::getHomePage(void )
 	return basePath;
 }
 
-};
+}

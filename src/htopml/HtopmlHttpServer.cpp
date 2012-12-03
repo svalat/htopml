@@ -150,4 +150,4 @@ bool HtopmlHttpServer::callHandler(void (*handler)(HtopmlHttpServer & server))
 	return true;
 }
 
-};
+}

@@ -111,4 +111,4 @@ std::string VirtualDirectoryHttpNode::getMountPoint(const std::string& localRelP
 	return res;
 }
 
-};
+}

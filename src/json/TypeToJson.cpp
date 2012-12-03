@@ -63,4 +63,4 @@ void typeToJson(JsonState & json,std::ostream& stream, bool value)
 		stream << "false";
 }
 
-};
+}

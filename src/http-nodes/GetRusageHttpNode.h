@@ -32,6 +32,6 @@ class GetRusageHttpNode : public JsonHttpNode<rusage>
 void typeToJson(JsonState & json,std::ostream& stream, const rusage & value);
 void typeToJson(JsonState & json,std::ostream& stream, const timeval & value);
 
-};
+}
 
 #endif // HTOPML_LINUX_GET_RUSAGE_WEB_NODE_H

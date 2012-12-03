@@ -44,6 +44,6 @@ class MenuHttpNode : public HttpNode
 /*******************  FUNCTION  *********************/
 void typeToJson(JsonState & json,std::ostream& stream, const MenuEntry & value);
 
-};
+}
 
 #endif // HTOPML_VALIDATION_HTTP_NODE_H

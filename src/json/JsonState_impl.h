@@ -77,6 +77,6 @@ void JsonState::printArray(const T * value,int size)
 	closeArray();
 }
 
-};
+}
 
 #endif // HTOPML_JSON_STATE_IMPL_H

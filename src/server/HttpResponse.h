@@ -56,6 +56,6 @@ class HttpResponse
 		std::string mongooseFile;
 };
 
-};
+}
 
 #endif // HTOPML_HTTP_RESPONSE_H

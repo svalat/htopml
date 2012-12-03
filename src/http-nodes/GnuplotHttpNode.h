@@ -26,6 +26,6 @@ class GnuplotHttpNode : public ProcessHttpNode
 		std::string command;
 };
 
-};
+}
 
 #endif // HTOPML_GNUPLOT_WEB_NODE_H

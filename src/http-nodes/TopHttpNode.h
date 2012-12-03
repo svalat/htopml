@@ -66,6 +66,6 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 void typeToJson(JsonState & json,std::ostream& stream, const LinuxTop & value);
 void typeToJson(JsonState & json,std::ostream& stream, const LinuxTopCpu & value);
 
-};
+}
 
 #endif // HTOPML_LINUX_GET_RUSAGE_WEB_NODE_H

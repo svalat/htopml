@@ -31,6 +31,6 @@ class TemplatePageHttpNode : public HttpNode
 		bool cache;
 };
 
-};
+}
 
 #endif // HTOPML_TEMPLATE_PAGE_HTTP_NODE_H

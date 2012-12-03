@@ -29,6 +29,6 @@ template <class T> std::string toString(const T & value)
 /*******************  FUNCTION  *********************/
 char * loadFileInMemory(const std::string & fname,size_t * size = NULL,bool abortOnError = true);
 
-};
+}
 
 #endif //HTOPML_COMMON_H

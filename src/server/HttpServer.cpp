@@ -54,8 +54,8 @@ void HttpServer::start()
 	string port = toString(this->port);
 
 	//gen options
-	const char *options[5] = {"listening_ports", port.c_str(), NULL, NULL, NULL};
-	int cntOptions = 2;
+	const char *options[9] = {"listening_ports", port.c_str(), "num_threads", "1" ,"error_log_file","mongoose.err.log", NULL, NULL, NULL};
+	int cntOptions = 6;
 
 	//optional onces.
 	if (passFile.empty() == false)
@@ -66,6 +66,7 @@ void HttpServer::start()
 
 	//start the server
 	ctx = mg_start(&staticCallback, this, options);
+	assert(ctx != NULL);
 
 	//mark as starting
 	status = SERVER_RUNNING;

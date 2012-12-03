@@ -195,4 +195,4 @@ void JsonState::popState(JsonStateEnum state)
 	stateStack.pop();
 }
 
-};
+}

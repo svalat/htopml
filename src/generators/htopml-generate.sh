@@ -101,7 +101,7 @@ for tmp in "${TEMPLATES_DIR}/"*.template
 do
 	#calc names
 	outfname=$(basename "$tmp" | sed -e 's/\.template$//g')
-	xslfile=$(tempfile -s '.xsl')
+	xslfile=$(mktemp '/tmp/htopml-XXXXXXX.xsl')
 
 	#add prefix
 	outfname="${FILE_PREFIX}-${outfname}"

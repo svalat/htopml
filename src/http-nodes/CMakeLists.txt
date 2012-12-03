@@ -15,7 +15,6 @@ set(HTTP_NODES_HEADERS ProcessHttpNode.h   TopHttpNode.h   GnuplotHttpNode.h   G
 if (HWLOC_FOUND)
 	set(HTTP_NODES_SOURCES ${HTTP_NODES_SOURCES} HwlocThreadBindingHttpNode.cpp)
 	set(${HTTP_NODES_HEADERS} ${HTTP_NODES_SOURCES} HwlocThreadBindingHttpNode.h)
-	include_directories(${HWLOC_INCLUDE_DIRS})
 endif (HWLOC_FOUND)
 
 ######################################################

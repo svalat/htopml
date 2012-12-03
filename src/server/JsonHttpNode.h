@@ -57,6 +57,6 @@ void JsonHttpNode<T>::onRequest(const HttpRequest & request)
 	
 }
 
-};
+}
 
 #endif // HTOPML_JSON_HTTP_NODE_H

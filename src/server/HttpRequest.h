@@ -29,6 +29,6 @@ class HttpRequest
 		const mg_request_info * mongooseRequest;
 };
 
-};
+}
 
 #endif // REQUEST_H

@@ -47,6 +47,6 @@ template <class T> std::ostream& typeToJson(std::ostream& out,const T & value)
 	return out;
 }
 
-};
+}
 
 #endif //TYPE_TO_JSON_H

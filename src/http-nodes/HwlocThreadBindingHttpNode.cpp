@@ -205,4 +205,4 @@ void typeToJson(JsonState& state, ostream& stream, const HwlocBinding& value)
 	state.closeStruct();
 }
 
-};
+}

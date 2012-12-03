@@ -24,6 +24,6 @@ class ValidationHttpNode : public HttpNode
 		virtual void getContent(HttpResponse & response,const HttpRequest & request);
 };
 
-};
+}
 
 #endif // HTOPML_VALIDATION_HTTP_NODE_H

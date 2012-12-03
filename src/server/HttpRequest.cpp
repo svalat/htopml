@@ -29,4 +29,4 @@ std::string HttpRequest::getUri(void ) const
 	return mongooseRequest->uri;
 }
 
-};
+}

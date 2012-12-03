@@ -42,6 +42,6 @@ class VirtualDirectoryHttpNode : public HttpNode
 		std::string homepage;
 };
 
-};
+}
 
 #endif // HTOPML_DIRECTORY_HTTP_NODE_H

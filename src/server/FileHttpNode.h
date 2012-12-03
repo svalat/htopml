@@ -37,6 +37,6 @@ class FileHttpNode : public HttpNode
 		bool useCache;
 };
 
-};
+}
 
 #endif // HTOPML_FILE_HTTP_NODE_H

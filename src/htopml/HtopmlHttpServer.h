@@ -41,6 +41,6 @@ class HtopmlHttpServer : public HttpServer
 /********************  GLOBALS  *********************/
 extern HtopmlHttpServer glbAutomaticServer;
 
-};
+}
 
 #endif //HTOPML_HTOPML_HTTP_SERVER_H

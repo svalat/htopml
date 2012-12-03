@@ -33,6 +33,6 @@ class DirectoryHttpNode : public VirtualDirectoryHttpNode
 		std::string localPath;
 };
 
-};
+}
 
 #endif // HTOPML_DIRECTORY_HTTP_NODE_H

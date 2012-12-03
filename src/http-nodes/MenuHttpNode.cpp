@@ -64,4 +64,4 @@ void typeToJson(JsonState& json, ostream& stream, const MenuEntry& value)
 	json.closeStruct();
 }
 
-};
+}

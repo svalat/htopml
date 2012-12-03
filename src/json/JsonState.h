@@ -23,7 +23,7 @@ enum JsonStateEnum
 	JSON_STATE_ROOT   = 1,
 	JSON_STATE_STRUCT = 2,
 	JSON_STATE_ARRAY  = 4,
-	JSON_STATE_FIELD  = 8,
+	JSON_STATE_FIELD  = 8
 };
 
 /*********************  TYPES  **********************/
@@ -60,7 +60,7 @@ class JsonState
 		JsonStateEnum getState(void) const;
 	private:
 		/** Copy constructor is forbidden. **/
-		JsonState(const JsonState & state);;
+		JsonState(const JsonState & state);
 		void openField(const std::string & name);
 		void closeField(const std::string & name);
 		void pushState(JsonStateEnum state);
@@ -77,7 +77,7 @@ class JsonState
 		JsonStateStructStack stateStack;
 };
 
-};
+}
 
 #include "JsonState_impl.h"
 

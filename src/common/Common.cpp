@@ -57,4 +57,4 @@ char * loadFileInMemory(const std::string & fname,size_t * size,bool abortOnErro
 	return buffer;
 }
 
-};
+}

@@ -11,6 +11,7 @@
 #include <cstring>
 #include <pthread.h>
 #include <iostream>
+#include <cassert>
 #include "FileHttpNode.h"
 #include "mongoose.h"
 
@@ -45,6 +46,7 @@ FileHttpNode::~FileHttpNode(void )
 /*******************  FUNCTION  *********************/
 void FileHttpNode::loadFileInCache(void )
 {
+	size_t res;
 	pthread_mutex_lock(&mutex);
 	if (cache == NULL)
 	{
@@ -59,7 +61,8 @@ void FileHttpNode::loadFileInCache(void )
 		fseek(fp, 0L, SEEK_SET);
 		cache = malloc(fileSize);
 		this->size = fileSize;
-		fread(cache,1,fileSize,fp);
+		res = fread(cache,1,fileSize,fp);
+		assert(res == fileSize);
 		fclose(fp);
 	}
 	pthread_mutex_unlock(&mutex);
@@ -126,4 +129,4 @@ bool FileHttpNode::stringFinishBy(const string& value, const string& pattern)
 		return false;
 }
 
-};
+}

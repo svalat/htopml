@@ -170,4 +170,4 @@ void typeToJson(JsonState& json, std::ostream& stream, const LinuxTopCpu& value)
 	json.closeStruct();
 }
 
-};
+}

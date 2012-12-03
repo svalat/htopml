@@ -63,6 +63,6 @@ class HwlocThreadBindingHttpNode : public JsonHttpNode<HwlocBinding>
 		hwloc_bitmap_t cpuset;
 };
 
-};
+}
 
 #endif // HTOPML_HWLOC_THREAD_BINDING_HTTP_NODE_H

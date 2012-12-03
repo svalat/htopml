@@ -55,6 +55,6 @@ class HttpServer
 		std::string passFile;
 };
 
-};
+}
 
 #endif // HTOPML_HTTP_SERVER_H
