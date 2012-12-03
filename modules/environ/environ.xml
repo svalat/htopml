@@ -24,4 +24,8 @@
 			<update></update>
 		</export>
 	</exports>
+	<generate>
+		<skip>environ-graphs.js</skip>
+		<skip>environ-view.html</skip>
+	</generate>
 </htopml>

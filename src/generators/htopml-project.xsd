@@ -22,6 +22,7 @@
 			<xs:element name="structs" type="structs" minOccurs="0"/>
 			<xs:element name="exports" type="exports" minOccurs="0"/>
 			<xs:element name="graphs" type="graphs" minOccurs="0"/>
+			<xs:element name="generate" type="generate" minOccurs="0"/>
 		</xs:all>
 	</xs:complexType>
 
@@ -136,5 +137,15 @@
 				<xs:attribute name="name" type="xs:string" use='required'/>
 			</xs:extension>
 		</xs:simpleContent>
+	</xs:complexType>
+
+	<!-- def complex type config -->
+	<xs:complexType name="generate">
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name='skip' type='xs:string'/>
+				<xs:element name='gen' type='xs:string'/>
+			</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

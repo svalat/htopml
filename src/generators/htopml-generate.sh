@@ -61,14 +61,22 @@ case "${FILE}" in
 esac
 
 ######################################################
-#Params : {filename}
+#Params : {project.xml} {filename}
 function check_if_want_to_gen()
 {
+	#check in gen
+	if [ ! -z "$(grep "<skip>$2</skip>" "$1")" ]; then
+		return 1;
+	elif [ ! -z "$(grep "<gen>.*</gen>" "$1")" ] && [ -z "$(grep "<gen>$2</gen>" "$1")" ]; then
+		return 1;
+	fi
+
+	#check in params
 	if [ -z "${FILTER}" ]; then
 		return 0
 	else
 		case " ${FILTER} " in
-			*" $1 "*)
+			*" $2 "*)
 				return 0;
 				;;
 			*)
@@ -107,7 +115,7 @@ do
 	outfname="${FILE_PREFIX}-${outfname}"
 
 	#Check if want to gen
-	if check_if_want_to_gen "${outfname}"
+	if check_if_want_to_gen "${fname}" "${outfname}"
 	then
 		#mark as generated
 		reg_gen_file "${outfname}"
@@ -137,7 +145,7 @@ do
 	outfname="${FILE_PREFIX}-${outfname}"
 
 	#Check if want to gen
-	if check_if_want_to_gen "${outfname}"
+	if check_if_want_to_gen "${fname}" "${outfname}"
 	then
 		#mark as generated
 		reg_gen_file "${outfname}"
@@ -153,7 +161,7 @@ done
 
 ######################################################
 #setup makefile
-if check_if_want_to_gen "Makefile"
+if check_if_want_to_gen "${fname}" "Makefile"
 then
 	#mark as generated
 	reg_gen_file "Makefile"
@@ -166,7 +174,7 @@ fi
 
 ######################################################
 #copy main.cpp
-if check_if_want_to_gen "main.cpp"
+if check_if_want_to_gen "${fname}" "main.cpp"
 then
 	#mark as generated
 	reg_gen_file "main.cpp"
