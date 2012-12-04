@@ -10,6 +10,14 @@
 include(${CMAKE_SOURCE_DIR}/cmake/unittest-macros.cmake)
 
 ######################################################
+add_definitions(-DTEST_DATA="${CMAKE_CURRENT_SOURCE_DIR}/datas")
+
+######################################################
 add_executable(testJson testJson.cpp)
 target_link_libraries(testJson htopml-json gtest)
 htopml_add_test(testJson)
+
+######################################################
+add_executable(testCommon testCommon.cpp)
+target_link_libraries(testCommon htopml-common gtest)
+htopml_add_test(testCommon)
