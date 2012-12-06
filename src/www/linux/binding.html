@@ -4,11 +4,18 @@
 		<title>Highcharts Example</title>
 		<script type="text/javascript">
 
+	function hwloc_img_get_svg(name)
+	{
+		var container = document.getElementById(name);
+		var svgdoc = container.contentDocument;
+		if (svgdoc == null)
+			container.getSVGDocument();
+		return svgdoc;
+	}
 
 	function hwloc_img_update_rect_color(name,objects,color)
 	{
-		svgdoc = document.getElementById(name);
-		svgdoc = svgdoc.getSVGDocument()
+		var svgdoc = hwloc_img_get_svg(name);
 		for (var i in objects)
 		{
 			var id="rect_"+objects[i].replace(':','_');
@@ -19,16 +26,11 @@
 
 	function hwloc_img_set_count_bullet(name,counts)
 	{
-		svgdoc = document.getElementById(name);
-		svgdoc = svgdoc.getSVGDocument();
-// 		alert(svgdoc);
+		svgdoc = hwloc_img_get_svg(name);
 		for (var obj in counts)
 		{
 			var id="rect_"+obj.replace(':','_');
-// 			alert(id);
 			var rect = svgdoc.getElementById(id);
-// 			alert(rect);
-// 			alert(rect.x.animVal.value + " - " + rect.y.animVal.value);
 			var bulletCircle = svgdoc.createElementNS("http://www.w3.org/2000/svg","circle");
 			bulletCircle.setAttribute("cx", rect.x.animVal.value+5);
 			bulletCircle.setAttribute("cy", rect.y.animVal.value+3);
@@ -66,7 +68,6 @@
 				for (j in bindings)
 				{
 					var id = bindings[j];
-// 					alert(id);
 					if(id in thCountBind)
 						thCountBind[id]++;
 					else
@@ -89,20 +90,17 @@
 		},
 	});
 }
-// $(document).ready(function() {
-// 	requestData();
-// });
 
 		</script>
 	</head>
 	<body>
 		<div class='section' style='float:left'>
 			<h1>Process and threads binding</h1>
-			<embed src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg-binding'/>
+			<object id="hwlocimg-binding" data="/linux/hwloc.svg" type="image/svg+xml"></object>
 		</div>
 		<div class='section' style='float:left'>
 			<h1>Last known positions</h1>
-			<embed onload="requestData()"  src="/linux/hwloc.svg" type="image/svg+xml" id='hwlocimg-run'/>
+			<object id="hwlocimg-run" data="/linux/hwloc.svg" type="image/svg+xml" onload='requestData()'></object>
 		</div>
 	</body>
 </html>
