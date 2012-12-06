@@ -51,19 +51,74 @@ TopHttpNode::TopHttpNode(const std::string& addr)
 /*******************  FUNCTION  *********************/
 void TopHttpNode::onRequest(const HttpRequest & request)
 {
+	loadGlobalProcStat();
+	loadProcessProcStat();
+}
+
+/*******************  FUNCTION  *********************/
+void TopHttpNode::loadProcessProcStat(void )
+{
+	FILE * fp = fopen("/proc/self/stat","r");
+	if (fp == NULL)
+	{
+		perror("/proc/self/stat");
+		abort();
+	} else {
+		parseProcessProcStat(data,fp);
+		fclose(fp);
+	}
+}
+
+/*******************  FUNCTION  *********************/
+void TopHttpNode::loadGlobalProcStat(void )
+{
 	FILE * fp = fopen("/proc/stat","r");
 	if (fp == NULL)
 	{
 		perror("/proc/stat");
 		abort();
 	} else {
-		parseProcStat(data,fp);
+		parseGlobalProcStat(data,fp);
 		fclose(fp);
 	}
 }
 
 /*******************  FUNCTION  *********************/
-void TopHttpNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
+void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
+{
+	//vars
+	char buffer[4096];
+	char * tmp;
+	size_t size;
+	int trash_int;
+	unsigned long trash_ulong;
+	char trash_char;
+
+	//errors
+	assert(fp != NULL);
+
+	//read from file
+	size = fread(buffer,1,sizeof(buffer),fp);
+	assert(size > 0);
+	assert(size < sizeof(buffer));
+
+	//search end of filename :
+	tmp = buffer;
+	while (*tmp != ')' && tmp != '\0')
+		tmp++;
+	assert(*tmp == ')');
+
+	//parse
+	size = sscanf(tmp+1," %c %d %d %d %d %lu %lu %lu %lu %lu %ld %ld %ld %ld ",
+	              &trash_char,&trash_int,&trash_int,&trash_int,&trash_int,
+	              &trash_ulong,&trash_ulong,&trash_ulong,&trash_ulong,&trash_ulong,
+	              &(top.process_user),&(top.process_system),&(top.process_cum_user),
+	              &(top.process_cum_system));
+	assert(size == 14);
+}
+
+/*******************  FUNCTION  *********************/
+void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 {
 	//vars
 	char buffer[4096];
@@ -94,9 +149,9 @@ void TopHttpNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 		if (sscanf(cur,"btime %lu",&top.btime) == 1) {
 		} else if (sscanf(cur,"procs_running %lu",&top.proc_running) == 1) {
 		} else if (strncmp(cur,"cpu ",4) == 0 || strncmp(cur,"cpu\t",4) == 0 ) {
-			parseProcStatCpuLine(top.total,cur);
+			parseGlobalProcStatCpuLine(top.total,cur);
 		} else if (sscanf(cur,"cpu%d ",&top.nbCpu) == 1) {
-			parseProcStatCpuLine(top.cpu[top.nbCpu],cur);
+			parseGlobalProcStatCpuLine(top.cpu[top.nbCpu],cur);
 			top.nbCpu++;
 		}
 		cur = next;
@@ -104,7 +159,7 @@ void TopHttpNode::parseProcStat(htopml::LinuxTop& top, FILE* fp) const
 }
 
 /*******************  FUNCTION  *********************/
-void TopHttpNode::parseProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
+void TopHttpNode::parseGlobalProcStatCpuLine(LinuxTopCpu& cpu, const char* value) const
 {
 	int tmp;
 	int cnt;
@@ -153,6 +208,10 @@ void typeToJson(JsonState& json, std::ostream& stream, const LinuxTop& value)
 	json.printField("btime",value.btime);
 	json.printField("proc_running",value.proc_running);
 	json.printField("nbCpu",value.nbCpu);
+	json.printField("process_user",value.process_user);
+	json.printField("process_system",value.process_system);
+	json.printField("process_cum_user",value.process_cum_user);
+	json.printField("process_cum_system",value.process_cum_system);
 	json.closeStruct();
 }
 

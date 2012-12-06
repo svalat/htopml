@@ -46,6 +46,10 @@ class LinuxTop
 		unsigned long btime;
 		unsigned long proc_running;
 		int nbCpu;
+		long process_user;
+		long process_system;
+		long process_cum_user;
+		long process_cum_system;
 };
 
 /*********************  CLASS  **********************/
@@ -55,8 +59,11 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 		TopHttpNode(const std::string & addr);
 		virtual void onRequest(const HttpRequest & request);
 	private:
-		void parseProcStat(LinuxTop & top,FILE * fp) const;
-		void parseProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;
+		void loadProcessProcStat(void);
+		void parseProcessProcStat(LinuxTop & top,FILE * fp) const;
+		void loadGlobalProcStat(void);
+		void parseGlobalProcStat(LinuxTop & top,FILE * fp) const;
+		void parseGlobalProcStatCpuLine(LinuxTopCpu & cpu,const char * value) const;
 		static char * findEndOfLine(char * start,bool cutWithZero = true);
 	private:
 		LinuxTop data;
