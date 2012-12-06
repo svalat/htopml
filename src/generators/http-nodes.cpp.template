@@ -19,7 +19,7 @@ void $XSL{{name}}HttpNode::onRequest(const htopml::HttpRequest & request)
 
 static void register_user_pages(htopml::HtopmlHttpServer & server)
 {
-	puts("Load {{FILE_PREFIX}} analysis");
+	fputs("Load {{FILE_PREFIX}} analysis\n",stderr);
 	//setup dyanmic nodes
 	//XSL-FOREACH /htopml/exports/export
 	server.registerHttpNode(new $XSL{{name}}HttpNode("$XSL{{/htopml/config/root-mount-point}}/$XSL{{mount}}"),true);

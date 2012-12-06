@@ -35,15 +35,6 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	setupRusage();
 	setupHowloc();
 
-	//setup hwloc node
-	#ifdef HAVE_HWLOC
-	this->registerHttpNode(new HwlocThreadBindingHttpNode("/linux/hwloc-thread-binding.json"));
-	addTemplatePage("/linux/binding.html",HTOPML_WWW_PATH "/linux/binding.html",false);
-
-	//register menu entry
-	menu.addEntry("binding","/linux/binding.html");
-	#endif //HAVE_HWLOC
-
 	this->setPasswordFile("./htpasswd");
 
 	if (autostart)
@@ -107,6 +98,16 @@ void HtopmlHttpServer::setupHowloc(void )
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.xml","lstopo --of xml"));
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","lstopo --of native_svg"));
 	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.png","lstopo --of png"));
+
+	//setup hwloc node
+	#ifdef HAVE_HWLOC
+	this->registerHttpNode(new HwlocThreadBindingHttpNode("/linux/hwloc-thread-binding.json"));
+	this->quickRegisterFile("/linux/binding.png",HTOPML_WWW_PATH "/linux/binding.png");
+	addTemplatePage("/linux/binding.html",HTOPML_WWW_PATH "/linux/binding.html",false);
+
+	//register menu entry
+	menu.addEntry("binding","/linux/binding.html","/linux/binding.png");
+	#endif //HAVE_HWLOC
 }
 
 /*******************  FUNCTION  *********************/

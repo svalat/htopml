@@ -33,7 +33,7 @@ class HttpServer
 	public:
 		HttpServer(int port);
 		virtual ~HttpServer(void);
-		void start();
+		bool start();
 		void stop();
 		HttpNode & registerHttpNode(HttpNode & node);
 		HttpNode * registerHttpNode(HttpNode * node,bool autodelete = true);

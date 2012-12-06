@@ -42,7 +42,7 @@ HttpServer::~HttpServer(void )
 }
 
 /*******************  FUNCTION  *********************/
-void HttpServer::start()
+bool HttpServer::start()
 {
 	//errors
 	assert(status == SERVER_NOT_STARTED);
@@ -66,10 +66,17 @@ void HttpServer::start()
 
 	//start the server
 	ctx = mg_start(&staticCallback, this, options);
-	assert(ctx != NULL);
+	//assert(ctx != NULL);
 
 	//mark as starting
-	status = SERVER_RUNNING;
+	if (ctx != NULL)
+	{
+		status = SERVER_RUNNING;
+		return true;
+	} else {
+		status = SERVER_NOT_STARTED;
+		return false;
+	}
 }
 
 /*******************  FUNCTION  *********************/

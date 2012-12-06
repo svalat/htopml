@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<htopml>
+	<config>
+		<root-mount-point>/linux</root-mount-point>
+		<name>Malloc</name>
+		<icon>memory.png</icon>
+	</config>
+	<headers>
+		<header>malloc-profile.h</header>
+	</headers>
+	<structs>
+		<struct typename="htopml_malloc_stats_s">
+			<field>malloc_nb</field>
+			<field>cum_malloc_size</field>
+			<field>min_malloc_size</field>
+			<field>max_malloc_size</field>
+			<field>free_nb</field>
+		</struct>
+	</structs>
+	<exports>
+		<export>
+			<name>malloc</name>
+			<mount>malloc.json</mount>
+			<struct>htopml_malloc_stats_s</struct>
+			<update>data = htopml_malloc_stats;</update>
+		</export>
+	</exports>
+	<graphs>
+		<graph-lines>
+			<container>malloc-ops</container>
+			<title>Number of memory operations</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Number of operations</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>malloc.json</source>
+			<series>
+				<serie name="malloc()" delta="true">data.malloc_nb</serie>
+				<serie name="free()" delta="true">data.free_nb</serie>
+			</series>
+		</graph-lines>
+		<graph-lines>
+			<container>malloc-flow</container>
+			<title>Flow of memory allocations</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Memory allocation since last read.</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>malloc.json</source>
+			<series>
+				<serie name="malloc()" delta="true">data.cum_malloc_size</serie>
+			</series>
+		</graph-lines>
+	</graphs>
+</htopml>
