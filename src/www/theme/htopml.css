@@ -156,6 +156,8 @@ div.section {
 
 /* Table do show datas */
 table.data-table {
+	margin-left:auto;
+	margin-right:auto;
 	border-collapse:collapse;
 	border:solid 1px #3C3A32;
 }
@@ -175,4 +177,9 @@ table.data-table pre{
 	white-space: -pre-wrap;      /* Opera 4-6 */
 	white-space: -o-pre-wrap;    /* Opera 7 */
 	word-wrap: break-word;
+}
+
+.author {
+	text-align:center;
+	font-size:14px;
 }
