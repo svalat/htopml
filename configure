@@ -28,8 +28,10 @@ ENABLE_DISPLAY_COMMAND='false'
 ENABLE_GCC_COVERAGE=''
 ENABLE_JUNIT_OUT=''
 ENABLE_VALGRIND=''
+ENABLE_RPATH=''
 DISABLE_TESTS=''
 LIB_SUFFIX=''
+HWLOC_PREFIX=''
 
 ######################################################
 #Find default source dir
@@ -66,9 +68,11 @@ Optional Features:
    --enable-junit-output   Save test output in JUnit format (only in self-test mode).
    --enable-valgrind       Generate valgrind report while running the test suite.
    --disable-tests         Disable unit tests of the lib (-DDISABLE_UNIT_TESTS=yes).
+   --enable-rpath          Enable rpath to all deps at install time (-DENABLE_RPATH=yes).
 
 To find libs and commands :
    --with-cmake={command}  Define the cmake command to use [cmake].
+   --with-hwloc={prefix}   Define the hwloc prefix if available [/usr].
 
 To get the generated cmake command :
    --show                  Display the cmake command and didn't execute it.
@@ -119,7 +123,7 @@ do
 			exit 0
 			;;
 		--prefix=*)
-			PREFIX="`get_arg_value \"$arg\" --prefix`"
+			PREFIX="-DCMAKE_INSTALL_PREFIX=`get_arg_value \"$arg\" --prefix`"
 			;;
 		--srcdir=*)
 			SOURCE_DIR="`get_arg_value \"$arg\" --srcdir`"
@@ -130,6 +134,9 @@ do
 			;;
 		--with-cmake=*)
 			CMAKE="`get_arg_value \"$arg\" --with-cmake`"
+			;;
+		--with-hwloc=*)
+			HWLOC_PREFIX="-DHWLOC_PREFIX=`get_arg_value \"$arg\" --with-hwloc`"
 			;;
 		--enable-debug)
 			BUILD_TYPE='Debug'
@@ -143,6 +150,9 @@ do
 			;;
 		--enable-valgrind | --disable-valgrind)
 			ENABLE_VALGRIND="-DENABLE_VALGRIND=`enabl_disabl_to_yes_no $arg`"
+			;;
+		--enable-rpath | --disable-rpath)
+			ENABLE_RPATH="-DENABLE_RPATH=`enabl_disabl_to_yes_no $arg`"
 			;;
 		--disable-tests | --enable-tests)
 			DISABLE_TESTS="-DDISABLE_UNIT_TESTS=`enabl_disabl_to_yes_no $arg 'INVERT'`";
@@ -190,13 +200,32 @@ if [ ! -z "$EXTRA_CXXFLAGS" ]; then EXTRA_CXXFLAGS="-DCMAKE_CXX_FLAGS=\"${EXTRA_
 if [ ! -z "$EXTRA_LDFLAGS" ];  then EXTRA_LDFLAGS="-DCMAKE_EXE_LINKER_FLAGS=\"${EXTRA_LDFLAGS}\"" ; fi
 
 ######################################################
-#Gen final command
-COMMAND="\"${CMAKE}\" -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=\"${PREFIX}\" ${EXTRA_CXX} ${EXTRA_CXXFLAGS} ${EXTRA_LDFLAGS} ${ENABLE_SELF_TEST} ${ENABLE_JUNIT_OUT} ${ENABLE_VALGRIND} ${DISABLE_TESTS} ${DISABLE_CPPUNIT} ${LIB_SUFFIX} ${SOURCE_DIR}"
+#Function to gen clean command
+#Params : {command} [args...]
+gen_clean_command()
+{
+	res=""
+	for tmp in "$@"
+	do
+		if [ ! -z "${tmp}" ]; then
+			res="${res} '${tmp}'"
+		fi
+	done
+	echo "${res}"
+}
 
+######################################################
+#Gen final command
+COMMAND="`gen_clean_command "${CMAKE}" "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}" "${PREFIX}" "${EXTRA_CXX}" \
+	"${EXTRA_CXXFLAGS}" "${EXTRA_LDFLAGS}" "${ENABLE_SELF_TEST}" "${ENABLE_JUNIT_OUT}" "${ENABLE_VALGRIND}" \
+	"${DISABLE_TESTS}" "${DISABLE_CPPUNIT}" "${LIB_SUFFIX}" "${HWLOC_PREFIX}" "${ENABLE_RPATH}" "${SOURCE_DIR}"`"
+
+######################################################
 #execute or display
 if [ "${ENABLE_DISPLAY_COMMAND}" = 'true' ]; then
-	echo "$COMMAND"
+	echo "${COMMAND}"
 else
-	eval "$COMMAND"
+	echo ">>${COMMAND}"
+	eval "${COMMAND}"
 	exit $?
 fi
