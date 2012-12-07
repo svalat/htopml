@@ -5,6 +5,7 @@
 #include "malloc-profile.h"
 
 struct htopml_malloc_stats_s htopml_malloc_stats = {false};
+static char calloc_dlsym_buffer[1024];
 
 void htopml_malloc_stat_init(void)
 {
@@ -65,4 +66,59 @@ void free(void * ptr)
 	pthread_spin_lock(&htopml_malloc_stats.lock);
 	htopml_malloc_stats.free_nb++;
 	pthread_spin_unlock(&htopml_malloc_stats.lock);
+}
+
+void * realloc (void * ptr, size_t size)
+{
+	//setup wrapper subcall
+	static void * (*orig_realloc)(void * ptr,size_t size) = NULL;
+	if (!orig_realloc)
+		orig_realloc = dlsym(RTLD_NEXT, "realloc");  /* returns the object reference for free */
+
+	//call orig
+	ptr = orig_realloc(ptr,size);               /* call free() using function pointer */
+
+	//if counter not init
+	if (htopml_malloc_stats.init == false)
+		htopml_malloc_stat_init();
+
+	//count
+	pthread_spin_lock(&htopml_malloc_stats.lock);
+	htopml_malloc_stats.realloc_nb++;
+	htopml_malloc_stats.cum_realloc_size+=size;
+	if (size < htopml_malloc_stats.min_malloc_size) htopml_malloc_stats.min_malloc_size = size;
+	if (size > htopml_malloc_stats.max_malloc_size) htopml_malloc_stats.max_malloc_size = size;
+	pthread_spin_unlock(&htopml_malloc_stats.lock);
+
+	return ptr;
+}
+
+void* calloc(size_t nmemb,size_t size)
+{
+	//setup wrapper subcall
+	static void* (*orig_calloc)(size_t,size_t) = NULL;
+	if (orig_calloc == NULL)
+	{
+		orig_calloc = 0x1;
+		orig_calloc = dlsym(RTLD_NEXT, "calloc");  /* returns the object reference for malloc */
+	} else if (orig_calloc == 0x1) {
+		return calloc_dlsym_buffer;
+	}
+
+	//call orig
+	void *p = orig_calloc(nmemb,size);               /* call malloc() using function pointer */
+
+	//if counter not init
+	if (htopml_malloc_stats.init == false)
+		htopml_malloc_stat_init();
+
+	//count
+	pthread_spin_lock(&htopml_malloc_stats.lock);
+	htopml_malloc_stats.calloc_nb++;
+	htopml_malloc_stats.cum_calloc_size+=size;
+	if (size < htopml_malloc_stats.min_malloc_size) htopml_malloc_stats.min_malloc_size = size;
+	if (size > htopml_malloc_stats.max_malloc_size) htopml_malloc_stats.max_malloc_size = size;
+	pthread_spin_unlock(&htopml_malloc_stats.lock);
+
+	return p;
 }

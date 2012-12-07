@@ -18,6 +18,10 @@ struct htopml_malloc_stats_s
 	size_t min_malloc_size;
 	size_t max_malloc_size;
 	size_t free_nb;
+	size_t realloc_nb;
+	size_t cum_realloc_size;
+	size_t calloc_nb;
+	size_t cum_calloc_size;
 };
 
 extern struct htopml_malloc_stats_s htopml_malloc_stats;

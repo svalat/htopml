@@ -130,10 +130,11 @@ void HtopmlHttpServer::setupTop(void )
 	this->registerHttpNode(new TopHttpNode("/linux/top.json"));
 
 	//add page
+	this->quickRegisterFile("/linux/top.png",HTOPML_WWW_PATH "/linux/top.png");
 	this->addTemplatePage("/linux/top.html",HTOPML_WWW_PATH "/linux/top.html");
 
 	//register menu entry
-	menu.addEntry("Top","/linux/top.html");
+	menu.addEntry("Top","/linux/top.html","/linux/top.png");
 }
 
 /*******************  FUNCTION  *********************/

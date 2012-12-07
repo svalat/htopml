@@ -24,6 +24,10 @@
 			<field>min_malloc_size</field>
 			<field>max_malloc_size</field>
 			<field>free_nb</field>
+			<field>realloc_nb</field>
+			<field>cum_realloc_size</field>
+			<field>calloc_nb</field>
+			<field>cum_calloc_size</field>
 		</struct>
 	</structs>
 	<exports>
@@ -45,6 +49,8 @@
 			<source>malloc.json</source>
 			<series>
 				<serie name="malloc()" delta="true">data.malloc_nb</serie>
+				<serie name="calloc()" delta="true">data.calloc_nb</serie>
+				<serie name="realloc()" delta="true">data.realloc_nb</serie>
 				<serie name="free()" delta="true">data.free_nb</serie>
 			</series>
 		</graph-lines>
@@ -58,6 +64,8 @@
 			<source>malloc.json</source>
 			<series>
 				<serie name="malloc()" delta="true">data.cum_malloc_size</serie>
+				<serie name="calloc()" delta="true">data.cum_calloc_size</serie>
+				<serie name="realloc()" delta="true">data.cum_realloc_size</serie>
 			</series>
 		</graph-lines>
 	</graphs>
