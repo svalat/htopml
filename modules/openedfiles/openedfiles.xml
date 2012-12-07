@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<htopml>
+	<config>
+		<root-mount-point>/linux</root-mount-point>
+		<name>Opened files</name>
+		<icon>openedfiles.png</icon>
+	</config>
+	<headers>
+		<header>openedfiles.h</header>
+	</headers>
+	<exports>
+		<export>
+			<name>openedfiles</name>
+			<mount>openedfiles.json</mount>
+			<struct>HtopmlFileList</struct>
+			<update>data = htopmlGetOpenFileList();</update>
+		</export>
+	</exports>
+	<generate>
+		<skip>graphs.js</skip>
+		<skip>view.html</skip>
+	</generate>
+</htopml>
