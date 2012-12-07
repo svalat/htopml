@@ -9,10 +9,14 @@ function requestData() {
 			{
 				var tr = document.createElement('tr');
 				var tdName = document.createElement('td');
-				tdName.innerText = v;
+				var pre = document.createElement('pre');
+				pre.innerHTML = v;
+				tdName.appendChild(pre);
 				var tdValue = document.createElement('td');
 				//tdValue.style.setProperty("word-wrap","break-word");
-				tdValue.innerText = point[v];
+				pre = document.createElement('pre');
+				pre.innerHTML = point[v];
+				tdValue.appendChild(pre);
 				tr.appendChild(tdName);
 				tr.appendChild(tdValue);
 				table.appendChild(tr);

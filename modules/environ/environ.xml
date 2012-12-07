@@ -12,6 +12,7 @@
 	<config>
 		<root-mount-point>/linux</root-mount-point>
 		<name>Environement</name>
+		<icon>environ.png</icon>
 	</config>
 	<headers>
 		<header>environ.h</header>
