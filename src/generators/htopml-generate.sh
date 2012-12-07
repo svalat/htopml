@@ -108,14 +108,14 @@ echo "==================== GENERATE ===================="
 for tmp in "${TEMPLATES_DIR}/"*.template
 do
 	#calc names
-	outfname=$(basename "$tmp" | sed -e 's/\.template$//g')
-	xslfile=$(mktemp '/tmp/htopml-XXXXXXX.xsl')
+	outfnamebase=$(basename "$tmp" | sed -e 's/\.template$//g')
+	xslfile=$(mktemp)
 
 	#add prefix
-	outfname="${FILE_PREFIX}-${outfname}"
+	outfname="${FILE_PREFIX}-${outfnamebase}"
 
 	#Check if want to gen
-	if check_if_want_to_gen "${fname}" "${outfname}"
+	if check_if_want_to_gen "${fname}" "${outfnamebase}"
 	then
 		#mark as generated
 		reg_gen_file "${outfname}"
@@ -138,14 +138,14 @@ done
 for tmp in "${TEMPLATES_DIR}/"*.xsl
 do
 	#calc names
-	outfname=$(basename "$tmp" | sed -e 's/\.xsl$//g')
+	outfnamebase=$(basename "$tmp" | sed -e 's/\.xsl$//g')
 	xslfile=$tmp
 
 	#add prefix
-	outfname="${FILE_PREFIX}-${outfname}"
+	outfname="${FILE_PREFIX}-${outfnamebase}"
 
 	#Check if want to gen
-	if check_if_want_to_gen "${fname}" "${outfname}"
+	if check_if_want_to_gen "${fname}" "${outfnamebase}"
 	then
 		#mark as generated
 		reg_gen_file "${outfname}"

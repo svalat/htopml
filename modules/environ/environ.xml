@@ -26,7 +26,7 @@
 		</export>
 	</exports>
 	<generate>
-		<skip>environ-graphs.js</skip>
-		<skip>environ-view.html</skip>
+		<skip>graphs.js</skip>
+		<skip>view.html</skip>
 	</generate>
 </htopml>
