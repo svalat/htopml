@@ -25,8 +25,14 @@
 			<update>data = htopmlGetOpenFileList();</update>
 		</export>
 	</exports>
-	<generate>
-		<skip>graphs.js</skip>
-		<skip>view.html</skip>
-	</generate>
+	<graphs>
+		<hash-table>
+			<title>Opened file descriptors</title>
+			<container>openedfiles-table</container>
+			<key-label>ID</key-label>
+			<value-label>File path</value-label>
+			<source>openedfiles.json</source>
+			<serie>data</serie>
+		</hash-table>
+	</graphs>
 </htopml>

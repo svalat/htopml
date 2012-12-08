@@ -17,13 +17,28 @@
 </xsl:template>
 
 <xsl:template match="graphs">
-	<xsl:for-each select="graph-lines">
-		<div class='section'>
-			<div style="min-width: 400px; height: 400px; margin: 0 auto">
-				<xsl:attribute name="id"><xsl:value-of select="container"/></xsl:attribute>
-			</div>
+	<xsl:apply-templates select="graph-lines|hash-table"/>
+</xsl:template>
+
+<xsl:template match="graph-lines">
+	<div class='section'>
+		<div style="min-width: 400px; height: 400px; margin: 0 auto">
+			<xsl:attribute name="id"><xsl:value-of select="container"/></xsl:attribute>
 		</div>
-	</xsl:for-each>
+	</div>
+</xsl:template>
+
+<xsl:template match="hash-table">
+	<div class='section'>
+		<h1><xsl:value-of select='title'/></h1>
+		<table class='data-table'>
+			<xsl:attribute name='id'><xsl:value-of select='container'/></xsl:attribute>
+			<tr>
+				<th color='yellow'><xsl:value-of select='key-label'/></th>
+				<th color='yellow'><xsl:value-of select='value-label'/></th>
+			</tr>
+		</table>
+	</div>
 </xsl:template>
 
 </xsl:stylesheet>

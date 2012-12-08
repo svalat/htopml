@@ -39,6 +39,8 @@ function htopmlUpdateGraphs() {
 function htopmlFillVarArray(tableId,data)
 {
 	var table = document.getElementById(tableId);
+	if (table == null)
+		return;
 	var content = "";
 	for (v in data)
 	{
@@ -60,6 +62,9 @@ function htopmlFillVarArray(tableId,data)
 
 /* Load a table value (with key => value format) from a fiven URL and fill an html table with it. */
 function htopmlFillVarArrayFromUrl(tableId,updateUrl) {
+	var table = document.getElementById(tableId);
+	if (table == null)
+		return;
 	$.ajax({
 		url: updateUrl,
 		contentType: 'application/json; charset=utf-8',

@@ -105,8 +105,23 @@
 	<!-- def complex type graphs -->
 	<xs:complexType name="graphs">
 		<xs:sequence>
-			<xs:element name="graph-lines" type='graph-lines' minOccurs='0' maxOccurs='unbounded'/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="graph-lines" type='graph-lines' minOccurs='0' maxOccurs='unbounded'/>
+				<xs:element name="hash-table" type='hash-table' minOccurs='0' maxOccurs='unbounded'/>
+			</xs:choice>
 		</xs:sequence>
+	</xs:complexType>
+
+	<!-- def complex type hash-table -->
+	<xs:complexType name="hash-table">
+		<xs:all>
+			<xs:element name='container' type='xs:string' minOccurs='1'/>
+			<xs:element name='title' type='xs:string' minOccurs='1'/>
+			<xs:element name='key-label' type='xs:string' minOccurs='1'/>
+			<xs:element name='value-label' type='xs:string' minOccurs='1'/>
+			<xs:element name='source' type='xs:string' minOccurs='1'/>
+			<xs:element name='serie' type='xs:string' minOccurs='1'/>
+		</xs:all>
 	</xs:complexType>
 
 	<!-- def complex type graph-lines -->

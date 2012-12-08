@@ -77,5 +77,11 @@ $(function () {
 });
 //XSL-END-FOREACH
 
+//XSL-FOREACH /htopml/graphs/hash-table
+$(document).ready(function() {
+	htopmlFillVarArrayFromUrl('$XSL{{container}}','$XSL{{source}}');
+});
+//XSL-END-FOREACH
+
 //start to update
 htopmlUpdateGraphs();
