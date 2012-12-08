@@ -37,6 +37,11 @@ $(function () {
 
 	//create it when page is ready
 	$(document).ready(function() {
+		//skip if container is not found
+		var checkContainer = document.getElementById('$XSL{{container}}');
+		if (checkContainer == null)
+			return;
+		
 		//create the chart
 		chart = new Highcharts.Chart({
 			chart: {
