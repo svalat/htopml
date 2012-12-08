@@ -46,11 +46,40 @@ $(function () {
 		chart = new Highcharts.Chart({
 			chart: {
 				renderTo: '$XSL{{container}}',
+				//XSL-IF not(type)
 				type: 'line',
+				//XSL-END-IF
+				//XSL-IF (type)
+				type: '$XSL{{type}}',
+				//XSL-END-IF
 				animation: false,
 			},
 			title: {
 				text: '$XSL{{title}}'
+			},
+			plotOptions: {
+				area: {
+					marker: {
+						enabled: false,
+						states: {
+							hover: {
+								enabled: true,
+								radius: 5
+							}
+						}
+					}
+				},
+				line: {
+					marker: {
+						enabled: false,
+						states: {
+							hover: {
+								enabled: true,
+								radius: 5
+							}
+						}
+					}
+				}
 			},
 			xAxis: {
 				type: 'datetime',

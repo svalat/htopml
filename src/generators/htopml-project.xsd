@@ -135,6 +135,7 @@
 			<xs:element name='maxpoints' type='xs:integer' minOccurs='1'/>
 			<xs:element name='refresh' type='xs:integer' minOccurs='1'/>
 			<xs:element name='series' type='series' minOccurs='1'/>
+			<xs:element name='type' type='xs:string' minOccurs='0'/>
 		</xs:all>
 	</xs:complexType>
 
