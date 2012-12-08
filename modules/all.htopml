@@ -1,0 +1,5 @@
+./openedfiles/openedfiles.xml
+./statm/statm.xml
+./sysinfo/sysinfo.xml
+./environ/environ.xml
+./malloc/malloc.xml
