@@ -82,7 +82,7 @@ $(function () {
 				}
 			},
 			xAxis: {
-				type: 'datetime',
+				type: 'time',
 				tickPixelInterval: 150,
 				maxZoom: 10*10,
 				title: {
