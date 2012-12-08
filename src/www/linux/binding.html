@@ -8,6 +8,7 @@
 	{
 		var container = document.getElementById(name);
 		var svgdoc = container.contentDocument;
+		//need to check as their is diff between IE, FF and Chrome
 		if (svgdoc == null)
 			container.getSVGDocument();
 		return svgdoc;
@@ -20,7 +21,7 @@
 		{
 			var id="rect_"+objects[i].replace(':','_');
 			var rect = svgdoc.getElementById(id);
-			rect.style.setProperty('fill',color);
+ 			rect.style.setProperty('fill',color,'');
 		}
 	}
 
