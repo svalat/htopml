@@ -160,6 +160,7 @@ do
 done
 
 ######################################################
+HTOPML_MODULE_FILE=$(basename ${fname})
 #setup makefile
 if check_if_want_to_gen "${fname}" "Makefile"
 then
@@ -167,7 +168,7 @@ then
 	reg_gen_file "Makefile"
 	echo "Makefile"
 	echo "  + Generate Makefile"
-	sed -e "s/{{FILE_PREFIX}}/${FILE_PREFIX}/g" -e "s#{{HTOPML_PREFIX}}#${HTOPML_PREFIX}#g" "${TEMPLATES_DIR}/Makefile.in" > Makefile
+	sed -e "s/{{FILE_PREFIX}}/${FILE_PREFIX}/g" -e "s#{{HTOPML_PREFIX}}#${HTOPML_PREFIX}#g" -e "s#{{HTOPML_MODULE_FILE}}#${HTOPML_MODULE_FILE}#g" "${TEMPLATES_DIR}/Makefile.in" > Makefile
 else
 	echo "Makefile [SKIPED]"
 fi

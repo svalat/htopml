@@ -1,42 +1,61 @@
 ######################################################
-CXX=g++
-CC=gcc
-CFLAGS=-g -fPIC -DSTATIC_DATA_PATH="\"$(PWD)\""
-LDFLAGS=-shared -g -fPIC
+CXX:=g++
+CC:=gcc
+AR:=ar
+CFLAGS:=-g -Wall -fPIC -DSTATIC_DATA_PATH="\"$(PWD)\""
+LDFLAGS:=-shared -g -fPIC
+ARFLAGS:=rcs
 
 ######################################################
-HTOPML_CFLAGS=-I{{HTOPML_PREFIX}}/include -I.
-HTOPML_LDFLAGS=-L{{HTOPML_PREFIX}}/lib -Wl,-rpath={{HTOPML_PREFIX}}/lib -lhtopml
+HTOPML_PREFIX:={{HTOPML_PREFIX}}
+FILE_PREFIX:={{FILE_PREFIX}}
+HTOPML_MODULE_FILE:={{HTOPML_MODULE_FILE}}
+
+######################################################
+HTOPML_CFLAGS=-I$(HTOPML_PREFIX)/include -I.
+HTOPML_LDFLAGS=-L$(HTOPML_PREFIX)/lib -Wl,-rpath=$(HTOPML_PREFIX)/lib -lhtopml
 
 ######################################################
 RM=rm -f
 
 ######################################################
-TARGETS=lib{{FILE_PREFIX}}.so {{FILE_PREFIX}}d
+TARGETS=lib$(FILE_PREFIX).so $(FILE_PREFIX)d lib$(FILE_PREFIX).a lib$(FILE_PREFIX).a.ldflags
 
 ######################################################
 SRC_CXX=$(wildcard *.cpp)
 SRC_C=$(wildcard *.c)
-OBJ= $(SRC_C:.c=.c.o) $(SRC_CXX:.cpp=.cpp.o)
+OBJ=$(SRC_C:.c=.c.o) $(SRC_CXX:.cpp=.cpp.o)
 
 ######################################################
 all: $(TARGETS)
 
 ######################################################
-%.cpp.o: %.cpp
-	$(CXX) -c $(CFLAGS) $(HTOPML_CFLAGS) $^ -o $@
+Makefile: $(HTOPML_MODULE_FILE)
+	$(HTOPML_PREFIX)/bin/htopml-generate $<
 
 ######################################################
-%.c.o: %.c
-	$(CC) -c $(CFLAGS) $(HTOPML_CFLAGS) $^ -o $@
+%.cpp.o: %.cpp Makefile
+	$(CXX) -c -DSKIP_HTOPML_MAIN $(CFLAGS) $(HTOPML_CFLAGS) $< -o $@
 
 ######################################################
-lib{{FILE_PREFIX}}.so: $(OBJ)
-	$(CXX) $(LDFLAGS) $(HTOPML_LDFLAGS) $^ -o $@
+%.c.o: %.c Makefile
+	$(CC) -c -DSKIP_HTOPML_MAIN $(CFLAGS) $(HTOPML_CFLAGS) $< -o $@
 
 ######################################################
-{{FILE_PREFIX}}d: main.cpp lib{{FILE_PREFIX}}.so
-	$(CXX) $(HTOPML_LDFLAGS) -L. -Wl,-rpath=$(PWD) -l{{FILE_PREFIX}} $< -o $@
+lib$(FILE_PREFIX).so: $(OBJ) Makefile
+	$(CXX) $(LDFLAGS) $(HTOPML_LDFLAGS) $(OBJ) -o $@
+
+######################################################
+lib$(FILE_PREFIX).a: $(OBJ) Makefile
+	$(AR) $(ARFLAGS) $@  $(OBJ)
+
+######################################################
+lib$(FILE_PREFIX).a.ldflags: Makefile
+	echo "$(LDFLAGS) $(HTOPML_LDFLAGS)" > $@
+
+######################################################
+$(FILE_PREFIX)d: main.cpp lib$(FILE_PREFIX).so
+	$(CXX) $(CFLAGS) $(HTOPML_LDFLAGS) -L. -Wl,-rpath=$(PWD) -l$(FILE_PREFIX) $< -o $@
 
 ######################################################
 distclean: clean
