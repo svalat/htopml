@@ -7,16 +7,5 @@
 ######################################################
 
 ######################################################
-add_subdirectory(server)
-add_subdirectory(json)
-add_subdirectory(http-nodes)
-add_subdirectory(common)
-add_subdirectory(htopml)
-add_subdirectory(integration)
-add_subdirectory(generators)
-add_subdirectory(examples)
-add_subdirectory(proxy)
-
-######################################################
-#install procedure
-INSTALL(DIRECTORY www DESTINATION share/htopml)
+INSTALL(PROGRAMS htopml-slurm-proxy.py
+        DESTINATION bin RENAME htopml-slurm-proxy)
