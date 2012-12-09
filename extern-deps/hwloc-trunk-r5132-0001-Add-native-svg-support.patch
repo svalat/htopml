@@ -1,0 +1,531 @@
+From 52c02b8a72020c06403719efc3037aecbfd04386 Mon Sep 17 00:00:00 2001
+From: Sebastien Valat <sebastien.valat.dev@orange.fr>
+Date: Sun, 9 Dec 2012 20:17:43 +0100
+Subject: [PATCH]  * Add native svg support
+
+---
+ utils/Makefile.am         |   2 +-
+ utils/lstopo-cairo.c      |   4 +-
+ utils/lstopo-draw.c       |  78 ++++++++++++++++-----------------
+ utils/lstopo-fig.c        |   4 +-
+ utils/lstopo-native-svg.c | 109 ++++++++++++++++++++++++++++++++++++++++++++++
+ utils/lstopo-text.c       |   4 +-
+ utils/lstopo.c            |   8 +++-
+ utils/lstopo.h            |   4 +-
+ 8 files changed, 164 insertions(+), 49 deletions(-)
+ create mode 100644 utils/lstopo-native-svg.c
+
+diff --git a/utils/Makefile.am b/utils/Makefile.am
+index d625bbc..be82423 100644
+--- a/utils/Makefile.am
++++ b/utils/Makefile.am
+@@ -18,7 +18,7 @@ noinst_HEADERS = misc.h
+ 
+ bin_PROGRAMS = lstopo-no-graphics hwloc-annotate hwloc-assembler hwloc-calc hwloc-bind hwloc-distances hwloc-distrib hwloc-ps
+ 
+-lstopo_no_graphics_SOURCES = lstopo.h lstopo.c lstopo-color.c lstopo-text.c lstopo-draw.c lstopo-fig.c lstopo-xml.c
++lstopo_no_graphics_SOURCES = lstopo.h lstopo.c lstopo-color.c lstopo-text.c lstopo-draw.c lstopo-fig.c lstopo-xml.c lstopo-native-svg.c
+ lstopo_no_graphics_CFLAGS = $(HWLOC_LIBXML2_CFLAGS) $(HWLOC_PCI_CFLAGS)
+ lstopo_no_graphics_LDADD = $(LDADD) -lm $(HWLOC_TERMCAP_LIBS)
+ lstopo_SOURCES = $(lstopo_no_graphics_SOURCES)
+diff --git a/utils/lstopo-cairo.c b/utils/lstopo-cairo.c
+index 3b28710..81ea03f 100644
+--- a/utils/lstopo-cairo.c
++++ b/utils/lstopo-cairo.c
+@@ -49,7 +49,7 @@
+ #if (CAIRO_HAS_XLIB_SURFACE + CAIRO_HAS_PNG_FUNCTIONS + CAIRO_HAS_PDF_SURFACE + CAIRO_HAS_PS_SURFACE + CAIRO_HAS_SVG_SURFACE)
+ /* Cairo methods */
+ static void
+-topo_cairo_box(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned width, unsigned y, unsigned height)
++topo_cairo_box(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned width, unsigned y, unsigned height,hwloc_obj_t level)
+ {
+   cairo_t *c = output;
+   cairo_rectangle(c, x, y, width, height);
+@@ -74,7 +74,7 @@ topo_cairo_line(void *output, int r, int g, int b, unsigned depth __hwloc_attrib
+ }
+ 
+ static void
+-topo_cairo_text(void *output, int r, int g, int b, int size, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned y, const char *text)
++topo_cairo_text(void *output, int r, int g, int b, int size, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned y, const char *text,hwloc_obj_t level)
+ {
+   cairo_t *c = output;
+   cairo_move_to(c, x, y + size);
+diff --git a/utils/lstopo-draw.c b/utils/lstopo-draw.c
+index 8ae58b4..dc44747 100644
+--- a/utils/lstopo-draw.c
++++ b/utils/lstopo-draw.c
+@@ -109,9 +109,9 @@ static int prefer_ratio(float ratio1, float ratio2) {
+ 
+ static void* null_start(void *output, int width __hwloc_attribute_unused, int height __hwloc_attribute_unused) { return output; }
+ static void null_declare_color(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused) { }
+-static void null_box(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x __hwloc_attribute_unused, unsigned width __hwloc_attribute_unused, unsigned y __hwloc_attribute_unused, unsigned height __hwloc_attribute_unused) { }
++static void null_box(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x __hwloc_attribute_unused, unsigned width __hwloc_attribute_unused, unsigned y __hwloc_attribute_unused, unsigned height __hwloc_attribute_unused,hwloc_obj_t level) { }
+ static void null_line(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x1 __hwloc_attribute_unused, unsigned y1_arg __hwloc_attribute_unused, unsigned x2 __hwloc_attribute_unused, unsigned y2 __hwloc_attribute_unused) { }
+-static void null_text(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, int size __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x __hwloc_attribute_unused, unsigned y __hwloc_attribute_unused, const char *text __hwloc_attribute_unused) { }
++static void null_text(void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, int size __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x __hwloc_attribute_unused, unsigned y __hwloc_attribute_unused, const char *text __hwloc_attribute_unused,hwloc_obj_t level) { }
+ 
+ static struct draw_methods null_draw_methods = {
+   null_start,
+@@ -426,10 +426,10 @@ pci_device_draw(hwloc_topology_t topology __hwloc_attribute_unused, struct draw_
+ 
+   RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+-  methods->box(output, PCI_DEVICE_R_COLOR, PCI_DEVICE_G_COLOR, PCI_DEVICE_B_COLOR, depth, x, *retwidth, y, *retheight);
++  methods->box(output, PCI_DEVICE_R_COLOR, PCI_DEVICE_G_COLOR, PCI_DEVICE_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+ 
+   if (fontsize)
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+ 
+   RECURSE_RECT(level, methods, gridsize, gridsize);
+ 
+@@ -454,10 +454,10 @@ os_device_draw(hwloc_topology_t topology __hwloc_attribute_unused, struct draw_m
+   *retwidth = totwidth;
+   *retheight = totheight;
+ 
+-  methods->box(output, OS_DEVICE_R_COLOR, OS_DEVICE_G_COLOR, OS_DEVICE_B_COLOR, depth, x, *retwidth, y, *retheight);
++  methods->box(output, OS_DEVICE_R_COLOR, OS_DEVICE_G_COLOR, OS_DEVICE_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+ 
+   if (fontsize)
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name,level);
+ }
+ 
+ static void
+@@ -475,7 +475,7 @@ bridge_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical
+   RECURSE_VERT(level, &null_draw_methods, gridsize, 0);
+ 
+   /* Square and left link */
+-  methods->box(output, BRIDGE_R_COLOR, BRIDGE_G_COLOR, BRIDGE_B_COLOR, depth, x, gridsize, y + PCI_HEIGHT/2 - gridsize/2, gridsize);
++  methods->box(output, BRIDGE_R_COLOR, BRIDGE_G_COLOR, BRIDGE_B_COLOR, depth, x, gridsize, y + PCI_HEIGHT/2 - gridsize/2, gridsize,level);
+   methods->line(output, 0, 0, 0, depth, x + gridsize, y + PCI_HEIGHT/2, x + 2*gridsize, y + PCI_HEIGHT/2);
+ 
+   if (level->arity > 0) {
+@@ -505,7 +505,7 @@ bridge_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical
+ 	    snprintf(text, sizeof(text), "%.0f", subobjs[i]->attr->pcidev.linkspeed);
+ 	  else
+ 	    snprintf(text, sizeof(text), "%0.1f", subobjs[i]->attr->pcidev.linkspeed);
+-          methods->text(output, 0, 0, 0, fontsize, depth-1, x + 2*gridsize + gridsize, y + totheight, text);
++          methods->text(output, 0, 0, 0, fontsize, depth-1, x + 2*gridsize + gridsize, y + totheight, text,level);
+         }
+       }
+     RECURSE_END_VERT(gridsize, 0);
+@@ -534,21 +534,21 @@ pu_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical, hw
+   RECURSE_RECT(level, &null_draw_methods, 0, gridsize);
+ 
+   if (lstopo_pu_offline(level))
+-    methods->box(output, OFFLINE_R_COLOR, OFFLINE_G_COLOR, OFFLINE_B_COLOR, depth, x, *retwidth, y, *retheight);
++    methods->box(output, OFFLINE_R_COLOR, OFFLINE_G_COLOR, OFFLINE_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+   else if (lstopo_pu_forbidden(level))
+-    methods->box(output, FORBIDDEN_R_COLOR, FORBIDDEN_G_COLOR, FORBIDDEN_B_COLOR, depth, x, *retwidth, y, *retheight);
++    methods->box(output, FORBIDDEN_R_COLOR, FORBIDDEN_G_COLOR, FORBIDDEN_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+   else if (lstopo_pu_running(topology, level))
+-    methods->box(output, RUNNING_R_COLOR, RUNNING_G_COLOR, RUNNING_B_COLOR, depth, x, *retwidth, y, *retheight);
++    methods->box(output, RUNNING_R_COLOR, RUNNING_G_COLOR, RUNNING_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+   else
+-    methods->box(output, THREAD_R_COLOR, THREAD_G_COLOR, THREAD_B_COLOR, depth, x, *retwidth, y, *retheight);
++    methods->box(output, THREAD_R_COLOR, THREAD_G_COLOR, THREAD_B_COLOR, depth, x, *retwidth, y, *retheight,level);
+ 
+   if (fontsize) {
+     char text[64];
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+     if (hwloc_bitmap_isset(level->online_cpuset, level->os_index))
+-      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+     else
+-      methods->text(output, 0xff, 0xff, 0xff, fontsize, depth-1, x + gridsize, y + gridsize, text);
++      methods->text(output, 0xff, 0xff, 0xff, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   RECURSE_RECT(level, methods, 0, gridsize);
+@@ -569,13 +569,13 @@ cache_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical,
+ 
+   RECURSE_RECT(level, &null_draw_methods, separator, 0);
+ 
+-  methods->box(output, CACHE_R_COLOR, CACHE_G_COLOR, CACHE_B_COLOR, depth, x, totwidth, y, myheight - gridsize);
++  methods->box(output, CACHE_R_COLOR, CACHE_G_COLOR, CACHE_B_COLOR, depth, x, totwidth, y, myheight - gridsize,level);
+ 
+   if (fontsize) {
+     char text[64];
+ 
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   RECURSE_RECT(level, methods, separator, 0);
+@@ -594,12 +594,12 @@ core_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical,
+ 
+   RECURSE_RECT(level, &null_draw_methods, 0, gridsize);
+ 
+-  methods->box(output, CORE_R_COLOR, CORE_G_COLOR, CORE_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, CORE_R_COLOR, CORE_G_COLOR, CORE_B_COLOR, depth, x, totwidth, y, totheight,level);
+ 
+   if (fontsize) {
+     char text[64];
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   RECURSE_RECT(level, methods, 0, gridsize);
+@@ -618,12 +618,12 @@ socket_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical
+ 
+   RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+-  methods->box(output, SOCKET_R_COLOR, SOCKET_G_COLOR, SOCKET_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, SOCKET_R_COLOR, SOCKET_G_COLOR, SOCKET_B_COLOR, depth, x, totwidth, y, totheight,level);
+ 
+   if (fontsize) {
+     char text[64];
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   RECURSE_RECT(level, methods, gridsize, gridsize);
+@@ -652,15 +652,15 @@ node_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical,
+   RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+   /* Draw the epoxy box */
+-  methods->box(output, NODE_R_COLOR, NODE_G_COLOR, NODE_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, NODE_R_COLOR, NODE_G_COLOR, NODE_B_COLOR, depth, x, totwidth, y, totheight,level);
+   /* Draw the memory box */
+-  methods->box(output, MEMORY_R_COLOR, MEMORY_G_COLOR, MEMORY_B_COLOR, depth-1, x + gridsize, totwidth - 2 * gridsize, y + gridsize, myheight - gridsize);
++  methods->box(output, MEMORY_R_COLOR, MEMORY_G_COLOR, MEMORY_B_COLOR, depth-1, x + gridsize, totwidth - 2 * gridsize, y + gridsize, myheight - gridsize,level);
+ 
+   if (fontsize) {
+     char text[64];
+     /* Output text */
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-2, x + 2 * gridsize, y + 2 * gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-2, x + 2 * gridsize, y + 2 * gridsize, text,level);
+   }
+ 
+   /* Restart, now really drawing sublevels */
+@@ -681,12 +681,12 @@ machine_draw(hwloc_topology_t topology, struct draw_methods *methods, int logica
+ 
+   RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+-  methods->box(output, MACHINE_R_COLOR, MACHINE_G_COLOR, MACHINE_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, MACHINE_R_COLOR, MACHINE_G_COLOR, MACHINE_B_COLOR, depth, x, totwidth, y, totheight,level);
+ 
+   if (fontsize) {
+     char text[64];
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   RECURSE_RECT(level, methods, gridsize, gridsize);
+@@ -750,12 +750,12 @@ system_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical
+   else
+     RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+-  methods->box(output, SYSTEM_R_COLOR, SYSTEM_G_COLOR, SYSTEM_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, SYSTEM_R_COLOR, SYSTEM_G_COLOR, SYSTEM_B_COLOR, depth, x, totwidth, y, totheight,level);
+ 
+   if (fontsize) {
+     char text[64];
+     lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+   }
+ 
+   if (level->arity > 1 && (level->children[0]->type == HWLOC_OBJ_MACHINE || !level->children[0]->cpuset))
+@@ -788,15 +788,15 @@ group_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical,
+   else
+     RECURSE_RECT(level, &null_draw_methods, gridsize, gridsize);
+ 
+-  methods->box(output, MISC_R_COLOR, MISC_G_COLOR, MISC_B_COLOR, depth, x, totwidth, y, totheight);
++  methods->box(output, MISC_R_COLOR, MISC_G_COLOR, MISC_B_COLOR, depth, x, totwidth, y, totheight,level);
+ 
+   if (fontsize) {
+     if (level->name) {
+-      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name);
++      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name,level);
+     } else {
+       char text[64];
+       lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+     }
+   }
+ 
+@@ -824,15 +824,15 @@ misc_draw(hwloc_topology_t topology, struct draw_methods *methods, int logical,
+   else
+     RECURSE_HORIZ(level, &null_draw_methods, gridsize, 0);
+ 
+-  methods->box(output, MISC_R_COLOR, MISC_G_COLOR, MISC_B_COLOR, depth, x, totwidth, y, boxheight);
++  methods->box(output, MISC_R_COLOR, MISC_G_COLOR, MISC_B_COLOR, depth, x, totwidth, y, boxheight,level);
+ 
+   if (fontsize) {
+     if (level->name) {
+-      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name);
++      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, level->name,level);
+     } else {
+       char text[64];
+       lstopo_obj_snprintf(text, sizeof(text), level, logical);
+-      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text);
++      methods->text(output, 0, 0, 0, fontsize, depth-1, x + gridsize, y + gridsize, text,level);
+     }
+   }
+ 
+@@ -870,17 +870,17 @@ fig(hwloc_topology_t topology, struct draw_methods *methods, int logical, int le
+     }
+     if (*hostname) {
+       snprintf(text, sizeof(text), "Host: %s", hostname);
+-      methods->box(output, 0xff, 0xff, 0xff, depth, 0, totwidth, totheight, gridsize*4 + fontsize*3);
+-      methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize, text);
++      methods->box(output, 0xff, 0xff, 0xff, depth, 0, totwidth, totheight, gridsize*4 + fontsize*3,level);
++      methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize, text,level);
+       offset = gridsize + fontsize;
+     } else {
+-      methods->box(output, 0xff, 0xff, 0xff, depth, 0, totwidth, totheight, gridsize*3 + fontsize*2);
++      methods->box(output, 0xff, 0xff, 0xff, depth, 0, totwidth, totheight, gridsize*3 + fontsize*2,level);
+       offset = 0;
+     }
+ 
+     /* Display whether we're showing physical or logical IDs */
+     snprintf(text, sizeof(text), "Indexes: %s", logical ? "logical" : "physical");
+-    methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize + offset, text);
++    methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize + offset, text,level);
+ 
+     /* Display timestamp */
+     t = time(NULL);
+@@ -902,7 +902,7 @@ fig(hwloc_topology_t topology, struct draw_methods *methods, int logical, int le
+       snprintf(text, sizeof(text), "Date: %s", date);
+     }
+ #endif /* HAVE_STRFTIME */
+-    methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize + offset + fontsize + gridsize, text);
++    methods->text(output, 0, 0, 0, fontsize, depth, gridsize, totheight + gridsize + offset + fontsize + gridsize, text,level);
+   }
+ }
+ 
+@@ -940,7 +940,7 @@ struct coords {
+ };
+ 
+ static void
+-getmax_box(void *output, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned width, unsigned y, unsigned height)
++getmax_box(void *output, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned width, unsigned y, unsigned height,hwloc_obj_t level)
+ {
+   struct coords *coords = output;
+ 
+diff --git a/utils/lstopo-fig.c b/utils/lstopo-fig.c
+index 801e3f8..c2f5522 100644
+--- a/utils/lstopo-fig.c
++++ b/utils/lstopo-fig.c
+@@ -65,7 +65,7 @@ fig_declare_color(void *output_, int r, int g, int b)
+ }
+ 
+ static void
+-fig_box(void *output_, int r, int g, int b, unsigned depth, unsigned x, unsigned width, unsigned y, unsigned height)
++fig_box(void *output_, int r, int g, int b, unsigned depth, unsigned x, unsigned width, unsigned y, unsigned height,hwloc_obj_t level)
+ {
+   FILE *output = output_;
+   x *= FIG_FACTOR;
+@@ -96,7 +96,7 @@ fig_line(void *output_, int r, int g, int b, unsigned depth, unsigned x1, unsign
+ }
+ 
+ static void
+-fig_text(void *output_, int r, int g, int b, int size, unsigned depth, unsigned x, unsigned y, const char *text)
++fig_text(void *output_, int r, int g, int b, int size, unsigned depth, unsigned x, unsigned y, const char *text,hwloc_obj_t level)
+ {
+   FILE *output = output_;
+   unsigned len = strlen(text);
+diff --git a/utils/lstopo-native-svg.c b/utils/lstopo-native-svg.c
+new file mode 100644
+index 0000000..51879ef
+--- /dev/null
++++ b/utils/lstopo-native-svg.c
+@@ -0,0 +1,109 @@
++/*
++ * Copyright © 2009 CNRS
++ * Copyright © 2009-2012 Inria.  All rights reserved.
++ * Copyright © 2009-2010 Université Bordeaux 1
++ * Copyright © 2009-2011 Cisco Systems, Inc.  All rights reserved.
++ * See COPYING in top-level directory.
++ */
++
++#include <private/autogen/config.h>
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "lstopo.h"
++#include "hwloc.h"
++
++struct native_svg_context
++{
++	FILE * fp;
++};
++
++/* Cairo methods */
++static void topo_native_svg_box(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned width, unsigned y, unsigned height,hwloc_obj_t level)
++{
++	struct native_svg_context * cs = output;
++	char type[128];
++	hwloc_obj_type_snprintf(type, sizeof(type), level, 0);
++	if (type != NULL && level->logical_index >= 0)
++		fprintf(cs->fp,"\t<rect id='rect_%s_%d' class='%s' x='%d' y='%d' width='%d' height='%d' style='fill:rgb(%d,%d,%d);stoke-width:1;stroke:rgb(0,0,0)'/>\n",type,level->logical_index,type,x,y,width,height,r,g,b);
++	else
++		fprintf(cs->fp,"\t<rect x='%d' y='%d' width='%d' height='%d' style='fill:rgb(%d,%d,%d);stoke-width:1;stroke:rgb(0,0,0)'/>\n",x,y,width,height,r,g,b);
++}
++
++static void
++topo_native_svg_line(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x1, unsigned y1, unsigned x2, unsigned y2)
++{
++	struct native_svg_context * cs = output;
++	fprintf(cs->fp,"\t<line x1='%d' y1='%d' x2='%d' y2='%d' style='stroke:rgb(%d,%d,%d);stroke-width:1;'/>\n",x1,y1,x2,y2,r,g,b);
++}
++
++static void
++topo_native_svg_text(void *output, int r, int g, int b, int size, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned y, const char *text,hwloc_obj_t level)
++{
++	struct native_svg_context * cs = output;
++	char type[128];
++	hwloc_obj_type_snprintf(type, sizeof(type), level, 0);
++	if (type != NULL && level->logical_index >= 0)
++		fprintf(cs->fp,"\t<text id='text_%s_%d' class='%s' x='%d' y='%d' fill='rgb(%d,%d,%d)' style='font-size:%dpx'>%s</text>\n",type,level->logical_index,type,x,y+size,r,g,b,size,text);
++	else
++		fprintf(cs->fp,"\t<text x='%d' y='%d' fill='rgb(%d,%d,%d)' style='font-size:%d'>%s</text>\n",x,y+size,r,g,b,size,text);
++}
++
++static void
++topo_native_svg_paint(struct draw_methods *methods, int logical, int legend, hwloc_topology_t topology,struct native_svg_context * cs)
++{
++	output_draw(methods, logical, legend, topology, cs);
++}
++
++static void null_declare_color (void *output __hwloc_attribute_unused, int r __hwloc_attribute_unused, int g __hwloc_attribute_unused, int b __hwloc_attribute_unused) {}
++
++/* SVG back-end */
++static void * native_svg_start(void *output, int width, int height)
++{
++	struct native_svg_context * cs = output;
++
++	fprintf(cs->fp,"%s","<?xml version='1.0' encoding='UTF-8'?>\n");
++	fprintf(cs->fp,"<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='%dpx' height='%dpx' viewBox='0 0 %dpx %dpx' version='1.1'>\n",width,height,width,height);
++	return output;
++}
++
++static struct draw_methods native_svg_draw_methods = {
++	native_svg_start,
++	null_declare_color,
++	topo_native_svg_box,
++	topo_native_svg_line,
++	topo_native_svg_text,
++};
++
++void print_svg_foot(struct native_svg_context cs)
++{
++	fprintf(cs.fp,"</svg>\n");
++}
++
++void output_native_svg(hwloc_topology_t topology, const char *filename, int logical, int legend, int verbose_mode __hwloc_attribute_unused)
++{
++	//vars
++	struct native_svg_context cs;
++
++	//open file
++	if (filename == NULL)
++		cs.fp = stdout;
++	else
++		cs.fp = fopen(filename,"w");
++	if (!cs.fp) {
++		perror(filename);
++		fprintf(stderr, "Failed to open %s for writing (%s)\n", filename, strerror(errno));
++		return;
++	}
++
++	//down
++	output_draw_start(&native_svg_draw_methods, logical, legend, topology, &cs);
++	topo_native_svg_paint(&native_svg_draw_methods, logical, legend, topology, &cs);
++	print_svg_foot(cs);
++
++	//close file
++	if (cs.fp != stdout)
++		fclose(cs.fp);
++}
+diff --git a/utils/lstopo-text.c b/utils/lstopo-text.c
+index 43eb75f..48a62bc 100644
+--- a/utils/lstopo-text.c
++++ b/utils/lstopo-text.c
+@@ -584,7 +584,7 @@ merge(struct display *disp, int x, int y, int or, int andnot, int r, int g, int
+ 
+ /* Now we can implement the standard drawing helpers */
+ static void
+-text_box(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x1, unsigned width, unsigned y1, unsigned height)
++text_box(void *output, int r, int g, int b, unsigned depth __hwloc_attribute_unused, unsigned x1, unsigned width, unsigned y1, unsigned height,hwloc_obj_t level)
+ {
+   struct display *disp = output;
+   unsigned i, j;
+@@ -672,7 +672,7 @@ text_line(void *output, int r __hwloc_attribute_unused, int g __hwloc_attribute_
+ }
+ 
+ static void
+-text_text(void *output, int r, int g, int b, int size __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned y, const char *text)
++text_text(void *output, int r, int g, int b, int size __hwloc_attribute_unused, unsigned depth __hwloc_attribute_unused, unsigned x, unsigned y, const char *text,hwloc_obj_t level)
+ {
+   struct display *disp = output;
+   x /= (gridsize/2);
+diff --git a/utils/lstopo.c b/utils/lstopo.c
+index b7de702..6c09bfc 100644
+--- a/utils/lstopo.c
++++ b/utils/lstopo.c
+@@ -237,7 +237,7 @@ void usage(const char *name, FILE *where)
+ 		  ", svg"
+ #endif /* CAIRO_HAS_SVG_SURFACE */
+ #endif /* LSTOPO_HAVE_GRAPHICS */
+-		  ", xml, synthetic"
++		  ", xml, synthetic, native_svg"
+ 		  "\n");
+   fprintf (where, "\nFormatting options:\n");
+   fprintf (where, "  -l --logical          Display hwloc logical object indexes\n");
+@@ -296,6 +296,7 @@ enum output_format {
+   LSTOPO_OUTPUT_PDF,
+   LSTOPO_OUTPUT_PS,
+   LSTOPO_OUTPUT_SVG,
++  LSTOPO_OUTPUT_NATIVE_SVG,
+   LSTOPO_OUTPUT_XML
+ };
+ 
+@@ -320,6 +321,8 @@ parse_output_format(const char *name, char *callname)
+     return LSTOPO_OUTPUT_PS;
+   else if (!strcasecmp(name, "svg"))
+     return LSTOPO_OUTPUT_SVG;
++  else if (!strcasecmp(name, "native_svg"))
++    return LSTOPO_OUTPUT_NATIVE_SVG;
+   else if (!strcasecmp(name, "xml"))
+     return LSTOPO_OUTPUT_XML;
+ 
+@@ -670,6 +673,9 @@ main (int argc, char *argv[])
+       break;
+ #endif /* CAIRO_HAS_SVG_SURFACE */
+ #endif /* LSTOPO_HAVE_GRAPHICS */
++	case LSTOPO_OUTPUT_NATIVE_SVG:
++      output_native_svg(topology, filename, logical, legend, verbose_mode);
++      break;
+     case LSTOPO_OUTPUT_XML:
+       output_xml(topology, filename, logical, legend, verbose_mode);
+       break;
+diff --git a/utils/lstopo.h b/utils/lstopo.h
+index 1f22c15..f611bbe 100644
+--- a/utils/lstopo.h
++++ b/utils/lstopo.h
+@@ -26,9 +26,9 @@ extern output_method output_console, output_synthetic, output_text, output_x11,
+ struct draw_methods {
+   void* (*start) (void *output, int width, int height);
+   void (*declare_color) (void *output, int r, int g, int b);
+-  void (*box) (void *output, int r, int g, int b, unsigned depth, unsigned x, unsigned width, unsigned y, unsigned height);
++  void (*box) (void *output, int r, int g, int b, unsigned depth, unsigned x, unsigned width, unsigned y, unsigned height,hwloc_obj_t level);
+   void (*line) (void *output, int r, int g, int b, unsigned depth, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
+-  void (*text) (void *output, int r, int g, int b, int size, unsigned depth, unsigned x, unsigned y, const char *text);
++  void (*text) (void *output, int r, int g, int b, int size, unsigned depth, unsigned x, unsigned y, const char *text,hwloc_obj_t level);
+ };
+ 
+ extern unsigned int gridsize, fontsize;
+-- 
+1.8.0
+
