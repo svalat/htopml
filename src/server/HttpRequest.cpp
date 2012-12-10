@@ -9,6 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cassert>
 #include <cstdlib>
+#include <cstring>
 #include "mongoose.h"
 #include "HttpRequest.h"
 
@@ -17,16 +18,23 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-HttpRequest::HttpRequest(const mg_request_info* mongooseRequest)
+HttpRequest::HttpRequest(const mg_request_info* mongooseRequest,std::string auth)
 {
 	assert(mongooseRequest != NULL);
 	this->mongooseRequest = mongooseRequest;
+	this->auth = auth;
 }
 
 /*******************  FUNCTION  *********************/
 std::string HttpRequest::getUri(void ) const
 {
 	return mongooseRequest->uri;
+}
+
+/*******************  FUNCTION  *********************/
+std::string HttpRequest::getAuth(void ) const
+{
+	return auth;
 }
 
 }

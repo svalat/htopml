@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <cstdarg>
+#include <time.h>
 #include "HttpResponse.h"
 #include "mongoose.h"
 
@@ -27,6 +28,7 @@ HttpResponse::HttpResponse(void )
 	this->stringData = NULL;
 	this->freeRawData = false;
 	this->status = 200;
+	this->type = HTTP_RESPONSE_EMPTY;
 }
 
 
@@ -42,22 +44,25 @@ HttpResponse::~HttpResponse(void )
 /*******************  FUNCTION  *********************/
 std::ostream& HttpResponse::getStream(void )
 {
-	assert(rawData == NULL && rawDataSize == 0);
+	assert(rawData == NULL && rawDataSize == 0 && (type == HTTP_RESPONSE_STRING_DATA || type == HTTP_RESPONSE_EMPTY));
 	if (stringData == NULL)
+	{
 		stringData = new std::stringstream;
+		type = HTTP_RESPONSE_STRING_DATA;
+	}
 	return *stringData;
 }
 
 /*******************  FUNCTION  *********************/
 bool HttpResponse::isRawData(void ) const
 {
-	return (rawData != NULL);
+	return (rawData != NULL && type == HTTP_RESPONSE_RAW_DATA);
 }
 
 /*******************  FUNCTION  *********************/
 bool HttpResponse::isStringData(void ) const
 {
-	return (stringData != NULL);
+	return (stringData != NULL && type == HTTP_RESPONSE_STRING_DATA);
 }
 
 /*******************  FUNCTION  *********************/
@@ -82,6 +87,7 @@ void HttpResponse::setHttpStatus(int status)
 /*******************  FUNCTION  *********************/
 void HttpResponse::setRawData(void* data, size_t size,bool autodelete,std::string mimeType,int status)
 {
+	assert(this->type == HTTP_RESPONSE_EMPTY || this->type == HTTP_RESPONSE_RAW_DATA);
 	assert(this->stringData == NULL);
 	assert(this->rawData == NULL && this->rawDataSize == 0);
 	this->rawData = data;
@@ -90,6 +96,7 @@ void HttpResponse::setRawData(void* data, size_t size,bool autodelete,std::strin
 	this->status = status;
 	if (mimeType != "{KEEP_PREVIOUS}")
 		this->mimeType = mimeType;
+	this->type = HTTP_RESPONSE_RAW_DATA;
 }
 
 /*******************  FUNCTION  *********************/
@@ -100,23 +107,40 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 	size_t size;
 	std::string tmp;
 
-	//ensure we get something
-	assert (rawData != NULL || stringData != NULL || mongooseFile.empty() == false);
-
-	if (rawData != NULL)
+	switch(this->type)
 	{
-		data = rawData;
-		size = rawDataSize;
-	} else if (stringData != NULL) {
-		//need improvement to avoid tmp copy
-		tmp = stringData->str();
-		data = (void*)tmp.c_str();
-		size = tmp.size();
-	} else if (!mongooseFile.empty()) {
-		mg_send_file(conn,mongooseFile.c_str());
-		return;
-	} else {
-		abort();
+		case HTTP_RESPONSE_EMPTY:
+			this->error(404,"Invalid empty answer");
+			break;
+		case HTTP_RESPONSE_MONGOOSE_FILE:
+			assert(mongooseFile.empty() == false);
+			mg_send_file(conn,mongooseFile.c_str());
+			return;
+		case HTTP_RESPONSE_RAW_DATA:
+			assert(rawData != NULL);
+			data = rawData;
+			size = rawDataSize;
+			break;
+		case HTTP_RESPONSE_STRING_DATA:
+			assert(stringData != NULL);
+			//need improvement to avoid tmp copy
+			tmp = stringData->str();
+			data = (void*)tmp.c_str();
+			size = tmp.size();
+			break;
+		case HTTP_RESPONSE_REQUIRE_AUTH:
+			mg_printf(conn,
+						"HTTP/1.1 401 Unauthorized\r\n"
+						"Content-Length: 0\r\n"
+						"WWW-Authenticate: Digest qop=\"auth\", "
+						"realm=\"%s\", nonce=\"%lu\"\r\n\r\n",
+						"htopml",
+						(unsigned long) time(NULL));
+			break;
+		default:
+			assert(false);
+			abort();
+			break;
 	}
 	
 	mg_printf(conn,
@@ -158,7 +182,16 @@ void HttpResponse::setExtraHttpHeader(const std::string& name, const std::string
 /*******************  FUNCTION  *********************/
 void HttpResponse::useMongooseFile(const std::string& fname)
 {
+	assert(type == HTTP_RESPONSE_EMPTY || type == HTTP_RESPONSE_MONGOOSE_FILE);
 	this->mongooseFile = fname;
+	this->type = HTTP_RESPONSE_MONGOOSE_FILE;
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::requireAuth(void )
+{
+	assert(type == HTTP_RESPONSE_EMPTY || type == HTTP_RESPONSE_REQUIRE_AUTH);
+	type = HTTP_RESPONSE_REQUIRE_AUTH;
 }
 
 }

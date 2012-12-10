@@ -21,6 +21,15 @@ struct mg_connection;
 namespace htopml
 {
 
+enum HttpResponseType
+{
+	HTTP_RESPONSE_RAW_DATA,
+	HTTP_RESPONSE_MONGOOSE_FILE,
+	HTTP_RESPONSE_STRING_DATA,
+	HTTP_RESPONSE_REQUIRE_AUTH,
+	HTTP_RESPONSE_EMPTY,
+};
+
 /*********************  CLASS  **********************/
 class HttpResponse
 {
@@ -42,10 +51,12 @@ class HttpResponse
 		void setInfo(int status,const std::string & mimeType);
 		void setExtraHttpHeader(const std::string & name,const std::string & value);
 		void useMongooseFile(const std::string & fname);
+		void requireAuth(void);
 	private:
 		/** Copy is not supported. **/
 		HttpResponse(const HttpResponse & response);
 	private:
+		HttpResponseType type;
 		std::string mimeType;
 		void * rawData;
 		size_t rawDataSize;

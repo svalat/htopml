@@ -1,5 +1,5 @@
 From 52c02b8a72020c06403719efc3037aecbfd04386 Mon Sep 17 00:00:00 2001
-From: Sebastien Valat <sebastien.valat.dev@orange.fr>
+From: Sebastien Valat <sebastien.valat@cea.fr>
 Date: Sun, 9 Dec 2012 20:17:43 +0100
 Subject: [PATCH]  * Add native svg support
 

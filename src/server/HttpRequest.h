@@ -14,6 +14,7 @@
 
 /*********************  STRUCT  *********************/
 struct mg_request_info;
+struct mg_connection;
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -23,10 +24,12 @@ namespace htopml
 class HttpRequest
 {
 	public:
-		HttpRequest(const mg_request_info * mongooseRequest);
+		HttpRequest(const mg_request_info * mongooseRequest,std::string auth = "");
 		std::string getUri(void) const;
+		std::string getAuth(void) const;
 	private:
 		const mg_request_info * mongooseRequest;
+		std::string auth;
 };
 
 }

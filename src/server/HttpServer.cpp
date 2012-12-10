@@ -9,6 +9,7 @@
 /********************  HEADERS  *********************/
 #include <cassert>
 #include <mongoose.h>
+#include <cstring>
 #include "Common.h"
 #include "HttpNode.h"
 #include "HttpServer.h"
@@ -32,6 +33,7 @@ HttpServer::HttpServer(int port)
 	this->port = port;
 	this->ctx = NULL;
 	this->status = SERVER_NOT_STARTED;
+	this->authContext = "htopml";
 }
 
 /*******************  FUNCTION  *********************/
@@ -54,15 +56,18 @@ bool HttpServer::start()
 	string port = toString(this->port);
 
 	//gen options
-	const char *options[9] = {"listening_ports", port.c_str(), "num_threads", "1" ,"error_log_file","mongoose.err.log", NULL, NULL, NULL};
-	int cntOptions = 6;
+	const char *options[11] = {"listening_ports", port.c_str(), "num_threads", "1" ,"error_log_file","mongoose.err.log","authentication_domain","htopml", NULL, NULL, NULL};
+	int cntOptions = 8;
 
 	//optional onces.
-	if (passFile.empty() == false)
+	//TODO need to check how to use, but mongoose maybe manage pass with a cache, so may be ok (but failed)
+	/*if (passFile.empty() == false)
 	{
-		options[cntOptions++] = "put_delete_passwords_file";
+		options[cntOptions++] = "global_passwords_file";
 		options[cntOptions++] = passFile.c_str();
-	}
+	}*/
+	if (!passFile.empty())
+		loadAuthCache();
 
 	//start the server
 	ctx = mg_start(&staticCallback, this, options);
@@ -96,23 +101,106 @@ void* HttpServer::staticCallback(mg_event event, mg_connection* conn)
 }
 
 /*******************  FUNCTION  *********************/
+void HttpServer::loadAuthCache(void )
+{
+	//buffers
+	char login[1024];
+	char domain[1024];
+	char pass[1024];
+	char buffer[4096];
+	int line = 1;
+
+	//clear current cache
+	authCache.clear();
+	//open file
+	FILE * fp = fopen(passFile.c_str(),"r");
+	if (fp == NULL)
+	{
+		perror(passFile.c_str());
+		abort();
+	}
+	//load entries
+	while (!feof(fp))
+	{
+		if (fgets(buffer,sizeof(buffer),fp) <= 0)
+		{
+			break;
+		} else if (*buffer == '\n') {
+			continue;
+		} else if (sscanf(buffer,"%[^:]:%[^:]:%s\n",login,domain,pass) == 3) {
+			if (strcmp(domain,"htopml"))
+				fprintf(stderr,"Warning : your pass file (%s) contain and invalid entry line %d : invalid domain (%s).\n",passFile.c_str(),line,domain);
+			else
+				authCache[login] = pass;
+		} else {
+			fprintf(stderr,"Warning : your pass file (%s) contain and invalid entry line %d : invalid line format (%s).\n",passFile.c_str(),line,buffer);
+		}
+		line++;
+	}
+}
+
+/*******************  FUNCTION  *********************/
+string HttpServer::getLoginPass(string login) const
+{
+	HttpServerAuthCache::const_iterator it = authCache.find(login);
+	if (it == authCache.end())
+		return "";
+	else
+		return it->second;
+}
+
+/*******************  FUNCTION  *********************/
+string HttpServer::getConnAuth(mg_connection* conn) const
+{
+	struct mg_auth_header ah;
+	char line[256], f_user[256], ha1[256], f_domain[256], buf[8192], *p;
+
+	if (!mg_parse_auth_header(conn, buf, sizeof(buf), &ah))
+		return "";
+
+	if (ah.user == NULL || ah.user == "\0")
+		return "";
+
+	string pass = getLoginPass(ah.user);
+    if (!pass.empty())
+	{
+		if (mg_check_password(conn, pass.c_str(), ah.uri,ah.nonce, ah.nc, ah.cnonce, ah.qop, ah.response))
+			return ah.user;
+		else
+			fprintf(stderr,"Caution, get an invalid access on htopml from : XXX.XXX.XXX.XXX\n");//,mg_get_request_info(conn)->remote_ip);
+	}
+
+	return "";
+}
+
+/*******************  FUNCTION  *********************/
 void * HttpServer::callback(mg_event event, mg_connection* conn, const mg_request_info* request_info)
 {
-	if (event == MG_NEW_REQUEST) {
-		//search web node
-		HttpNode * node = getHttpNode(request_info->uri);
-		if (node == NULL)
-		{
-			return quickErrorCode(conn,404,"text/plain","Page not found\n");
-		} else {
-			HttpRequest req(request_info);
-			HttpResponse rep;
-			node->onHttpRequest(rep,req);
-			rep.flushInConnection(conn);
-			return (void*)"";
-		}
+	//vars
+	HttpRequest req(request_info,getConnAuth(conn));
+	HttpResponse rep;
+
+	//todo improve to made auth every time optional
+	if (authContext.empty() == false && passFile.empty() == false && req.getAuth().empty())
+	{
+		rep.requireAuth();
+		rep.flushInConnection(conn);
+		return (void*)"";
 	} else {
-		return NULL;
+		if (event == MG_NEW_REQUEST) {
+			//search web node
+			HttpNode * node = getHttpNode(request_info->uri);
+			if (node == NULL)
+			{
+				return quickErrorCode(conn,404,"text/plain","Page not found\n");
+			} else {
+				node->onHttpRequest(rep,req);
+				rep.flushInConnection(conn);
+				return (void*)"";
+			}
+		} else {
+			return NULL;
+		}
 	}
 }
 
@@ -150,7 +238,7 @@ HttpNode* HttpServer::getHttpNode(const char* uri)
 }
 
 /*******************  FUNCTION  *********************/
-void * HttpServer::quickErrorCode(mg_connection* conn,int code, const std::string& contentType, const std::string& message)
+void * HttpServer::quickErrorCode(mg_connection* conn,int code, const string& contentType, const string& message)
 {
 	mg_printf(conn,
 			"HTTP/1.1 %d OK\r\n"
@@ -165,7 +253,7 @@ void * HttpServer::quickErrorCode(mg_connection* conn,int code, const std::strin
 }
 
 /*******************  FUNCTION  *********************/
-void HttpServer::setPasswordFile(const std::string& path)
+void HttpServer::setPasswordFile(const string& path)
 {
 	this->passFile = path;
 }

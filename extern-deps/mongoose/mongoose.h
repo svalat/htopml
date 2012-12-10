@@ -359,6 +359,17 @@ const char *mg_version(void);
 //   mg_md5(buf, "aa", "bb", NULL);
 void mg_md5(char buf[33], ...);
 
+int mg_check_password(struct mg_connection *conn, const char *ha1, const char *uri,
+                          const char *nonce, const char *nc, const char *cnonce,
+                          const char *qop, const char *response);
+
+// Parsed Authorization header
+struct mg_auth_header {
+  char *user, *uri, *cnonce, *response, *qop, *nc, *nonce;
+};
+
+int mg_parse_auth_header(struct mg_connection *conn, char *buf,
+                             size_t buf_size, struct mg_auth_header *ah);
 
 #ifdef __cplusplus
 }

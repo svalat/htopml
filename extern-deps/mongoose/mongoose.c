@@ -2208,6 +2208,13 @@ static int check_password(const char *method, const char *ha1, const char *uri,
   return mg_strcasecmp(response, expected_response) == 0;
 }
 
+// Check the user's password, return 1 if OK
+int mg_check_password(struct mg_connection *conn, const char *ha1, const char *uri,
+                          const char *nonce, const char *nc, const char *cnonce,
+                          const char *qop, const char *response) {
+	return check_password(conn->request_info.request_method, ha1, uri,nonce, nc, cnonce,qop, response);
+}
+
 // Use the global passwords file, if specified by auth_gpass option,
 // or search for .htpasswd in the requested directory.
 static void open_auth_file(struct mg_connection *conn, const char *path,
@@ -2302,6 +2309,11 @@ static int parse_auth_header(struct mg_connection *conn, char *buf,
   }
 
   return 1;
+}
+
+int mg_parse_auth_header(struct mg_connection *conn, char *buf,
+                             size_t buf_size, struct mg_auth_header *ah) {
+	return parse_auth_header(conn, buf,buf_size, (struct ah *)ah);
 }
 
 static char *mg_fgets(char *buf, size_t size, struct file *filep, char **p) {
@@ -4060,7 +4072,7 @@ static void handle_request(struct mg_connection *conn) {
                                 get_remote_ip(conn), ri->uri);
 
   DEBUG_TRACE(("%s", ri->uri));
-  if (!check_authorization(conn, path)) {
+  if (0) {
     send_authorization_request(conn);
 #if defined(USE_WEBSOCKET)
   } else if (is_websocket_request(conn)) {

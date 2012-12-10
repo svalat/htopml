@@ -7,17 +7,10 @@
 ######################################################
 
 ######################################################
-add_subdirectory(server)
-add_subdirectory(json)
-add_subdirectory(http-nodes)
-add_subdirectory(common)
-add_subdirectory(htopml)
-add_subdirectory(integration)
-add_subdirectory(generators)
-add_subdirectory(examples)
-add_subdirectory(proxy)
-add_subdirectory(passwd)
+#build htopmld exe (for tests)
+add_executable(htopml-passwd main.cpp)
+target_link_libraries(htopml-passwd mongoose ${CMAKE_THREAD_LIBS_INIT})
 
 ######################################################
-#install procedure
-INSTALL(DIRECTORY www DESTINATION share/htopml)
+INSTALL(TARGETS htopml-passwd
+        RUNTIME DESTINATION bin)

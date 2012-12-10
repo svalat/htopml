@@ -29,6 +29,8 @@ class HtopmlHttpServer : public HttpServer
 		void addTemplatePage(const std::string & mount,const std::string & file,bool cache=true,const std::string icon = "");
 		bool callHandler(void (*handler)(HtopmlHttpServer & server));
 	private:
+		bool passFileExist(void) const;
+		std::string getPassFile(void) const;
 		void setupCommonRessources(void);
 		void setupMenu(void);
 		void setupTop(void);

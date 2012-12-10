@@ -12,6 +12,7 @@
 /********************  HEADERS  *********************/
 #include <vector>
 #include <string>
+#include <map>
 #include "mongoose.h"
 #include "VirtualDirectoryHttpNode.h"
 
@@ -26,6 +27,9 @@ enum HttpServerStatus
 	SERVER_STARTING,
 	SERVER_RUNNING
 };
+
+/*********************  TYPES  **********************/
+typedef std::map<std::string,std::string> HttpServerAuthCache;
 
 /*********************  CLASS  **********************/
 class HttpServer
@@ -47,12 +51,17 @@ class HttpServer
 	private:
 		//copy is forbidden.
 		HttpServer(const HttpServer & orig);
+		std::string getConnAuth(mg_connection* conn) const;
+		std::string getLoginPass(std::string login) const;
+		void loadAuthCache(void);
 		static void * staticCallback(mg_event event,mg_connection *conn);
 		void* callback(mg_event event, mg_connection* conn, const mg_request_info* request_info);
 		HttpNode * getHttpNode(const char * uri);
 		VirtualDirectoryHttpNode rootDir;
 		void * quickErrorCode(mg_connection* conn, int code, const std::string& contentType, const std::string& message);
 		std::string passFile;
+		std::string authContext;
+		HttpServerAuthCache authCache;
 };
 
 }

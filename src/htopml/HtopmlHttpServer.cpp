@@ -35,10 +35,34 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	setupRusage();
 	setupHowloc();
 
-	this->setPasswordFile("./htpasswd");
+	if (passFileExist())
+		this->setPasswordFile(getPassFile());
 
 	if (autostart)
 		this->start();
+}
+
+/*******************  FUNCTION  *********************/
+std::string HtopmlHttpServer::getPassFile(void ) const
+{
+	std::string res = getenv("HOME");
+	res += "/.htopmlpass";
+	return res;
+}
+
+/*******************  FUNCTION  *********************/
+bool HtopmlHttpServer::passFileExist(void ) const
+{
+	std::string file = getPassFile();
+	//TODO use fstat which is cleaner for that.
+	FILE * fp = fopen(file.c_str(),"r");
+	if (fp == NULL)
+	{
+		return false;
+	} else {
+		fclose(fp);
+		return true;
+	}
 }
 
 /*******************  FUNCTION  *********************/
