@@ -55,7 +55,8 @@ std::string HtopmlHttpServer::getCurrentExeName(void ) const
 	char buffer[4096];
 	size_t size;
 	size = readlink("/proc/self/exe",buffer,sizeof(buffer));
-	assert(size < sizeof(buffer));
+	assert(size < sizeof(buffer) - 1);
+	buffer[size] = '\0';
 	return basename(buffer);
 }
 
