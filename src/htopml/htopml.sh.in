@@ -1,0 +1,50 @@
+#!/bin/bash
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+
+######################################################
+HTOPML_PREFIX="@CMAKE_INSTALL_PREFIX@"
+HTOPML_LIBDIR="${HTOPML_PREFIX}/lib@LIB_SUFFIX@"
+HTOPML_MODULES=""
+HTOPML_INSTR_EXE=""
+
+######################################################
+if [ -z "$*" ]; then
+	echo "Missing arguments : $0 [--modules=libXXXX.so,libYYYY.so] [--only=exename] {program} [program options...]" 1>&2
+	exit 1
+fi
+
+######################################################
+END_ARGS=false
+while [ "$END_ARGS" = 'false' ]
+do
+	case "$1" in
+		--modules=*)
+			HTOPML_MODULES=$(echo "$1" | sed -e 's/^--modules=/:/g' -e 's/,/:/g')
+			shift 1
+			;;
+		--only=*)
+			export HTOPML_INSTR_EXE=$(echo "$1" | sed -e 's/^--only=//g')
+			shift 1
+			;;
+		*)
+			END_ARGS='true'
+			;;
+	esac
+done
+
+######################################################
+if [ -z "$LD_PRELOAD" ]; then
+	export LD_PRELOAD="${HTOPML_LIBDIR}/libhtopml.so${HTOPML_MODULES}"
+else
+	export LD_PRELOAD="${LD_PRELOAD}:${HTOPML_LIBDIR}/libhtopml.so${HTOPML_MODULES}"
+fi
+
+######################################################
+"$@"
+exit $?

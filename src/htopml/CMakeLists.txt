@@ -17,8 +17,14 @@ target_link_libraries(htopml mongoose htopml-server htopml-json htopml-http-node
 target_link_libraries(htopml ${CMAKE_THREAD_LIBS_INIT})
 
 ######################################################
+#htopml script
+configure_file(htopml.sh.in ${CMAKE_CURRENT_BINARY_DIR}/htopml.sh ESCAPE_QUOTES @ONLY)
+
+######################################################
 #install procedure
 INSTALL(TARGETS htopml
         ARCHIVE DESTINATION lib${LIB_SUFFIX}
         LIBRARY DESTINATION lib${LIB_SUFFIX})
 INSTALL(FILES ${HTOPML_HEADERS} DESTINATION include/htopml)
+INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/htopml.sh
+		DESTINATION bin RENAME htopml)
