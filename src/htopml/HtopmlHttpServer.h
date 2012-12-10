@@ -29,6 +29,8 @@ class HtopmlHttpServer : public HttpServer
 		void addTemplatePage(const std::string & mount,const std::string & file,bool cache=true,const std::string icon = "");
 		bool callHandler(void (*handler)(HtopmlHttpServer & server));
 	private:
+		bool instrumentThisExe(void);
+		std::string getCurrentExeName(void) const;
 		bool passFileExist(void) const;
 		std::string getPassFile(void) const;
 		void setupCommonRessources(void);
@@ -38,6 +40,7 @@ class HtopmlHttpServer : public HttpServer
 		void setupHowloc(void);
 	private:
 		MenuHttpNode menu;
+		std::string exeName;
 };
 
 /********************  GLOBALS  *********************/

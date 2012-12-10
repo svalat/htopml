@@ -7,6 +7,8 @@
 *****************************************************/
 
 /********************  HEADERS  *********************/
+#include <unistd.h>
+#include <libgen.h>
 #include "DirectoryHttpNode.h"
 #include "TemplatePageHttpNode.h"
 #include "GetRusageHttpNode.h"
@@ -38,8 +40,34 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
 	if (passFileExist())
 		this->setPasswordFile(getPassFile());
 
-	if (autostart)
-		this->start();
+	if (autostart && instrumentThisExe())
+	{
+		if (!this->start())
+			fprintf(stderr,"Failed to instrument %s\n",exeName.c_str());
+	} else {
+		fprintf(stderr,"Skip instrumtation of %s\n",exeName.c_str());
+	}
+}
+
+/*******************  FUNCTION  *********************/
+std::string HtopmlHttpServer::getCurrentExeName(void ) const
+{
+	char buffer[4096];
+	size_t size;
+	size = readlink("/proc/self/exe",buffer,sizeof(buffer));
+	assert(size < sizeof(buffer));
+	return basename(buffer);
+}
+
+/*******************  FUNCTION  *********************/
+bool HtopmlHttpServer::instrumentThisExe(void )
+{
+	const char * fname = getenv("HTOPML_INSTR_EXE");
+	exeName = getCurrentExeName();
+	if (fname == NULL)
+		return true;
+	else
+		return exeName == fname;
 }
 
 /*******************  FUNCTION  *********************/
