@@ -9,5 +9,3 @@
 ######################################################
 INSTALL(PROGRAMS htopml-slurm-proxy.py
         DESTINATION bin RENAME htopml-slurm-proxy)
-INSTALL(PROGRAMS htopml-workstation-slurm-proxy.py
-        DESTINATION bin RENAME htopml-workstation-slurm-proxy)
