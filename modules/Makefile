@@ -60,7 +60,7 @@ clean:
 	make -C sysinfo clean
 
 distclean:
-	$(RM) alld liball.so
+	$(RM) alld liball.so libopenedfiles.so libstatm.so libenviron.so libmalloc.so libsysinfo.so
 	make -C openedfiles distclean
 	make -C statm distclean
 	make -C environ distclean
