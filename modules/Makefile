@@ -1,7 +1,7 @@
 ######################################################
 CXX=g++
 LDFLAGS=-fPIC -shared -g
-HTOPML_PREFIX=/home/sebv/testinstall/
+HTOPML_PREFIX=`which htopml-generate | xargs dirname`/../
 HTOPML_GENERATE=$(HTOPML_PREFIX)/bin/htopml-generate
 
 ######################################################
@@ -41,7 +41,12 @@ sysinfo/libsysinfo.so: sysinfo/Makefile
 
 ######################################################
 liball.so: openedfiles/libopenedfiles.so statm/libstatm.so environ/libenviron.so malloc/libmalloc.so sysinfo/libsysinfo.so
-	$(CXX) $(LDFLAGS) -o $@ $^
+	ln -sf openedfiles/libopenedfiles.so .
+	ln -sf statm/libstatm.so .
+	ln -sf environ/libenviron.so .
+	ln -sf malloc/libmalloc.so
+	ln -sf sysinfo/libsysinfo.so
+	$(CXX) $(LDFLAGS) -o $@ -Wl,-rpath=$(PWD) -L. -lopenedfiles -lstatm -lenviron -lmalloc -lsysinfo
 
 alld: liball.so
 	$(CXX) -g -o $@ $(HTOPML_PREFIX)/share/htopml/templates/main.cpp $^ -Wl,-rpath=$(PWD)

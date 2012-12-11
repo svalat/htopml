@@ -565,7 +565,7 @@ class EmulateSshProxyOption:
 		print 'Now listening on http://localhost:%d => %s:%d throw ssh://%s' % (self.localPort,self.targetHost,self.targetPort,self.bounce,)
 		try:
 			#Open ssh proxy
-			cmd = ['ssh','-C',self.bounce,'python htopml-slurm-proxy','ssh-emulated-remote',self.bounce,self.targetHost,'%d'%(self.targetPort,)]
+			cmd = ['ssh','-C',self.bounce,'htopml-slurm-proxy','ssh-emulated-remote',self.bounce,self.targetHost,'%d'%(self.targetPort,)]
 			self.proxyDebug(" ".join(cmd))
 			ssh = subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE)
 			#Wait clients
