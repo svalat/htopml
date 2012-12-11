@@ -52,7 +52,7 @@ alld: liball.so
 	$(CXX) -g -o $@ $(HTOPML_PREFIX)/share/htopml/templates/main.cpp $^ -Wl,-rpath=$(PWD)
 
 clean:
-	$(RM) alld liball.so
+	$(RM) alld liball.so libopenedfiles.so libstatm.so libenviron.so libmalloc.so libsysinfo.so
 	make -C openedfiles clean
 	make -C statm clean
 	make -C environ clean
