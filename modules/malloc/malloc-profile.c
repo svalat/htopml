@@ -28,7 +28,7 @@ void* malloc(size_t size)
 	//setup wrapper subcall
 	static void* (*orig_malloc)(size_t) = NULL;
 	if (!orig_malloc)
-		orig_malloc = dlsym(RTLD_NEXT, "malloc");  /* returns the object reference for malloc */
+		orig_malloc = (void* (*)(size_t))  dlsym(RTLD_NEXT, "malloc");  /* returns the object reference for malloc */
 
 	//call orig
 	void *p = orig_malloc(size);               /* call malloc() using function pointer */
@@ -53,7 +53,7 @@ void free(void * ptr)
 	//setup wrapper subcall
 	static void (*orig_free)(void * ptr) = NULL;
 	if (!orig_free)
-		orig_free = dlsym(RTLD_NEXT, "free");  /* returns the object reference for free */
+		orig_free =  (void (*)(void * ptr))dlsym(RTLD_NEXT, "free");  /* returns the object reference for free */
 
 	//call orig
 	orig_free(ptr);               /* call free() using function pointer */
@@ -73,7 +73,7 @@ void * realloc (void * ptr, size_t size)
 	//setup wrapper subcall
 	static void * (*orig_realloc)(void * ptr,size_t size) = NULL;
 	if (!orig_realloc)
-		orig_realloc = dlsym(RTLD_NEXT, "realloc");  /* returns the object reference for free */
+		orig_realloc = ( void * (*)(void * ptr,size_t size)) dlsym(RTLD_NEXT, "realloc");  /* returns the object reference for free */
 
 	//call orig
 	ptr = orig_realloc(ptr,size);               /* call free() using function pointer */
@@ -99,9 +99,9 @@ void* calloc(size_t nmemb,size_t size)
 	static void* (*orig_calloc)(size_t,size_t) = NULL;
 	if (orig_calloc == NULL)
 	{
-		orig_calloc = 0x1;
-		orig_calloc = dlsym(RTLD_NEXT, "calloc");  /* returns the object reference for malloc */
-	} else if (orig_calloc == 0x1) {
+		orig_calloc = ( void* (*)(size_t,size_t))1;
+		orig_calloc =  ( void* (*)(size_t,size_t))dlsym(RTLD_NEXT, "calloc");  /* returns the object reference for malloc */
+	} else if (orig_calloc ==  ( void* (*)(size_t,size_t))1) {
 		return calloc_dlsym_buffer;
 	}
 

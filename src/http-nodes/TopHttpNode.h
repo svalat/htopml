@@ -17,7 +17,7 @@ namespace htopml
 {
 
 /********************  MACRO  ***********************/
-#define HTOPML_TOP_MAX_CPU 128
+#define HTOPML_TOP_MAX_CPU 512
 
 /*********************  STRUCT  *********************/
 class LinuxTopCpu

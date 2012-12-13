@@ -87,7 +87,7 @@ void TopHttpNode::loadGlobalProcStat(void )
 void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 {
 	//vars
-	char buffer[4096];
+	char * buffer = (char*)malloc(32*4096);
 	char * tmp;
 	size_t size;
 	int trash_int;
@@ -98,9 +98,9 @@ void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 	assert(fp != NULL);
 
 	//read from file
-	size = fread(buffer,1,sizeof(buffer),fp);
+	size = fread(buffer,1,32*4096,fp);
 	assert(size > 0);
-	assert(size < sizeof(buffer));
+	assert(size < 32*4096);
 
 	//search end of filename :
 	tmp = buffer;
@@ -115,13 +115,15 @@ void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 	              &(top.process_user),&(top.process_system),&(top.process_cum_user),
 	              &(top.process_cum_system));
 	assert(size == 14);
+
+	free(buffer);
 }
 
 /*******************  FUNCTION  *********************/
 void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 {
 	//vars
-	char buffer[4096];
+	char * buffer = (char*)malloc(32*4096);
 	char * next = buffer;
 	char * cur = buffer;
 	int size;
@@ -130,8 +132,8 @@ void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 	assert(fp != NULL);
 
 	//read from file
-	size = fread(buffer,1,sizeof(buffer),fp);
-	if (size >= sizeof(buffer) - 1)
+	size = fread(buffer,1,32*4096,fp);
+	if (size >= 32*4096 - 1)
 	{
 		fprintf(stderr,"Buffer is to small to read /proc/stat in one step.");
 		abort();
@@ -156,6 +158,8 @@ void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 		}
 		cur = next;
 	}
+
+	free(buffer);
 }
 
 /*******************  FUNCTION  *********************/
