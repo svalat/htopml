@@ -126,7 +126,7 @@ enum mg_event {
   // Mongoose initializes Lua server page. Sent only if Lua support is enabled.
   // Callback's return value is ignored.
   // ev_data contains lua_State pointer.
-  MG_INIT_LUA,
+  MG_INIT_LUA
 };
 
 

@@ -27,7 +27,7 @@ enum HttpResponseType
 	HTTP_RESPONSE_MONGOOSE_FILE,
 	HTTP_RESPONSE_STRING_DATA,
 	HTTP_RESPONSE_REQUIRE_AUTH,
-	HTTP_RESPONSE_EMPTY,
+	HTTP_RESPONSE_EMPTY
 };
 
 /*********************  CLASS  **********************/
