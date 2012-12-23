@@ -17,7 +17,8 @@ namespace htopml
 {
 
 /********************  MACRO  ***********************/
-#define HTOPML_TOP_MAX_CPU 512
+#define HTOPML_TOP_MAX_CPU 1024
+#define HTOPML_TOP_READBUF_SIZE (64*4096)
 
 /*********************  STRUCT  *********************/
 class LinuxTopCpu
@@ -57,6 +58,7 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 {
 	public:
 		TopHttpNode(const std::string & addr);
+		virtual ~TopHttpNode(void);
 		virtual void onRequest(const HttpRequest & request);
 	private:
 		void loadProcessProcStat(void);
@@ -67,6 +69,7 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 		static char * findEndOfLine(char * start,bool cutWithZero = true);
 	private:
 		LinuxTop data;
+		char * readBuffer;
 };
 
 /*******************  FUNCTION  *********************/

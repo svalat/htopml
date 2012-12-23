@@ -46,6 +46,14 @@ LinuxTopCpu::LinuxTopCpu(void )
 TopHttpNode::TopHttpNode(const std::string& addr)
 	:JsonHttpNode<LinuxTop>(addr,&data)
 {
+	this->readBuffer = new char[HTOPML_TOP_READBUF_SIZE];
+}
+
+/*******************  FUNCTION  *********************/
+TopHttpNode::~TopHttpNode(void )
+{
+	if (this->readBuffer != NULL)
+		delete[] this->readBuffer;
 }
 
 /*******************  FUNCTION  *********************/
@@ -87,7 +95,6 @@ void TopHttpNode::loadGlobalProcStat(void )
 void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 {
 	//vars
-	char * buffer = (char*)malloc(32*4096);
 	char * tmp;
 	size_t size;
 	int trash_int;
@@ -98,12 +105,12 @@ void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 	assert(fp != NULL);
 
 	//read from file
-	size = fread(buffer,1,32*4096,fp);
+	size = fread(readBuffer,1,32*4096,fp);
 	assert(size > 0);
 	assert(size < 32*4096);
 
 	//search end of filename :
-	tmp = buffer;
+	tmp = readBuffer;
 	while (*tmp != ')' && tmp != '\0')
 		tmp++;
 	assert(*tmp == ')');
@@ -115,24 +122,21 @@ void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 	              &(top.process_user),&(top.process_system),&(top.process_cum_user),
 	              &(top.process_cum_system));
 	assert(size == 14);
-
-	free(buffer);
 }
 
 /*******************  FUNCTION  *********************/
 void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 {
 	//vars
-	char * buffer = (char*)malloc(32*4096);
-	char * next = buffer;
-	char * cur = buffer;
+	char * next = readBuffer;
+	char * cur = readBuffer;
 	int size;
 
 	//errors
 	assert(fp != NULL);
 
 	//read from file
-	size = fread(buffer,1,32*4096,fp);
+	size = fread(readBuffer,1,32*4096,fp);
 	if (size >= 32*4096 - 1)
 	{
 		fprintf(stderr,"Buffer is to small to read /proc/stat in one step.");
@@ -141,7 +145,7 @@ void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 		perror("fread");
 		abort();
 	} else {
-		buffer[size] = '\0';
+		readBuffer[size] = '\0';
 	}
 
 	//parse it
@@ -158,8 +162,6 @@ void TopHttpNode::parseGlobalProcStat(htopml::LinuxTop& top, FILE* fp) const
 		}
 		cur = next;
 	}
-
-	free(buffer);
 }
 
 /*******************  FUNCTION  *********************/
