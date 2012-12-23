@@ -131,7 +131,7 @@ Highcharts.theme = {
 			}
 		},
 		candlestick: {
-			lineColor: 'red'
+			lineColor: 'white'
 		}
 	},
 
