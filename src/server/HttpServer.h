@@ -35,7 +35,7 @@ typedef std::map<std::string,std::string> HttpServerAuthCache;
 class HttpServer
 {
 	public:
-		HttpServer(int port);
+		HttpServer(int port,const std::string & listenAddr = "");
 		virtual ~HttpServer(void);
 		bool start();
 		void stop();
@@ -62,6 +62,7 @@ class HttpServer
 		std::string passFile;
 		std::string authContext;
 		HttpServerAuthCache authCache;
+		std::string listenAddr;
 };
 
 }

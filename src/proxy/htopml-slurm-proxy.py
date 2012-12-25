@@ -369,13 +369,17 @@ class SshNativeProxy(Proxy):
 	remoteUser = None
 	interactiveNode = None
 
-	def __init__(self,localPort,interactiveNode,remoteUser):
+	def __init__(self,localPort,interactiveNode,remoteUser,useHopToNode = False):
 		#setup parent class
 		Proxy.__init__(self,localPort)
 
-		#setup loal args
+		#setup local args
 		self.interactiveNode = interactiveNode
 		self.remoteUser = remoteUser
+		self.useHopToNode = useHopToNode
+		
+	def genCmdNoHop(self):
+		return cmd = ['ssh','-l',self.remoteUser,self.interactiveNode,'-L%d:%s:%d' % (self.localPort,self.targetHost,self.targetPort)]
 	
 	def update(self,targetHost,targetPort):
 		#if same
@@ -394,7 +398,10 @@ class SshNativeProxy(Proxy):
 
 		#start a new one
 		try:
-			cmd = ['ssh','-l',self.remoteUser,self.interactiveNode,'-L%d:%s:%d' % (self.localPort,self.targetHost,self.targetPort)]
+			if self.useHopToNode:
+				cmd = self.genCmdNoHop()
+			else:
+				cmd = self.genCmdNoHop()
 			self.errors += ">> " + ' '.join(cmd) + "\n"
 			self.ssh = subprocess.Popen(cmd,stdout=subprocess.PIPE,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
 		except ValueError:

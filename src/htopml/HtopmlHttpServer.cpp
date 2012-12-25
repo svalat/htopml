@@ -25,11 +25,15 @@ namespace htopml
 {
 
 /********************  GLOBALS  *********************/
-HtopmlHttpServer glbAutomaticServer(8080,true);
+#ifdef ENABLE_LISTEN_ALL
+	HtopmlHttpServer glbAutomaticServer(8080,true);
+#else
+	HtopmlHttpServer glbAutomaticServer(8080,true,"127.0.0.1");
+#endif
 
 /*******************  FUNCTION  *********************/
-HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart)
-	:HttpServer(port),menu("/menu.js","navigation")
+HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & listentAddr)
+	:HttpServer(port,listentAddr),menu("/menu.js","navigation")
 {
 	setupMenu();
 	setupCommonRessources();

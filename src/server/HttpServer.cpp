@@ -23,7 +23,7 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-HttpServer::HttpServer(int port)
+HttpServer::HttpServer(int port,const std::string & listenAddr)
 	:rootDir("/")
 {
 	//errors
@@ -34,6 +34,7 @@ HttpServer::HttpServer(int port)
 	this->ctx = NULL;
 	this->status = SERVER_NOT_STARTED;
 	this->authContext = "htopml";
+	this->listenAddr = listenAddr;
 }
 
 /*******************  FUNCTION  *********************/
@@ -53,7 +54,10 @@ bool HttpServer::start()
 	status = SERVER_STARTING;
 	
 	//generate tmp string
-	string port = toString(this->port);
+	string port;
+	if (listenAddr.empty() == false)
+		port += listenAddr + ":";
+	port += toString(this->port);
 
 	//gen options
 	const char *options[11] = {"listening_ports", port.c_str(), "num_threads", "1" ,"error_log_file","mongoose.err.log","authentication_domain","htopml", NULL, NULL, NULL};

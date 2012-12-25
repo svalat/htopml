@@ -24,7 +24,7 @@ namespace htopml
 class HtopmlHttpServer : public HttpServer
 {
 	public:
-		HtopmlHttpServer(int port,bool autostart = false);
+		HtopmlHttpServer(int port,bool autostart = false,const std::string & listenAddr = "");
 		void addMenuEntry(const std::string & name,const std::string & url,const std::string & icon = "");
 		void addTemplatePage(const std::string & mount,const std::string & file,bool cache=true,const std::string icon = "");
 		bool callHandler(void (*handler)(HtopmlHttpServer & server));

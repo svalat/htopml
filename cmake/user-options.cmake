@@ -15,6 +15,7 @@ set(ENABLE_GCC_COVERAGE no CACHE BOOL "Compile htopml library with coverage GCC 
 set(DISABLE_TESTS no CACHE BOOL "Disable compilation of svUnitTest tests.")
 set(ENABLE_LOCAL_PATHS no CACHE BOOL "Setup absolute path to run in build directory, not for installation.")
 set(ENABLE_RPATH no CACHE BOOL "Force to use rpath for all libs when installing.")
+set(ENABLE_LISTEN_ALL no CACHE BOOL "Enable listening of all interface instead of 127.0.0.1.")
 
 ######################################################
 #Take care of lib suffix for lib64 directory on some distributions
@@ -55,3 +56,8 @@ IF (ENABLE_RPATH)
 	SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
 	SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ENDIF(ENABLE_RPATH)
+
+######################################################
+IF (ENABLE_LISTEN_ALL)
+	add_definitions(-DENABLE_LISTEN_ALL)
+ENDIF (ENABLE_LISTEN_ALL)
