@@ -18,9 +18,20 @@ namespace htopml
 {
 
 /********************  MACRO  ***********************/
+/**
+ * Macro used to register a new module in htopml server at loading time (exe, dynlib...)
+ * It's based on global object constructor mechanism.
+ * @param handler Define a handler function to call to register the component.
+**/
 #define REGISTER_TO_SERVER(handler) bool __call_handler_##handler = htopml::glbAutomaticServer.callHandler(handler)
 
 /*********************  CLASS  **********************/
+/**
+ * Extension of basic HttpServer to provide all the default components and
+ * registration system to build the htopml server. This class will be load
+ * in a global variable to automatically start the server on application
+ * startup.
+**/
 class HtopmlHttpServer : public HttpServer
 {
 	public:
@@ -39,7 +50,9 @@ class HtopmlHttpServer : public HttpServer
 		void setupRusage(void);
 		void setupHowloc(void);
 	private:
+		/** Store the menu structure of the htopml infrastructure. **/
 		MenuHttpNode menu;
+		/** Name of the current executable. **/
 		std::string exeName;
 };
 

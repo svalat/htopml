@@ -21,6 +21,15 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
+/**
+ * Function to quickly load a file in memory. It allocate a temporary buffer
+ * which must be freed by the caller (with free()).
+ * @param fname Define the file path to open.
+ * @param size Pointer to size variable. If not NULL, will be updated with
+ * the size of the loaded file.
+ * @param abortOnError If true, abort on failure otherwise, return NULL and
+ * -1 as size.
+**/
 char * loadFileInMemory(const std::string & fname,size_t * size,bool abortOnError)
 {
 	//vars
@@ -38,6 +47,8 @@ char * loadFileInMemory(const std::string & fname,size_t * size,bool abortOnErro
 	if (fp == NULL)
 	{
 		cerr << "File not found : " << fname << endl;
+		if (size != NULL)
+			*size = -1;
 		if (abortOnError)
 			abort();
 	} else {

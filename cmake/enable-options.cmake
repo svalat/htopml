@@ -7,6 +7,11 @@
 ######################################################
 
 ######################################################
+# Final setup of flags to take in account availability
+# of optional deps.
+# Also display a final summary of global flags status.
+
+######################################################
 if (NOT GTEST_FOUND)
 	set(DISABLE_TESTS "yes")
 endif (NOT GTEST_FOUND)

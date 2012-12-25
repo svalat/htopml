@@ -7,6 +7,9 @@
 ######################################################
 
 ######################################################
+# This file provide the packaging options.
+
+######################################################
 #CPACK support
 INCLUDE(InstallRequiredSystemLibraries)
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Provide a quick way to get a HTML tool like htop to survey application internals.")

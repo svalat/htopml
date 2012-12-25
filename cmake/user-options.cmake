@@ -7,15 +7,19 @@
 ######################################################
 
 ######################################################
+# Define all user options and also apply them if their
+# is no link with optional extern deps.
+
+######################################################
 #User options
-set(LIB_SUFFIX no CACHE STRING "Define the suffix to append to lib directory name to support lib64 exotic name on some distributions.")
-set(ENABLE_JUNIT_OUTPUT no CACHE BOOL "Generate a JUnit XML file for each test while running svUnitTest test suite.")
-set(ENABLE_VALGRIND no CACHE BOOL "Wrap all test execution with valgrind memcheck to generate XML report for each one.")
-set(ENABLE_GCC_COVERAGE no CACHE BOOL "Compile htopml library with coverage GCC CFLAGS.")
-set(DISABLE_TESTS no CACHE BOOL "Disable compilation of svUnitTest tests.")
-set(ENABLE_LOCAL_PATHS no CACHE BOOL "Setup absolute path to run in build directory, not for installation.")
-set(ENABLE_RPATH no CACHE BOOL "Force to use rpath for all libs when installing.")
-set(ENABLE_LISTEN_ALL no CACHE BOOL "Enable listening of all interface instead of 127.0.0.1.")
+set(LIB_SUFFIX          no CACHE STRING "Define the suffix to append to lib directory name to support lib64 exotic name on some distributions.")
+set(ENABLE_JUNIT_OUTPUT no CACHE BOOL   "Generate a JUnit XML file for each test while running svUnitTest test suite.")
+set(ENABLE_VALGRIND     no CACHE BOOL   "Wrap all test execution with valgrind memcheck to generate XML report for each one.")
+set(ENABLE_GCC_COVERAGE no CACHE BOOL   "Compile htopml library with coverage GCC CFLAGS.")
+set(DISABLE_TESTS       no CACHE BOOL   "Disable compilation of svUnitTest tests.")
+set(ENABLE_LOCAL_PATHS  no CACHE BOOL   "Setup absolute path to run in build directory, not for installation.")
+set(ENABLE_RPATH        no CACHE BOOL   "Force to use rpath for all libs when installing.")
+set(ENABLE_LISTEN_ALL   no CACHE BOOL   "Enable listening of all interface instead of 127.0.0.1.")
 
 ######################################################
 #Take care of lib suffix for lib64 directory on some distributions

@@ -19,6 +19,11 @@ namespace htopml
 {
 
 /*********************  CLASS  **********************/
+/**
+ * Quick function wrapper to convert a generic value to string format
+ * if stream operators are supported. It return it as a C++ string.
+ * @param value Define the value to convert.
+**/
 template <class T> std::string toString(const T & value)
 {
 	std::stringstream str;

@@ -7,6 +7,11 @@
 ######################################################
 
 ######################################################
+# Define some macro for unit test execution and definition
+# It's better to use this wrapper to get good integration
+# in jenkins infrastructure.
+
+######################################################
 #For integration of tests in jenkins, but only in self-test mode
 macro (htopml_add_test test_name)
 	#steup wrapper

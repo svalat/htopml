@@ -9,6 +9,7 @@
 /********************  HEADERS  *********************/
 #include <unistd.h>
 #include <libgen.h>
+#include <sys/socket.h>
 #include "DirectoryHttpNode.h"
 #include "TemplatePageHttpNode.h"
 #include "GetRusageHttpNode.h"
@@ -25,6 +26,11 @@ namespace htopml
 {
 
 /********************  GLOBALS  *********************/
+/**
+ * Global variable to force execution of constructor at loading time. By this
+ * way we can start the internal server without actions from user.
+ * It also be necessary for automatic registration of modules.
+**/
 #ifdef ENABLE_LISTEN_ALL
 	HtopmlHttpServer glbAutomaticServer(8080,true);
 #else
@@ -32,6 +38,12 @@ namespace htopml
 #endif
 
 /*******************  FUNCTION  *********************/
+/**
+ * Constructor of htopml server class.
+ * @param port Define the port to listen.
+ * @param autostart If defined to true, automatically start the server.
+ * @param listentAddr If not empty, open the listen port on the given network IP.
+**/
 HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & listentAddr)
 	:HttpServer(port,listentAddr),menu("/menu.js","navigation")
 {
@@ -54,6 +66,10 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & 
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Function to extract the current executable name.
+ * It is used to know if we need to enable the server or not.
+**/
 std::string HtopmlHttpServer::getCurrentExeName(void ) const
 {
 	char buffer[4096];
@@ -65,6 +81,11 @@ std::string HtopmlHttpServer::getCurrentExeName(void ) const
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Check if we need to instrument the current executable. The filter
+ * if defined by HTOPML_INSTR_EXE environnement variable.
+ * Return true if the variable is empty or match the current exe name.
+**/
 bool HtopmlHttpServer::instrumentThisExe(void )
 {
 	const char * fname = getenv("HTOPML_INSTR_EXE");
@@ -76,6 +97,9 @@ bool HtopmlHttpServer::instrumentThisExe(void )
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Return the path to the password file to use to protect the server.
+**/
 std::string HtopmlHttpServer::getPassFile(void ) const
 {
 	std::string res = getenv("HOME");
@@ -84,10 +108,13 @@ std::string HtopmlHttpServer::getPassFile(void ) const
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Helper tp quicly check if the password file exist.
+**/
 bool HtopmlHttpServer::passFileExist(void ) const
 {
 	std::string file = getPassFile();
-	//TODO use fstat which is cleaner for that.
+	//TODO use fstat which is cleaner for that (but less portable).
 	FILE * fp = fopen(file.c_str(),"r");
 	if (fp == NULL)
 	{
@@ -99,12 +126,19 @@ bool HtopmlHttpServer::passFileExist(void ) const
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Register the menu http node in http server.
+**/
 void HtopmlHttpServer::setupMenu(void )
 {
 	this->registerHttpNode(menu);
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Setup the mount points for default ressources common to all htopml
+ * web UI infrastructure.
+**/
 void HtopmlHttpServer::setupCommonRessources(void )
 {
 	//basic ressources required for highcharts
@@ -142,12 +176,21 @@ void HtopmlHttpServer::setupCommonRessources(void )
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Register a new entry in the htoml menu.
+ * @param name Define the name of the entry (displayed text).
+ * @param url Define the url of the menu entry. (eg. linux/htop.html)
+ * @param icon If not empty, define the URL to the icon to display on the menu entry.
+ **/
 void HtopmlHttpServer::addMenuEntry(const std::string& name, const std::string& url, const std::string& icon)
 {
 	this->menu.addEntry(name,url,icon);
 }
 
 /*******************  FUNCTION  *********************/
+/**
+ * Setup the hwloc entries in server.
+**/
 void HtopmlHttpServer::setupHowloc(void )
 {
 	//setup top structure
