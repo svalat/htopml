@@ -369,7 +369,7 @@ class SshNativeProxy(Proxy):
 	remoteUser = None
 	interactiveNode = None
 
-	def __init__(self,localPort,interactiveNode,remoteUser,useHopToNode = False):
+	def __init__(self,localPort,interactiveNode,remoteUser,useHopToNode = False,skipHostKey = False):
 		#setup parent class
 		Proxy.__init__(self,localPort)
 
@@ -377,9 +377,16 @@ class SshNativeProxy(Proxy):
 		self.interactiveNode = interactiveNode
 		self.remoteUser = remoteUser
 		self.useHopToNode = useHopToNode
+		self.skipHostKey = skipHostKey
 		
 	def genCmdNoHop(self):
-		return cmd = ['ssh','-l',self.remoteUser,self.interactiveNode,'-L%d:%s:%d' % (self.localPort,self.targetHost,self.targetPort)]
+		return ['ssh','-l',self.remoteUser,self.interactiveNode,'-L%d:%s:%d' % (self.localPort,self.targetHost,self.targetPort)]
+
+	def genCmdHop(self):
+		if self.skipHostKey:
+			return ['ssh','-l',self.remoteUser,self.targetHost,'-L%d:localhost:%d' % (self.localPort,self.targetPort),'-o','ProxyCommand=ssh %s nc %s 22' % (self.interactiveNode,self.targetHost),'-o','UserKnownHostsFile=/dev/null','-o','StrictHostKeyChecking=no']
+		else:
+			return ['ssh','-l',self.remoteUser,self.targetHost,'-L%d:localhost:%d' % (self.localPort,self.targetPort),'-o','ProxyCommand=ssh %s nc %s 22' % (self.interactiveNode,self.targetHost)]
 	
 	def update(self,targetHost,targetPort):
 		#if same
@@ -399,7 +406,7 @@ class SshNativeProxy(Proxy):
 		#start a new one
 		try:
 			if self.useHopToNode:
-				cmd = self.genCmdNoHop()
+				cmd = self.genCmdHop()
 			else:
 				cmd = self.genCmdNoHop()
 			self.errors += ">> " + ' '.join(cmd) + "\n"
@@ -638,7 +645,7 @@ class EmulateSshProxyOption:
 
 ######################################################
 def showHelpAndQuit():
-	sys.stderr.write("Missing arguments, usage : \n    -> %s local\n    -> %s {ssh|ssh-emulated} {interactive_node} [remote_username]\nThis is more for internal self recall but also :\n    -> {ssh-emulated-local|ssh-emulated-remote} {bounce node} {target host} {target port} [bounce user]\n" % (sys.argv[0],sys.argv[0]))
+	sys.stderr.write("Missing arguments, usage : \n    -> %s local\n    -> %s {ssh|ssh-hop|ssh-hop-no-check|ssh-emulated} {interactive_node} [remote_username]\nThis is more for internal self recall but also :\n    -> {ssh-emulated-local|ssh-emulated-remote} {bounce node} {target host} {target port} [bounce user]\n" % (sys.argv[0],sys.argv[0]))
 	sys.exit(1)
 
 ######################################################
@@ -678,6 +685,10 @@ if __name__ == '__main__':
 		showHelpAndQuit()
 	elif mode == 'ssh' and len(sys.argv) < 3:
 		showHelpAndQuit()
+	elif mode == 'ssh-hop' and len(sys.argv) < 3:
+		showHelpAndQuit()
+	elif mode == 'ssh-hop-no-check' and len(sys.argv) < 3:
+		showHelpAndQuit()
 	elif mode == 'ssh-emulated' and len(sys.argv) < 3:
 		showHelpAndQuit()
 	elif mode == 'ssh-emulated-local' and len(sys.argv) < 5:
@@ -690,13 +701,18 @@ if __name__ == '__main__':
 		interactiveNode = 'localhost'
 		remoteUser = os.getlogin()
 		runProxyInterface(LocalProxy(8080),interactiveNode,remoteUser)
-	elif mode == 'ssh':
+	elif mode == 'ssh' or mode == 'ssh-hop' or mode == 'ssh-hop-no-check':
 		interactiveNode = sys.argv[2]
 		if len(sys.argv) >= 4:
 			remoteUser = sys.argv[3]
 		else:
 			remoteUser = os.getlogin()
-		runProxyInterface(SshNativeProxy(8080,interactiveNode,remoteUser),interactiveNode,remoteUser)
+		if mode == 'ssh':
+			runProxyInterface(SshNativeProxy(8080,interactiveNode,remoteUser),interactiveNode,remoteUser)
+		elif mode == 'ssh-hop':
+			runProxyInterface(SshNativeProxy(8080,interactiveNode,remoteUser,True),interactiveNode,remoteUser)
+		elif mode == 'ssh-hop-no-check':
+			runProxyInterface(SshNativeProxy(8080,interactiveNode,remoteUser,True,True),interactiveNode,remoteUser)
 	elif mode == 'ssh-emulated':
 		interactiveNode = sys.argv[2]
 		if len(sys.argv) >= 4:
