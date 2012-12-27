@@ -9,7 +9,7 @@
 /********************  HEADERS  *********************/
 #include <iostream>
 #include <cstdio>
-#include "src/htopml/HtopmlHttpServer.h"
+#include "HtopmlHttpServer.h"
 
 /**********************  USING  *********************/
 using namespace htopml;

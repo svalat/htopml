@@ -31,7 +31,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/enable-options.cmake)
 ######################################################
 #some include dirs
 include_directories(${CMAKE_SOURCE_DIR}/extern-deps/mongoose)
-include_directories(src/common src/htopml src/http-nodes src/integration src/json src/server)
+include_directories(src/libhtopml/common src/libhtopml/htopml src/libhtopml/http-nodes src/libhtopml/json src/libhtopml/server)
 
 ######################################################
 #manage subdirs
