@@ -43,7 +43,7 @@ Makefile: $(HTOPML_MODULE_FILE)
 
 ######################################################
 lib$(FILE_PREFIX).so: $(OBJ) Makefile
-	$(CXX) $(LDFLAGS) $(HTOPML_LDFLAGS) $(OBJ) -o $@
+	$(CXX) $(LDFLAGS) $(OBJ) $(HTOPML_LDFLAGS) -o $@
 
 ######################################################
 lib$(FILE_PREFIX).a: $(OBJ) Makefile

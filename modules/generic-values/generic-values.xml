@@ -1,0 +1,43 @@
+<?xml version='1.0'?>
+<!--
+######################################################
+#            PROJECT  : htopml                       #
+#            VERSION  : 0.1.0-dev                    #
+#            DATE     : 11/2012                      #
+#            AUTHOR   : Valat Sébastien              #
+#            LICENSE  : CeCILL-C                     #
+######################################################
+-->
+<htopml>
+	<config>
+		<root-mount-point>/generic</root-mount-point>
+		<name>Generic values</name>
+		<!--<icon>memory.png</icon>-->
+	</config>
+	<headers>
+		<header>htopml-generic-values.h</header>
+	</headers>
+	<exports>
+		<export>
+			<name>GenericValues</name>
+			<mount>generic-values.json</mount>
+			<struct>HtopmlNamedValueMap</struct>
+			<update>data = gblHtopmlNamedValueMap;</update>
+		</export>
+	</exports>
+	<graphs>
+		<graph-lines>
+			<container>generic-values</container>
+			<title>Generic values</title>
+			<xlabel>Time</xlabel>
+			<ylabel>Value</ylabel>
+			<maxpoints>400</maxpoints>
+			<refresh>500</refresh>
+			<source>generic-values.json</source>
+			<series>
+				<serie name="malloc()">data.test1</serie>
+				<serie name="malloc2()">data.test2</serie>
+			</series>
+		</graph-lines>
+	</graphs>
+</htopml>

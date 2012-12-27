@@ -40,10 +40,32 @@ template <class T> void typeToJson(JsonState & json,std::ostream& stream, const 
 }
 
 /*******************  FUNCTION  *********************/
+template <class T,class U> void typeToJson(JsonState & json,std::ostream& stream, const std::map<T,U> & iterable)
+{
+	json.openStruct();
+
+	for (typename std::map<T,U>::const_iterator it = iterable.begin() ; it != iterable.end() ; ++it)
+		json.printField(it->first,it->second);
+
+	json.closeStruct();
+}
+
+/*******************  FUNCTION  *********************/
 template <class T> std::ostream& typeToJson(std::ostream& out,const T & value)
 {
 	JsonState state(&out);
 	state.printValue(value);
+	return out;
+}
+
+/*******************  FUNCTION  *********************/
+template <class T> std::ostream& typeToJson(std::ostream& out,const T * value)
+{
+	JsonState state(&out);
+	if (value == NULL)
+		state.printFormattedValue("null");
+	else
+		state.printValue(*value);
 	return out;
 }
 

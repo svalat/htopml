@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <map>
 #include "JsonState.h"
 
 /********************  NAMESPACE  *******************/
@@ -26,6 +27,7 @@ namespace htopml
 
 /*******************  FUNCTION  *********************/
 template <class T> std::ostream& typeToJson(std::ostream& out,const T & value);
+template <class T> std::ostream& typeToJson(std::ostream& out,const T * value);
 
 /*******************  FUNCTION  *********************/
 void typeToJson(JsonState & json,std::ostream& stream, const std::string& value);
@@ -38,6 +40,7 @@ void typeToJson(JsonState & json,std::ostream& stream, bool value);
 /*******************  FUNCTION  *********************/
 template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable);
 template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable);
+template <class T,class U> void typeToJson(JsonState & json,std::ostream& stream, const std::map<T,U> & iterable);
 
 /*******************  FUNCTION  *********************/
 IHSTK_TYPE_TO_JSON_BASIC_TYPE(int,long)
