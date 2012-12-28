@@ -40,4 +40,20 @@ extern int gblHtopmlIsEnabled;
 	#define HTOPML_ACTION(x) do{} while(0)
 #endif //HAVE_HTOPML
 
+/*******************  FUNCTION  *********************/
+#ifdef HAVE_HTOPML
+	#define HTOPML_UPDATE_GENERIC_VALUE(name,value) HTOPML_ACTION(htopml_update_generic_value((name),(value)))
+#else //HAVE_HTOPML
+	#define HTOPML_UPDATE_GENERIC_VALUE(name,value) do{} while(0)
+#endif
+
+/*******************  FUNCTION  *********************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+void htopml_update_generic_value(const char * name,double value);
+#ifdef __cplusplus
+}
+#endif
+	
 #endif //HTOPML_IN_APP_H

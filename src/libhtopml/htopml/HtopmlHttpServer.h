@@ -12,6 +12,7 @@
 /********************  HEADERS  *********************/
 #include "HttpServer.h"
 #include "MenuHttpNode.h"
+#include "DoubleMapHttpNode.h"
 
 /********************  NAMESPACE  *******************/
 namespace htopml
@@ -40,6 +41,7 @@ class HtopmlHttpServer : public HttpServer
 		void addTemplatePage(const std::string & mount,const std::string & file,bool cache=true,const std::string icon = "");
 		bool callHandler(void (*handler)(HtopmlHttpServer & server));
 		static int isEnabled(void);
+		DoubleMapHttpNode & getDoubleMapNode(void) {return this->doubleMapNode;};
 	private:
 		bool instrumentThisExe(void);
 		std::string getCurrentExeName(void) const;
@@ -55,14 +57,23 @@ class HtopmlHttpServer : public HttpServer
 		MenuHttpNode menu;
 		/** Name of the current executable. **/
 		std::string exeName;
+		/** With this, the user application can quicly register some values in a generic way. **/
+		DoubleMapHttpNode doubleMapNode;
 };
 
 /********************  GLOBALS  *********************/
 extern HtopmlHttpServer glbAutomaticServer;
-extern "C" {
-extern int gblHtopmlIsEnabled;
+
 }
 
+/********************  GLOBALS  *********************/
+extern "C" {
+	extern int gblHtopmlIsEnabled;
+}
+
+/*******************  FUNCTION  *********************/
+extern "C" {
+	void htopml_update_generic_value(const char * name,double value);
 }
 
 #endif //HTOPML_HTOPML_HTTP_SERVER_H

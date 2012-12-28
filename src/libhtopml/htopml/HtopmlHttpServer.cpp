@@ -50,7 +50,7 @@ namespace htopml
  * @param listentAddr If not empty, open the listen port on the given network IP.
 **/
 HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & listentAddr)
-	:HttpServer(port,listentAddr),menu("/menu.js","navigation")
+	:HttpServer(port,listentAddr),menu("/menu.js","navigation"),doubleMapNode("/generic/double-map.json")
 {
 	setupMenu();
 	setupCommonRessources();
@@ -67,9 +67,9 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & 
 			fprintf(stderr,"Failed to instrument %s\n",exeName.c_str());
 		//avoid to start childs
 		unsetenv("HTOPML_ENABLE");
-	} else {
+	}/* else {
 		fprintf(stderr,"Skip instrumtation of %s\n",exeName.c_str());
-	}
+	}*/
 }
 
 /*******************  FUNCTION  *********************/
@@ -180,6 +180,9 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	addTemplatePage("/index.htm",HTOPML_WWW_PATH "/index.htm",false);
 	menu.addEntry("Home","/index.htm","/theme/icons/home.png");
 	setHomepage("/index.htm");
+	
+	//double map node
+	this->registerHttpNode(doubleMapNode);
 }
 
 /*******************  FUNCTION  *********************/
@@ -271,4 +274,12 @@ int HtopmlHttpServer::isEnabled(void )
 	}
 }
 
+}
+
+/*******************  FUNCTION  *********************/
+extern "C" {
+	void htopml_update_generic_value(const char* name, double value)
+	{
+		htopml::glbAutomaticServer.getDoubleMapNode().setValue(name,value);
+	}
 }
