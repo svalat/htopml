@@ -157,6 +157,24 @@ void HttpResponse::error(int status, const char* format, ... )
 {
 	//char
 	char buffer[1024];
+	
+	//setup status
+	this->setHttpStatus(status);
+
+	//format the chain
+	va_list param;
+	va_start (param, format);
+	vsnprintf (buffer,sizeof(buffer), format, param);
+	va_end (param);
+
+	getStream() << buffer;
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::printf(const char* format, ... )
+{
+	//char
+	char buffer[1024];
 
 	//format the chain
 	va_list param;

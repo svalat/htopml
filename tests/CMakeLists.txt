@@ -22,3 +22,8 @@ htopml_add_test(testJson)
 add_executable(testCommon testCommon.cpp)
 target_link_libraries(testCommon htopml-common ${SVUNITTEST_LIBRARY})
 htopml_add_test(testCommon)
+
+######################################################
+add_executable(testHttpNode testHttpNode.cpp)
+target_link_libraries(testHttpNode htopml-server ${SVUNITTEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+htopml_add_test(testHttpNode)

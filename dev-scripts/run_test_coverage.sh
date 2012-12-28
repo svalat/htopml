@@ -20,7 +20,7 @@ fi
 
 ######################################################
 # setup test list
-TEST_LIST="./tests/testCommon ./tests/testJson"
+TEST_LIST="./tests/testCommon ./tests/testJson ./tests/testHttpNode"
 
 ######################################################
 #enable debug

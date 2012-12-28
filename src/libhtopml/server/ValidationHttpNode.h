@@ -21,7 +21,7 @@ class ValidationHttpNode : public HttpNode
 {
 	public:
 		ValidationHttpNode(const std::string& path, bool strictPath);
-		virtual void getContent(HttpResponse & response,const HttpRequest & request);
+	virtual void onHttpRequest(HttpResponse& response, const HttpRequest& request);
 };
 
 }

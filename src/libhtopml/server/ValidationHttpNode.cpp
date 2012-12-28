@@ -23,7 +23,7 @@ ValidationHttpNode::ValidationHttpNode(const std::string& path, bool strictPath)
 }
 
 /*******************  FUNCTION  *********************/
-void ValidationHttpNode::getContent(HttpResponse & response,const HttpRequest & request)
+void ValidationHttpNode::onHttpRequest(HttpResponse& response, const HttpRequest& request)
 {
 	response.setHttpStatus(200);
 	response.printf("Ok, get the page at URI : %s\n",request.getUri().c_str());
