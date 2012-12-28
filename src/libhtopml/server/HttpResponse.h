@@ -52,6 +52,13 @@ class HttpResponse
 		void setExtraHttpHeader(const std::string & name,const std::string & value);
 		void useMongooseFile(const std::string & fname);
 		void requireAuth(void);
+		HttpResponseType getType(void) const;
+		const std::string & getMimeType(void) const;
+		int getHttpStatus(void) const;
+	protected:
+		virtual void connSendFile(mg_connection* conn,const std::string & path);
+		virtual void connWrite(mg_connection* conn,void* data, size_t size);
+		virtual void connPrintf(mg_connection* conn,const char * format,...);
 	private:
 		/** Copy is not supported. **/
 		HttpResponse(const HttpResponse & response);

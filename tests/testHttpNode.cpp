@@ -11,6 +11,8 @@
 #include <cstring>
 #include <svUnitTest/svUnitTest.h>
 #include <ValidationHttpNode.h>
+#include <mongoose.h>
+#include "mocks/MockHttpNode.h"
 
 /**********************  USING  *********************/
 using namespace std;
@@ -18,7 +20,7 @@ using namespace htopml;
 using namespace svUnitTest;
 
 /*********************  CONSTS  *********************/
-// static const std::string TEST_STRING_1 = "This is a test to load quicly a file in memory to send it to user as http anwser.\n";
+static const std::string TEST_STRING_1 = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 41\r\n\r\nOk, get the page at URI : /test/test.txt\n";
 
 /*******************  FUNCTION  *********************/
 static HttpNode * node = NULL;
@@ -88,8 +90,13 @@ SVUT_DECLARE_FLAT_TEST(HttpNode, getBasePath)
 /*******************  FUNCTION  *********************/
 SVUT_DECLARE_FLAT_TEST(HttpNode, onRequest)
 {
-	HttpResponse response;
-	SVUT_ASSERT_TODO("todo");
+	MockHttpResponse response;
+	mg_request_info info;
+	info.uri = "/test/test.txt";
+	HttpRequest request(&info,"testuser");
+	node->onHttpRequest(response,request);
+	response.flushInConnection(NULL);
+	SVUT_ASSERT_EQUAL(TEST_STRING_1,response.buffer.str());
 }
 
 /*******************  FUNCTION  *********************/

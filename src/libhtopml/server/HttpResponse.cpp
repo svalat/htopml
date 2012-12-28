@@ -114,7 +114,7 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 			break;
 		case HTTP_RESPONSE_MONGOOSE_FILE:
 			assert(mongooseFile.empty() == false);
-			mg_send_file(conn,mongooseFile.c_str());
+			connSendFile(conn,mongooseFile.c_str());
 			return;
 		case HTTP_RESPONSE_RAW_DATA:
 			assert(rawData != NULL);
@@ -129,7 +129,7 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 			size = tmp.size();
 			break;
 		case HTTP_RESPONSE_REQUIRE_AUTH:
-			mg_printf(conn,
+			connPrintf(conn,
 						"HTTP/1.1 401 Unauthorized\r\n"
 						"Content-Length: 0\r\n"
 						"WWW-Authenticate: Digest qop=\"auth\", "
@@ -143,13 +143,13 @@ void HttpResponse::flushInConnection(mg_connection* conn)
 			break;
 	}
 	
-	mg_printf(conn,
+	connPrintf(conn,
 			"HTTP/1.1 %d OK\r\n"
 			"Content-Type: %s\r\n"
 			"Content-Length: %lu\r\n" // Always set Content-Length
 			"%s\r\n",
 			status,mimeType.c_str(),size,extraHeaders.str().c_str());
-	mg_write(conn,data,size);
+	connWrite(conn,data,size);
 }
 
 /*******************  FUNCTION  *********************/
@@ -179,8 +179,11 @@ void HttpResponse::printf(const char* format, ... )
 	//format the chain
 	va_list param;
 	va_start (param, format);
-	vsnprintf (buffer,sizeof(buffer), format, param);
+	size_t s = vsnprintf (buffer,sizeof(buffer), format, param);
 	va_end (param);
+	
+	//check
+	assert(s < sizeof(buffer) - 1);
 
 	getStream() << buffer;
 }
@@ -210,6 +213,55 @@ void HttpResponse::requireAuth(void )
 {
 	assert(type == HTTP_RESPONSE_EMPTY || type == HTTP_RESPONSE_REQUIRE_AUTH);
 	type = HTTP_RESPONSE_REQUIRE_AUTH;
+}
+
+/*******************  FUNCTION  *********************/
+int HttpResponse::getHttpStatus(void ) const
+{
+	return this->status;
+}
+
+/*******************  FUNCTION  *********************/
+const std::string& HttpResponse::getMimeType(void ) const
+{
+	return this->mimeType;
+}
+
+/*******************  FUNCTION  *********************/
+HttpResponseType HttpResponse::getType(void ) const
+{
+	return this->type;
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::connSendFile(mg_connection* conn, const std::string& path)
+{
+	mg_send_file(conn,path.c_str());
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::connWrite(mg_connection* conn, void* data, size_t size)
+{
+	mg_write(conn,data,size);
+}
+
+/*******************  FUNCTION  *********************/
+void HttpResponse::connPrintf(mg_connection* conn, const char* format, ... )
+{
+	//char
+	char buffer[1024];
+
+	//format the chain
+	va_list param;
+	va_start (param, format);
+	size_t s = vsnprintf (buffer,sizeof(buffer), format, param);
+	va_end (param);
+	
+	//check
+	assert(s < sizeof(buffer) - 1);
+	
+	//write
+	connWrite(conn,buffer,s);
 }
 
 }
