@@ -162,7 +162,7 @@ string HttpServer::getConnAuth(mg_connection* conn) const
 	if (!mg_parse_auth_header(conn, buf, sizeof(buf), &ah))
 		return "";
 
-	if (ah.user == NULL || ah.user == "\0")
+	if (ah.user == NULL || *ah.user == '\0')
 		return "";
 
 	string pass = getLoginPass(ah.user);

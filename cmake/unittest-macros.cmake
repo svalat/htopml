@@ -23,7 +23,7 @@ macro (htopml_add_test test_name)
 
 	#setup output options
 	if (ENABLE_JUNIT_OUTPUT)
-		set(tmp_test_run_option --gtest_output=xml:${CMAKE_CURRENT_BINARY_DIR}/${test_name}.junit.xml)
+		set(tmp_test_run_option -m junit_xml -o ${CMAKE_CURRENT_BINARY_DIR}/${test_name}.junit.xml)
 	endif (ENABLE_JUNIT_OUTPUT)
 
 	#gen text command and register

@@ -8,12 +8,15 @@
 
 /********************  HEADERS  *********************/
 #include <sstream>
-#include <gtest/gtest.h>
-#include "../src/json/TypeToJson.h"
+#include <svUnitTest/svUnitTest.h>
+#include <TypeToJson.h>
+#include <list>
+#include <vector>
 
 /**********************  USING  *********************/
 using namespace std;
 using namespace htopml;
+using namespace svUnitTest;
 
 /*********************  CONSTS  *********************/
 static const char * TEST_STRING_1 = "\"coucou\"";
@@ -27,6 +30,7 @@ static const char * TEST_STRING_5 = "{\n\
 \t\"d\": true,\n\
 \t\"e\": false\n\
 }";
+static const char * TEST_STRING_6 = "[ 1, 2, 3, 4]";
 
 /*********************  STRUCT  *********************/
 struct TestStruct1
@@ -51,51 +55,81 @@ void typeToJson(JsonState & json,std::ostream& stream, const TestStruct1 & value
 }
 
 /*******************  FUNCTION  *********************/
-TEST(TypeToJson, basicString)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicString)
 {
 	string value = "coucou";
 	stringstream str;
 	typeToJson(str,value);
-	EXPECT_EQ(TEST_STRING_1,str.str());
+	SVUT_ASSERT_EQUAL(TEST_STRING_1,str.str());
 }
 
 /*******************  FUNCTION  *********************/
-TEST(TypeToJson, basicStringEscape)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicStringEscape)
 {
 	string value = "coucou \" guillimet";
 	stringstream str;
 	typeToJson(str,value);
-	EXPECT_EQ(TEST_STRING_4,str.str());
+	SVUT_ASSERT_EQUAL(TEST_STRING_4,str.str());
 }
 
 /*******************  FUNCTION  *********************/
-TEST(TypeToJson, basicInt)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicInt)
 {
 	stringstream str;
 	typeToJson(str,25);
-	EXPECT_EQ(TEST_STRING_2,str.str());
+	SVUT_ASSERT_EQUAL(TEST_STRING_2,str.str());
 }
 
 /*******************  FUNCTION  *********************/
-TEST(TypeToJson, basicFloat)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicULong)
+{
+	stringstream str;
+	typeToJson(str,(unsigned long)25);
+	SVUT_ASSERT_EQUAL(TEST_STRING_2,str.str());
+}
+
+/*******************  FUNCTION  *********************/
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicFloat)
 {
 	stringstream str;
 	typeToJson(str,25.3);
-	EXPECT_EQ(TEST_STRING_3,str.str());
+	SVUT_ASSERT_EQUAL(TEST_STRING_3,str.str());
 }
 
 /*******************  FUNCTION  *********************/
-TEST(TypeToJson, basicStruct1)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, basicStruct1)
 {
 	stringstream str;
 	TestStruct1 obj = {10,25.3,{1,2,3,4},true,false};
 	typeToJson(str,obj);
-	EXPECT_EQ(TEST_STRING_5,str.str());
+	SVUT_ASSERT_EQUAL(TEST_STRING_5,str.str());
 }
 
 /*******************  FUNCTION  *********************/
-int main(int argc, char **argv)
+SVUT_DECLARE_FLAT_TEST(TypeToJson, complexStdVectorInt)
 {
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
+	stringstream str;
+	vector<int> obj;
+	obj.push_back(1);
+	obj.push_back(2);
+	obj.push_back(3);
+	obj.push_back(4);
+	typeToJson(str,obj);
+	SVUT_ASSERT_EQUAL(TEST_STRING_6,str.str());
 }
+
+/*******************  FUNCTION  *********************/
+SVUT_DECLARE_FLAT_TEST(TypeToJson, complexStdListInt)
+{
+	stringstream str;
+	list<int> obj;
+	obj.push_back(1);
+	obj.push_back(2);
+	obj.push_back(3);
+	obj.push_back(4);
+	typeToJson(str,obj);
+	SVUT_ASSERT_EQUAL(TEST_STRING_6,str.str());
+}
+
+/*******************  FUNCTION  *********************/
+SVUT_USE_DEFAULT_MAIN

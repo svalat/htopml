@@ -12,5 +12,5 @@
 
 ######################################################
 find_package(Threads REQUIRED)
-find_package(GTest QUIET)
+find_package(svUnitTest QUIET)
 find_package(Hwloc QUIET)

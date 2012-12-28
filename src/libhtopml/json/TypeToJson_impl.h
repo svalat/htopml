@@ -33,7 +33,7 @@ template <class T> void typeToJson(JsonState & json,std::ostream& stream, const 
 {
 	json.openArray();
 
-	for (typename std::vector<T>::const_iterator it = iterable.begin() ; it != iterable.end() ; ++it)
+	for (typename std::list<T>::const_iterator it = iterable.begin() ; it != iterable.end() ; ++it)
 		json.printValue(*it);
 
 	json.closeArray();
