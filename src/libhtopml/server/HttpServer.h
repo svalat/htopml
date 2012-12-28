@@ -44,6 +44,7 @@ class HttpServer
 		void setPasswordFile(const std::string & path);
 		void quickRegisterFile(const std::string & mountPoint,const std::string & filePath, bool useCache = true,const std::string & mimeType = "auto");
 		void setHomepage(const std::string & homepage);
+		bool isRunning(void) const;
 	private:
 		mg_context *ctx;
 		int port;

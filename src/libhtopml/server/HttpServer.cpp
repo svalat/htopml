@@ -268,4 +268,10 @@ void HttpServer::quickRegisterFile(const string& mountPoint, const string& fileP
 	registerHttpNode(new FileHttpNode(mountPoint,filePath,useCache,mimeType),true);
 }
 
+/*******************  FUNCTION  *********************/
+bool HttpServer::isRunning(void ) const
+{
+	return (this->status == SERVER_RUNNING);
+}
+
 }

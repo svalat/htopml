@@ -23,7 +23,7 @@ namespace htopml
  * It's based on global object constructor mechanism.
  * @param handler Define a handler function to call to register the component.
 **/
-#define REGISTER_TO_SERVER(handler) bool __call_handler_##handler = htopml::glbAutomaticServer.callHandler(handler)
+#define HTOPML_REGISTER_MODULE(handler) bool __call_handler_##handler = htopml::glbAutomaticServer.callHandler(handler)
 
 /*********************  CLASS  **********************/
 /**
@@ -39,6 +39,7 @@ class HtopmlHttpServer : public HttpServer
 		void addMenuEntry(const std::string & name,const std::string & url,const std::string & icon = "");
 		void addTemplatePage(const std::string & mount,const std::string & file,bool cache=true,const std::string icon = "");
 		bool callHandler(void (*handler)(HtopmlHttpServer & server));
+		static int isEnabled(void);
 	private:
 		bool instrumentThisExe(void);
 		std::string getCurrentExeName(void) const;
@@ -58,6 +59,9 @@ class HtopmlHttpServer : public HttpServer
 
 /********************  GLOBALS  *********************/
 extern HtopmlHttpServer glbAutomaticServer;
+extern "C" {
+extern int gblHtopmlIsEnabled;
+}
 
 }
 

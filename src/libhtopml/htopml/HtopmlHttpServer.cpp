@@ -21,6 +21,11 @@
 #include "HwlocThreadBindingHttpNode.h"
 #endif //HAVE_HWLOC
 
+/********************  GLOBALS  *********************/
+extern "C" {
+	int gblHtopmlIsEnabled = htopml::HtopmlHttpServer::isEnabled();
+}
+
 /********************  NAMESPACE  *******************/
 namespace htopml
 {
@@ -56,10 +61,12 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & 
 	if (passFileExist())
 		this->setPasswordFile(getPassFile());
 
-	if (autostart && instrumentThisExe())
+	if (autostart && gblHtopmlIsEnabled && instrumentThisExe())
 	{
 		if (!this->start())
 			fprintf(stderr,"Failed to instrument %s\n",exeName.c_str());
+		//avoid to start childs
+		unsetenv("HTOPML_ENABLE");
 	} else {
 		fprintf(stderr,"Skip instrumtation of %s\n",exeName.c_str());
 	}
@@ -247,9 +254,21 @@ void HtopmlHttpServer::addTemplatePage(const std::string& mount, const std::stri
 bool HtopmlHttpServer::callHandler(void (*handler)(HtopmlHttpServer & server))
 {
 	assert(handler != NULL);
-	if (handler != NULL)
+	if (handler != NULL && gblHtopmlIsEnabled)
 		handler(*this);
 	return true;
+}
+
+/*******************  FUNCTION  *********************/
+int HtopmlHttpServer::isEnabled(void )
+{
+	char * value = getenv("HTOPML_ENABLE");
+	if (value != NULL && strncmp(value,"1",2) == 0)
+	{
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 }

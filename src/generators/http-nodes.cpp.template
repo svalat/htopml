@@ -40,4 +40,4 @@ static void register_user_pages(htopml::HtopmlHttpServer & server)
 	server.addMenuEntry("$XSL{{/htopml/config/name}}","$XSL{{/htopml/config/root-mount-point}}/{{FILE_PREFIX}}-view.html",icon);
 };
 
-REGISTER_TO_SERVER(register_user_pages);
+HTOPML_REGISTER_MODULE(register_user_pages);

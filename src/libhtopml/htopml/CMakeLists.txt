@@ -8,7 +8,7 @@
 
 ######################################################
 set(HTOPML_SOURCES HtopmlHttpServer.cpp)
-set(HTOPML_HEADERS HtopmlHttpServer.h)
+set(HTOPML_HEADERS HtopmlHttpServer.h Htopml.h)
 
 ######################################################
 #build libhtopml
