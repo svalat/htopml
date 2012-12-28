@@ -61,7 +61,7 @@ bool HttpServer::start()
 
 	//gen options
 	const char *options[11] = {"listening_ports", port.c_str(), "num_threads", "1" ,"error_log_file","mongoose.err.log","authentication_domain","htopml", NULL, NULL, NULL};
-	int cntOptions = 8;
+	//int cntOptions = 8;
 
 	//optional onces.
 	//TODO need to check how to use, but mongoose maybe manage pass with a cache, so may be ok (but failed)
@@ -157,7 +157,7 @@ string HttpServer::getLoginPass(string login) const
 string HttpServer::getConnAuth(mg_connection* conn) const
 {
 	struct mg_auth_header ah;
-	char line[256], f_user[256], ha1[256], f_domain[256], buf[8192], *p;
+	char buf[8192];
 
 	if (!mg_parse_auth_header(conn, buf, sizeof(buf), &ah))
 		return "";
