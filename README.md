@@ -10,6 +10,17 @@ the nice rending we can to with html/js/svg.
 
 Currently it a more a prototype than a finished product.
 
+Some screenshots
+----------------
+
+Example on CPU usage :
+
+![CPU usage](./screens/top.png?raw=true "Example of CPU usage")
+
+Example looking on thread bindings thanks to patched hwloc :
+
+![Thread binding](./screens/thread-binding.png?raw=true "Thread binding")
+
 Compile and install
 -------------------
 
