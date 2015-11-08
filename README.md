@@ -1,6 +1,8 @@
 Htopml
 ======
 
+[![Build Status](https://travis-ci.org/svalat/htopml.svg?branch=master)](https://travis-ci.org/svalat/htopml)
+
 What it is
 ----------
 
