@@ -18,7 +18,7 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable)
+/*template <class T> void convertToJson(JsonState & json,std::ostream& stream, const std::vector<T> & iterable)
 {
 	json.openArray();
 
@@ -26,10 +26,10 @@ template <class T> void typeToJson(JsonState & json,std::ostream& stream, const 
 		json.printValue(*it);
 
 	json.closeArray();
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-template <class T> void typeToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable)
+/*template <class T> void convertToJson(JsonState & json,std::ostream& stream, const std::list<T> & iterable)
 {
 	json.openArray();
 
@@ -37,10 +37,10 @@ template <class T> void typeToJson(JsonState & json,std::ostream& stream, const 
 		json.printValue(*it);
 
 	json.closeArray();
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-template <class T,class U> void typeToJson(JsonState & json,std::ostream& stream, const std::map<T,U> & iterable)
+/*template <class T,class U> void convertToJson(JsonState & json,std::ostream& stream, const std::map<T,U> & iterable)
 {
 	json.openStruct();
 
@@ -48,18 +48,18 @@ template <class T,class U> void typeToJson(JsonState & json,std::ostream& stream
 		json.printField(it->first,it->second);
 
 	json.closeStruct();
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,const T & value)
+/*template <class T> std::ostream& convertToJson(std::ostream& out,const T & value)
 {
 	JsonState state(&out);
 	state.printValue(value);
 	return out;
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-template <class T> std::ostream& typeToJson(std::ostream& out,const T * value)
+/*template <class T> std::ostream& convertToJson(std::ostream& out,const T * value)
 {
 	JsonState state(&out);
 	if (value == NULL)
@@ -67,7 +67,7 @@ template <class T> std::ostream& typeToJson(std::ostream& out,const T * value)
 	else
 		state.printValue(*value);
 	return out;
-}
+}*/
 
 }
 

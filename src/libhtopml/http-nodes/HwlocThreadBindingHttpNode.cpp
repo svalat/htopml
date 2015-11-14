@@ -186,7 +186,7 @@ std::string HwlocThreadBindingHttpNode::getBindingFromCpuset(hwloc_bitmap_t cpus
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState& state, ostream& stream, const HwlocThreadBinding& value)
+void convertToJson(JsonState& state, const HwlocThreadBinding& value)
 {
 	state.openStruct();
 	state.printField("threadId",value.threadId);
@@ -196,7 +196,7 @@ void typeToJson(JsonState& state, ostream& stream, const HwlocThreadBinding& val
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState& state, ostream& stream, const HwlocBinding& value)
+void convertToJson(JsonState& state, const HwlocBinding& value)
 {
 	state.openStruct();
 	state.printField("processId",value.processId);

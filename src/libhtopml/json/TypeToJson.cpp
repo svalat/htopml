@@ -17,13 +17,13 @@ namespace htopml
 {
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const std::string& value)
+/*void convertToJson(JsonState & json,std::ostream& stream, const std::string& value)
 {
-	return typeToJson(json,stream,value.c_str());
-}
+	return convertToJson(json,stream,value.c_str());
+}*/
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const char* value)
+/*void convertToJson(JsonState & json,std::ostream& stream, const char* value)
 {
 	stream << '\"';
 	while (value != NULL && *value != '\0')
@@ -35,32 +35,32 @@ void typeToJson(JsonState & json,std::ostream& stream, const char* value)
 		value++;
 	}
 	stream << '"';
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, unsigned long value)
+/*void convertToJson(JsonState & json,std::ostream& stream, unsigned long value)
 {
 	stream << value;
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, long value)
+/*void convertToJson(JsonState & json,std::ostream& stream, long value)
 {
 	stream << value;
-}
+}*/
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, double value)
+/*void convertToJson(JsonState & json,std::ostream& stream, double value)
 {
 	stream << value;
-}
+}*/
 
-void typeToJson(JsonState & json,std::ostream& stream, bool value)
+/*void convertToJson(JsonState & json,std::ostream& stream, bool value)
 {
 	if (value)
 		stream << "true";
 	else
 		stream << "false";
-}
+}*/
 
 }

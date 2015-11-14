@@ -3,7 +3,7 @@
 #include "{{FILE_PREFIX}}-json.h"
 
 //XSL-FOREACH /htopml/structs/struct
-void typeToJson(htopml::JsonState& json, std::ostream& stream, const $XSL{{@typename}} & value)
+void convertToJson(htopml::JsonState& json, const $XSL{{@typename}} & value)
 {
 	json.openStruct();
 	//XSL-FOREACH field

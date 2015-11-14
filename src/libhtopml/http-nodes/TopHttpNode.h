@@ -73,8 +73,8 @@ class TopHttpNode : public JsonHttpNode<LinuxTop>
 };
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const LinuxTop & value);
-void typeToJson(JsonState & json,std::ostream& stream, const LinuxTopCpu & value);
+void convertToJson(JsonState & json, const LinuxTop & value);
+void convertToJson(JsonState & json, const LinuxTopCpu & value);
 
 }
 

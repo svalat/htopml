@@ -15,7 +15,7 @@ typedef $XSL{{.}} $XSL{{@name}};
 
 //functions
 //XSL-FOREACH /htopml/structs/struct
-void typeToJson(htopml::JsonState& json, std::ostream& stream, const $XSL{{@typename}} & value);
+void convertToJson(htopml::JsonState& json, const $XSL{{@typename}} & value);
 //XSL-END-FOREACH
 
 #endif //HTOPML_AUTO_JSON_TO_TYPE_H

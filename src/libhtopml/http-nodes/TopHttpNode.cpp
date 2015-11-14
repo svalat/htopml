@@ -206,7 +206,7 @@ char* TopHttpNode::findEndOfLine(char* start, bool cutWithZero)
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState& json, std::ostream& stream, const LinuxTop& value)
+void convertToJson(JsonState& json, const LinuxTop& value)
 {
 	json.openStruct();
 	json.printFieldArray("cpus",value.cpu,value.nbCpu);
@@ -222,7 +222,7 @@ void typeToJson(JsonState& json, std::ostream& stream, const LinuxTop& value)
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState& json, std::ostream& stream, const LinuxTopCpu& value)
+void convertToJson(JsonState& json, const LinuxTopCpu& value)
 {
 	json.openStruct();
 	json.printField("user",value.user);

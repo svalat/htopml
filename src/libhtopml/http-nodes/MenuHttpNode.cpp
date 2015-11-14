@@ -43,7 +43,7 @@ void MenuHttpNode::onHttpRequest(HttpResponse& response, const HttpRequest& requ
 
 	//generate output
 	out << "var " << listId << " = " << endl;
-	typeToJson(out,entries);
+	convertToJson(out,entries);
 	out << ";" << endl;
 }
 
@@ -55,7 +55,7 @@ void MenuHttpNode::addEntry(const std::string& name, const std::string& url, con
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState& json, ostream& stream, const MenuEntry& value)
+void convertToJson(JsonState& json, const MenuEntry& value)
 {
 	json.openStruct();
 	json.printField("name",value.name);

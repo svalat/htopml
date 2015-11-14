@@ -29,8 +29,8 @@ class GetRusageHttpNode : public JsonHttpNode<rusage>
 };
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const rusage & value);
-void typeToJson(JsonState & json,std::ostream& stream, const timeval & value);
+void convertToJson(JsonState & json, const rusage & value);
+void convertToJson(JsonState & json, const timeval & value);
 
 }
 

@@ -39,8 +39,8 @@ struct HwlocBinding
 };
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & state,std::ostream& stream,const HwlocThreadBinding & value);
-void typeToJson(JsonState & state,std::ostream& stream,const HwlocBinding & value);
+void convertToJson(JsonState & state,const HwlocThreadBinding & value);
+void convertToJson(JsonState & state,const HwlocBinding & value);
 
 /*********************  CLASS  **********************/
 class HwlocThreadBindingHttpNode : public JsonHttpNode<HwlocBinding>

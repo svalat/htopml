@@ -55,7 +55,7 @@ static int getMemUsage()
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const rusage & value)
+void convertToJson(JsonState & json, const rusage & value)
 {
 	json.openStruct();
 	json.printField("ru_utime",value.ru_utime);
@@ -80,7 +80,7 @@ void typeToJson(JsonState & json,std::ostream& stream, const rusage & value)
 }
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const timeval & value)
+void convertToJson(JsonState & json, const timeval & value)
 {
 	json.openStruct();
 	json.printField("tv_sec",(unsigned long)value.tv_sec);

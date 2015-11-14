@@ -24,13 +24,13 @@ static const char * TEST_STRING_2 = "25";
 static const char * TEST_STRING_3 = "25.3";
 static const char * TEST_STRING_4 = "\"coucou \\\" guillimet\"";
 static const char * TEST_STRING_5 = "{\n\
-\t\"a\": 10,\n\
-\t\"b\": 25.3,\n\
-\t\"c\": [ 1, 2, 3, 4],\n\
-\t\"d\": true,\n\
-\t\"e\": false\n\
+\t\"a\":10,\n\
+\t\"b\":25.3,\n\
+\t\"c\":[1, 2, 3, 4],\n\
+\t\"d\":true,\n\
+\t\"e\":false\n\
 }";
-static const char * TEST_STRING_6 = "[ 1, 2, 3, 4]";
+static const char * TEST_STRING_6 = "[1, 2, 3, 4]";
 
 /*********************  STRUCT  *********************/
 struct TestStruct1
@@ -43,7 +43,7 @@ struct TestStruct1
 };
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const TestStruct1 & value)
+void convertToJson(JsonState & json, const TestStruct1 & value)
 {
 	json.openStruct();
 	json.printField("a",value.a);
@@ -59,7 +59,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicString)
 {
 	string value = "coucou";
 	stringstream str;
-	typeToJson(str,value);
+	convertToJson(str,value);
 	SVUT_ASSERT_EQUAL(TEST_STRING_1,str.str());
 }
 
@@ -68,7 +68,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicStringEscape)
 {
 	string value = "coucou \" guillimet";
 	stringstream str;
-	typeToJson(str,value);
+	convertToJson(str,value);
 	SVUT_ASSERT_EQUAL(TEST_STRING_4,str.str());
 }
 
@@ -76,7 +76,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicStringEscape)
 SVUT_DECLARE_FLAT_TEST(TypeToJson, basicInt)
 {
 	stringstream str;
-	typeToJson(str,25);
+	convertToJson(str,25);
 	SVUT_ASSERT_EQUAL(TEST_STRING_2,str.str());
 }
 
@@ -84,7 +84,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicInt)
 SVUT_DECLARE_FLAT_TEST(TypeToJson, basicULong)
 {
 	stringstream str;
-	typeToJson(str,(unsigned long)25);
+	convertToJson(str,(unsigned long)25);
 	SVUT_ASSERT_EQUAL(TEST_STRING_2,str.str());
 }
 
@@ -92,7 +92,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicULong)
 SVUT_DECLARE_FLAT_TEST(TypeToJson, basicFloat)
 {
 	stringstream str;
-	typeToJson(str,25.3);
+	convertToJson(str,25.3);
 	SVUT_ASSERT_EQUAL(TEST_STRING_3,str.str());
 }
 
@@ -101,7 +101,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, basicStruct1)
 {
 	stringstream str;
 	TestStruct1 obj = {10,25.3,{1,2,3,4},true,false};
-	typeToJson(str,obj);
+	convertToJson(str,obj);
 	SVUT_ASSERT_EQUAL(TEST_STRING_5,str.str());
 }
 
@@ -114,7 +114,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, complexStdVectorInt)
 	obj.push_back(2);
 	obj.push_back(3);
 	obj.push_back(4);
-	typeToJson(str,obj);
+	convertToJson(str,obj);
 	SVUT_ASSERT_EQUAL(TEST_STRING_6,str.str());
 }
 
@@ -127,7 +127,7 @@ SVUT_DECLARE_FLAT_TEST(TypeToJson, complexStdListInt)
 	obj.push_back(2);
 	obj.push_back(3);
 	obj.push_back(4);
-	typeToJson(str,obj);
+	convertToJson(str,obj);
 	SVUT_ASSERT_EQUAL(TEST_STRING_6,str.str());
 }
 

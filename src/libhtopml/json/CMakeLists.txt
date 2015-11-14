@@ -7,8 +7,8 @@
 ######################################################
 
 ######################################################
-set(JSON_SOURCES JsonState.cpp TypeToJson.cpp)
-set(JSON_HEADERS JsonState.h TypeToJson.h JsonState_impl.h TypeToJson_impl.h)
+set(JSON_SOURCES JsonState.cpp TypeToJson.cpp ConvertToJson.cpp)
+set(JSON_HEADERS JsonState.h TypeToJson.h JsonState_impl.h TypeToJson_impl.h ConvertToJson.h ConvertToJson_impl.h FastBufferdStream.hpp)
 
 ######################################################
 add_library(htopml-json ${JSON_SOURCES})

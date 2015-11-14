@@ -47,7 +47,7 @@ void JsonHttpNode<T>::onHttpRequest(HttpResponse & response,const HttpRequest & 
 	response.setHttpStatus(200);
 	response.setMimeType("application/json");
 	onRequest(request);
-	typeToJson(response.getStream(),*value);
+	convertToJson(response.getStream(),*value);
 }
 
 /*******************  FUNCTION  *********************/

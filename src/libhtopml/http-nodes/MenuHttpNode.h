@@ -42,7 +42,7 @@ class MenuHttpNode : public HttpNode
 };
 
 /*******************  FUNCTION  *********************/
-void typeToJson(JsonState & json,std::ostream& stream, const MenuEntry & value);
+void convertToJson(JsonState & json, const MenuEntry & value);
 
 }
 
