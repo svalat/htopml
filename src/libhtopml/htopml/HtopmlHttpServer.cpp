@@ -151,6 +151,7 @@ void HtopmlHttpServer::setupCommonRessources(void )
 	//basic ressources required for highcharts
 	DirectoryHttpNode * ressourcesNode = new DirectoryHttpNode("/ressources/",HTOPML_EXTDEPS_PATH);
 	ressourcesNode->registerFile("jquery/jquery.min.js");
+	ressourcesNode->registerFile("d3js/d3.min.js");
 	ressourcesNode->registerFile("highcharts/js/highcharts.js");
 	ressourcesNode->registerFile("highcharts/js/highcharts-more.js");
 	ressourcesNode->registerFile("highcharts/js/modules/exporting.js");
