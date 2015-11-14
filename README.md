@@ -109,7 +109,7 @@ relay with port forwarding to look on it and you can switch from one to another 
 Licence & status
 ----------------
 
-It is currently a draft prototype so expect miracles.
+It is currently a draft prototype so don't expect miracles.
 
 It is distributed under CeCILL-C lincence. But CAUTION, the web GUI used http://www.highcharts.com/ for the charts and this library
 is OpenSource (CC) only for personal and non-commercial use, in other cases, look on their site.
