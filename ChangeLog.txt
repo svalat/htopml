@@ -6,12 +6,9 @@
 #            LICENSE  : CeCILL-C                     #
 ######################################################
 
-######################################################
-#build htopmld exe (for tests)
-add_executable(htopmld main.cpp)
-target_link_libraries(htopmld htopml)
-target_link_libraries(htopmld ${CMAKE_THREAD_LIBS_INIT})
+Version 0.1.0 (December 21, 2015)
 
-######################################################
-INSTALL(TARGETS htopmld
-        RUNTIME DESTINATION bin)
+ * First release
+ * Provide basic example of htop
+ * Provide some plugin examples (malloc, statm, open files, env...)
+ * First real usage in one project (lhcb-daqpipe-v2)

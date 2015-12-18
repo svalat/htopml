@@ -1,8 +1,8 @@
 #!/bin/bash
 ######################################################
 #            PROJECT  : htmltop                      #
-#            VERSION  : 0.1.0-dev                    #
-#            DATE     : 11/2012                      #
+#            VERSION  : 0.1.0                        #
+#            DATE     : 12/2015                      #
 #            AUTHOR   : Valat Sébastien              #
 #            LICENSE  : CeCILL-C                     #
 ######################################################

@@ -1,7 +1,7 @@
 ######################################################
 #            PROJECT  : htmltop                      #
-#            VERSION  : 0.1.0-dev                    #
-#            DATE     : 11/2012                      #
+#            VERSION  : 0.1.0                        #
+#            DATE     : 12/2015                      #
 #            AUTHOR   : Valat Sébastien              #
 #            LICENSE  : CeCILL-C                     #
 ######################################################
@@ -16,7 +16,7 @@ SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Provide a quick way to get a HTML tool li
 SET(CPACK_PACKAGE_VENDOR "Sébastien Valat")
 # SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING-EN.txt")
-SET(CPACK_PACKAGE_VERSION "0.1.0-dev")
+SET(CPACK_PACKAGE_VERSION "0.1.0")
 SET(CPACK_PACKAGE_VERSION_MAJOR "0")
 SET(CPACK_PACKAGE_VERSION_MINOR "1")
 SET(CPACK_PACKAGE_VERSION_PATCH "0")

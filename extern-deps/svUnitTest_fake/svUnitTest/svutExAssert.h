@@ -1,7 +1,7 @@
 /*****************************************************
              PROJECT  : svUnitTest
              VERSION  : 0.5.0-dev
-             DATE     : 11/2012
+             DATE     : 12/2015
              AUTHOR   : Valat Sébastien
              LICENSE  : CeCILL-C
 *****************************************************/

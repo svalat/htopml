@@ -4,6 +4,6 @@ libdir=${prefix}/lib@LIB_SUFFIX@
 
 Name: htopml
 Description: The htopml library.
-Version: 0.1.0-dev
+Version: 0.1.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -lhtopml

@@ -1,7 +1,7 @@
 ######################################################
 #            PROJECT  : htopml                       #
-#            VERSION  : 0.1.0-dev                    #
-#            DATE     : 11/2012                      #
+#            VERSION  : 0.1.0                        #
+#            DATE     : 12/2015                      #
 #            AUTHOR   : Valat Sébastien              #
 #            LICENSE  : CeCILL-C                     #
 ######################################################
@@ -10,7 +10,7 @@
 #Cmake basic options
 cmake_minimum_required(VERSION 2.6)
 project(htopml)
-set(HTMLTOP_VERSION "0.1.0-dev")
+set(HTMLTOP_VERSION "0.1.0")
 
 ######################################################
 #global setup
