@@ -166,7 +166,7 @@ do
 			ENABLE_LISTEN_ALL="-DENABLE_LISTEN_ALL=`enabl_disabl_to_yes_no $arg`"
 			;;
 		--disable-tests | --enable-tests)
-			DISABLE_TESTS="-DDISABLE_UNIT_TESTS=`enabl_disabl_to_yes_no $arg 'INVERT'`";
+			DISABLE_TESTS="-DDISABLE_TESTS=`enabl_disabl_to_yes_no $arg 'INVERT'`";
 			;;
 		--show)
 			ENABLE_DISPLAY_COMMAND='true'
