@@ -17,8 +17,15 @@ HTOPML_INSTR_EXE=""
 export HTOPML_ENABLE=1
 
 ######################################################
+show_help()
+{
+	echo "htopml [--modules=libXXXX.so,libYYYY.so] [--only=exename] {program} [program options...]" 1>&2
+}
+
+######################################################
 if [ -z "$*" ]; then
-	echo "Missing arguments : $0 [--modules=libXXXX.so,libYYYY.so] [--only=exename] {program} [program options...]" 1>&2
+	echo "Missing arguments : " 1>&2
+	show_help
 	exit 1
 fi
 
@@ -34,6 +41,10 @@ do
 		--only=*)
 			export HTOPML_INSTR_EXE=$(echo "$1" | sed -e 's/^--only=//g')
 			shift 1
+			;;
+		--help*)
+			show_help
+			exit 0
 			;;
 		*)
 			END_ARGS='true'

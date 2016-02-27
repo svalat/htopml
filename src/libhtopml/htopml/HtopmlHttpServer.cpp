@@ -205,10 +205,10 @@ void HtopmlHttpServer::addMenuEntry(const std::string& name, const std::string& 
 void HtopmlHttpServer::setupHowloc(void )
 {
 	//setup top structure
-	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.txt","lstopo --of console"));
-	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.xml","lstopo --of xml"));
-	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","lstopo --of native_svg"));
-	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.png","lstopo --of png"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.txt","hwloc-ls --of console"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.xml","hwloc-ls --of xml"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.svg","hwloc-ls --of native_svg"));
+	this->registerHttpNode(new SimpleProcessHttpNode("/linux/hwloc.png","hwloc-ls --of png"));
 
 	//setup hwloc node
 	#ifdef HAVE_HWLOC
