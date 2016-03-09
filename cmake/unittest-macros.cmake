@@ -12,6 +12,9 @@
 # in jenkins infrastructure.
 
 ######################################################
+find_package (Threads)
+
+######################################################
 #For integration of tests in jenkins, but only in self-test mode
 macro (htopml_add_test test_name)
 	#steup wrapper
@@ -28,4 +31,5 @@ macro (htopml_add_test test_name)
 
 	#gen text command and register
 	add_test(${test_name} ${tmp_test_wrapper} ${CMAKE_CURRENT_BINARY_DIR}/${test_name} ${tmp_test_run_option})
+	target_link_libraries (${test_name} ${CMAKE_THREAD_LIBS_INIT})
 endmacro (htopml_add_test)
