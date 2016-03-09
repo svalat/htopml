@@ -7,8 +7,12 @@
 ######################################################
 
 ######################################################
+find_package (Threads)
+
+######################################################
 add_definitions(-DNO_SSL)
 add_library(mongoose mongoose.c)
+target_link_libraries (mongoose ${CMAKE_THREAD_LIBS_INIT})
 SET_TARGET_PROPERTIES(mongoose PROPERTIES COMPILE_FLAGS -fPIC)
 
 ######################################################
