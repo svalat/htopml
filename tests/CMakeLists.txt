@@ -27,3 +27,8 @@ htopml_add_test(testCommon)
 add_executable(testHttpNode testHttpNode.cpp)
 target_link_libraries(testHttpNode htopml-server ${SVUNITTEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
 htopml_add_test(testHttpNode)
+
+######################################################
+add_executable(testHttpRequest testHttpRequest.cpp)
+target_link_libraries(testHttpRequest htopml-server ${SVUNITTEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+htopml_add_test(testHttpRequest)

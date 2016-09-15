@@ -27,6 +27,7 @@ class HttpRequest
 		HttpRequest(const mg_request_info * mongooseRequest,std::string auth = "");
 		std::string getUri(void) const;
 		std::string getAuth(void) const;
+		std::string getParam(const std::string & name) const;
 	private:
 		const mg_request_info * mongooseRequest;
 		std::string auth;
