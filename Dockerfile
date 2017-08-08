@@ -31,7 +31,11 @@ RUN ../configure --prefix=/usr/local/htopml --with-hwloc=/usr \
 FROM qnib/uplain-init:14.04
 ENV SKIP_ENTRYPOINTS=true
 COPY --from=hwloc /usr/local/hwloc/ /usr/
-COPY --from=htopml /usr/local/htopml/bin/ /usr/bin/
-COPY --from=htopml /usr/local/htopml/lib /usr/local/htopml/lib
-
+COPY --from=htopml /usr/local/htopml/ /usr/local/htopml/
+RUN ln -s /usr/local/htopml/bin/htopml \
+          /usr/local/htopml/bin/htopmld  \
+          /usr/local/htopml/bin/htopml-slurm-proxy \
+          /usr/local/htopml/bin/htopml-passwd \
+          /usr/local/htopml/bin/htopml-generate \
+          /usr/bin/
 CMD ["htopmld"]
