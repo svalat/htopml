@@ -4,4 +4,4 @@ struct environ_c_array
 {
 };
 
-void convertToJson(htopml::JsonState & json,std::ostream& stream, environ_c_array value);
+void convertToJson(htopml::JsonState & json,environ_c_array value);

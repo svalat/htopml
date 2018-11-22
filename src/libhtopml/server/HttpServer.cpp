@@ -80,6 +80,7 @@ bool HttpServer::start()
 	//mark as starting
 	if (ctx != NULL)
 	{
+		fprintf(stderr,"Htopml server started on : http://%s:%d\n",listenAddr.c_str(),this->port);
 		status = SERVER_RUNNING;
 		return true;
 	} else {

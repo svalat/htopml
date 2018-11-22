@@ -63,7 +63,7 @@ HtopmlHttpServer::HtopmlHttpServer(int port,bool autostart, const std::string & 
 
 	if (autostart && gblHtopmlIsEnabled && instrumentThisExe())
 	{
-		if (!this->start())
+		if (this->start())
 			fprintf(stderr,"Failed to instrument %s\n",exeName.c_str());
 		//avoid to start childs
 		unsetenv("HTOPML_ENABLE");

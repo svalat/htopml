@@ -111,7 +111,7 @@ void TopHttpNode::parseProcessProcStat(LinuxTop& top, FILE* fp) const
 
 	//search end of filename :
 	tmp = readBuffer;
-	while (*tmp != ')' && tmp != '\0')
+	while (*tmp != ')' && *tmp != '\0')
 		tmp++;
 	assert(*tmp == ')');
 

@@ -1,9 +1,10 @@
 #include <cstdio>
+#include <htopml/HtopmlHttpServer.h>
 
 #ifndef SKIP_HTOPML_MAIN
 int main(void)
 {
-	puts("ok");
+	htopml::glbAutomaticServer.start();
 	getchar();
 	return 0;
 }

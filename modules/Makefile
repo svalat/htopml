@@ -46,10 +46,10 @@ liball.so: openedfiles/libopenedfiles.so statm/libstatm.so environ/libenviron.so
 	ln -sf environ/libenviron.so .
 	ln -sf malloc/libmalloc.so
 	ln -sf sysinfo/libsysinfo.so
-	$(CXX) $(LDFLAGS) -o $@ -Wl,-rpath=$(PWD) -L. -lopenedfiles -lstatm -lenviron -lmalloc -lsysinfo
+	$(CXX) $(LDFLAGS) -o $@ -Wl,-rpath=$(HTOPML_PREFIX)/lib -L$(HTOPML_PREFIX)/lib -Wl,-rpath=$(PWD) -L. -lopenedfiles -lstatm -lenviron -lmalloc -lsysinfo -lhtopml
 
 alld: liball.so
-	$(CXX) -g -o $@ $(HTOPML_PREFIX)/share/htopml/templates/main.cpp $^ -Wl,-rpath=$(PWD)
+	$(CXX) -g -o $@ -I$(HTOPML_PREFIX)/include $(HTOPML_PREFIX)/share/htopml/templates/main.cpp -Wl,-rpath=$(PWD) -L$(PWD) -lall -Wl,-rpath=$(HTOPML_PREFIX)/lib -L$(HTOPML_PREFIX)/lib -lhtopml
 
 clean:
 	$(RM) alld liball.so libopenedfiles.so libstatm.so libenviron.so libmalloc.so libsysinfo.so

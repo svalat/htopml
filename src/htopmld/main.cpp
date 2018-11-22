@@ -18,6 +18,7 @@ using namespace std;
 /*******************  FUNCTION  *********************/
 int main(int argc, char **argv)
 {
+	htopml::glbAutomaticServer.start();
 	getchar();
 	return 0;
 }

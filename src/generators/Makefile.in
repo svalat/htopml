@@ -12,8 +12,8 @@ FILE_PREFIX:={{FILE_PREFIX}}
 HTOPML_MODULE_FILE:={{HTOPML_MODULE_FILE}}
 
 ######################################################
-HTOPML_CFLAGS=-I$(HTOPML_PREFIX)/include -I.
-HTOPML_LDFLAGS=-L$(HTOPML_PREFIX)/lib -Wl,-rpath=$(HTOPML_PREFIX)/lib -lhtopml
+HTOPML_CFLAGS=-I$(HTOPML_PREFIX)/include -I. -z nolazyload
+HTOPML_LDFLAGS=-L$(HTOPML_PREFIX)/lib -Wl,-rpath=$(HTOPML_PREFIX)/lib -lhtopml -ldl -z nolazyload
 
 ######################################################
 RM=rm -f
@@ -55,7 +55,7 @@ lib$(FILE_PREFIX).a.ldflags: Makefile
 
 ######################################################
 $(FILE_PREFIX)d: main.cpp lib$(FILE_PREFIX).so
-	$(CXX) $(CFLAGS) $(HTOPML_LDFLAGS) -L. -Wl,-rpath=$(PWD) -l$(FILE_PREFIX) $< -o $@
+	$(CXX) $(CFLAGS) $(HTOPML_CFLAGS) $(HTOPML_LDFLAGS) -L. -Wl,-rpath=$(PWD) -l$(FILE_PREFIX) $< -o $@
 
 ######################################################
 distclean: clean

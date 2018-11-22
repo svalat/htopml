@@ -18,7 +18,7 @@ static const char * find_value_start(char * capture_name,const char * str,size_t
 		return str+i;
 }
 
-void convertToJson(htopml::JsonState& json, std::ostream& stream, environ_c_array value)
+void convertToJson(htopml::JsonState& json, environ_c_array value)
 {
 	int i = 0;
 	const char * fieldValue;
