@@ -127,8 +127,7 @@ void HttpServer::loadAuthCache(void )
 	//load entries
 	while (!feof(fp))
 	{
-		//need to cast to int on clang ????? they reimplement fgets with char* return ????
-		if ((int)fgets(buffer,sizeof(buffer),fp) <= 0)
+		if (fgets(buffer,sizeof(buffer),fp) == NULL)
 		{
 			break;
 		} else if (*buffer == '\n') {
