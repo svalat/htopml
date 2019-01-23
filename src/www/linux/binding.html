@@ -19,7 +19,7 @@
 		var svgdoc = hwloc_img_get_svg(name);
 		for (var i in objects)
 		{
-			var id="rect_"+objects[i].replace(':','_');
+			var id=objects[i].replace(':','_')+"_rect";
 			var rect = svgdoc.getElementById(id);
  			rect.style.setProperty('fill',color,'');
 		}
@@ -30,7 +30,7 @@
 		svgdoc = hwloc_img_get_svg(name);
 		for (var obj in counts)
 		{
-			var id="rect_"+obj.replace(':','_');
+			var id=obj.replace(':','_')+"_rect";
 			var rect = svgdoc.getElementById(id);
 			var bulletCircle = svgdoc.createElementNS("http://www.w3.org/2000/svg","circle");
 			bulletCircle.setAttribute("cx", rect.x.animVal.value+5);
