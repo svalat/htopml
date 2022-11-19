@@ -24,7 +24,7 @@ namespace htopml
  * It's based on global object constructor mechanism.
  * @param handler Define a handler function to call to register the component.
 **/
-#define HTOPML_REGISTER_MODULE(handler) bool __call_handler_##handler = htopml::glbAutomaticServer.callHandler(handler)
+#define HTOPML_REGISTER_MODULE(handler) static bool __call_handler_##handler = htopml::glbAutomaticServer.callHandler(handler)
 
 /*********************  CLASS  **********************/
 /**
